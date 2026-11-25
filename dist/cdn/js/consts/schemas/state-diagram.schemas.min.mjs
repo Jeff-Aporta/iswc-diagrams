@@ -1,0 +1,1 @@
+import{z as e}from"zod";var a=e.object({playing:e.boolean(),idx:e.number(),total:e.number(),replay:e.number()}),r=e.object({n:e.custom(()=>!0),g:e.custom(()=>!0)}),o=e.object({e:e.custom(()=>!0),g:e.custom(()=>!0)});

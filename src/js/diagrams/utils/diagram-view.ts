@@ -2,6 +2,11 @@
 import type { EmbedBox, EmbedCapture, EmbedCaptureOpts, EmbedSize, EmbeddedDiagram, NodeEmbedSpec } from '../../consts/schemas/diagram-view.schemas.js';
 import { DiagramHostLikeSchema, EmbeddedDiagramFileSchema, EmbeddedDiagramSchema, NodeEmbedSpecSchema } from '../../consts/schemas/diagram-view.schemas.js';
 
+// El viewport 2D (pan/zoom) vive en el kit y se consume por el alias publicado: asi el diagrama y
+// el lightbox comparten exactamente el mismo gesto. El diagrama anidado tambien lo usa.
+export { createPanZoom } from '@jeff-aporta/iswc-base/core/pan-zoom.min.mjs';
+export type { PanZoomController, PanZoomOptions, PanZoomView } from '../../consts/schemas/pan-zoom.schemas.js';
+
 // ── diagram-embed ──
 /**
  * diagram-embed.ts — nodos especiales reutilizables (`kind` de nodo):

@@ -9,7 +9,7 @@
 import { cpSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { stop } from 'esbuild';
-import { construirApp, vigilarApp } from 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/dist/cdn/build/construir-app.ts';
+import { construirApp, vigilarApp } from 'https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/build/construir-app.ts';
 import { KIT_TAGS, mapaRutas, PREFIJO } from '../js/kit-tags.ts';
 
 const fuente = (rel: string) => (rel.startsWith('js/') ? `src/${rel}` : rel).replace(/\.js$/, '.ts');

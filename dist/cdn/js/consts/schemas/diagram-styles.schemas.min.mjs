@@ -1,0 +1,1 @@
+import{z as e}from"zod";var r=e.union([e.literal("er"),e.literal("component"),e.literal("class"),e.literal("sequence"),e.literal("flowchart")]),i=e.record(e.string(),e.array(e.string()).min(1)),o=e.object({archivos:e.custom(t=>t instanceof Map),cargas:e.custom(t=>t instanceof Map),temas:e.custom(t=>t instanceof Map)});

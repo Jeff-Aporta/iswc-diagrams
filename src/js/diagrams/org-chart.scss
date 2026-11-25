@@ -1,5 +1,5 @@
 @use 'kit' as *;
-@use '../../core/diagram-kit';
+@use 'diagram-kit';
 
 /* iswc-org-chart */
 :host { @include texto-base(); width: 100%; min-height: 0; position: relative; box-sizing: border-box; &[color="viewer"] { width: 100%; height: 100%; }; }

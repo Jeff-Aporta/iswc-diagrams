@@ -1,4 +1,4 @@
-<!-- Copia de skills/iswc-base/PROMPT.md del kit Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c. No editar: se refresca con `deno task vendor:iswc`. -->
+<!-- Copia de skills/iswc-base/PROMPT.md del kit Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8. No editar: se refresca con `deno task vendor:iswc`. -->
 <!-- @vendor 2026-10-14T16:13:19.844Z Jeff-Aporta/is-webcomponents@main skills/iswc-base/PROMPT.md -->
 # ISWC (Instrucciones para LLM)
 
@@ -48,9 +48,9 @@ Cuando el usuario pida una de estas intenciones, sigue la skill de la herramient
 
 | Comando | Skill | Uso |
 | --- | --- | --- |
-| `/iswc-base:build` | [tools/build.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/tools/build.md) | Fundar o extender apps con `is-*` |
-| `/iswc-base:migrate` | [tools/migrate.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/tools/migrate.md) | Migrar un front (React/MUI/Svelte/…) a vanilla + `is-*` |
-| `/iswc-base:local` | [tools/local.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/tools/local.md) | Vendorizar JS/CSS locales (preferido) y actualizar SHA |
+| `/iswc-base:build` | [tools/build.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/tools/build.md) | Fundar o extender apps con `is-*` |
+| `/iswc-base:migrate` | [tools/migrate.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/tools/migrate.md) | Migrar un front (React/MUI/Svelte/…) a vanilla + `is-*` |
+| `/iswc-base:local` | [tools/local.md](https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/tools/local.md) | Vendorizar JS/CSS locales (preferido) y actualizar SHA |
 
 Instalación de skills (preferir repo GitHub):
 
@@ -205,15 +205,15 @@ Preferir enlaces **GitHub** (mejor instalación de skills). Raw como secundario 
 
 ## 1. Instalación CDN
 
-https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/is-cdn-install/SKILL.md
+https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/is-cdn-install/SKILL.md
 
 ## 2. Guía general
 
-https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/SKILL.md
+https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/SKILL.md
 
 ## 3. Prompt completo (este archivo)
 
-https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/PROMPT.md
+https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/PROMPT.md
 
 ## 4. Guía CDN publicada (jsDelivr)
 
@@ -221,7 +221,7 @@ https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@main/dist/cdn/skills/is
 
 ## 5. índice global
 
-https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/specs/componentes.md
+https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/specs/componentes.md
 
 ## 6. LLM.md de la categoría correspondiente
 
@@ -233,7 +233,7 @@ Leer siempre el archivo `.md` del componente antes de utilizarlo.
 
 ## 8. Herramientas
 
-- https://github.com/Jeff-Aporta/is-webcomponents/tree/92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/skills/iswc-base/tools
+- https://github.com/Jeff-Aporta/is-webcomponents/tree/2a651e44bbd1316b96942f14f26ff1c6175ac2c8/skills/iswc-base/tools
 
 ---
 

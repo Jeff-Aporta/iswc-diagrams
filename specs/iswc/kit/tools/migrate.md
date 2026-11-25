@@ -1,4 +1,4 @@
-<!-- Copia de skills/iswc-base/tools/migrate.md del kit Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c. No editar: se refresca con `deno task vendor:iswc`. -->
+<!-- Copia de skills/iswc-base/tools/migrate.md del kit Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8. No editar: se refresca con `deno task vendor:iswc`. -->
 <!-- @vendor 2026-10-13T14:13:48.240Z Jeff-Aporta/is-webcomponents@main skills/iswc-base/tools/migrate.md -->
 # `/iswc-base:migrate`
 

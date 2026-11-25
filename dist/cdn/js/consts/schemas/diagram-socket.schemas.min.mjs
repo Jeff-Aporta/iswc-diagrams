@@ -1,0 +1,1 @@
+import{z as e}from"zod";var c=e.object({palo:e.number(),socket:e.number(),bola:e.number()}),o=e.object({x:e.number(),y:e.number()}),t=e.object({tip:o,dir:o,medidas:c,color:e.string(),ancho:e.number(),relleno:e.string().optional(),pulso:e.boolean(),clase:e.string()});
