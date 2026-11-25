@@ -1,0 +1,262 @@
+{
+  "slug": "ruta-gate-entregable",
+  "module": "010-General",
+  "tag": "iswc-flowchart",
+  "script": "diagrams/flowchart.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "payload": {
+    "vectorFlow": {
+      "title": "Gate del entregable",
+      "steps": "auto",
+      "columns": [
+        {
+          "id": "S",
+          "label": "sync:entregable",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "ini",
+              "label": "Inicio",
+              "shape": "start"
+            },
+            {
+              "id": "s",
+              "label": "npm run sync:entregable",
+              "icon": "mdi:console"
+            },
+            {
+              "id": "v",
+              "label": "¿Remotos del mirror y dependencias del compilado en orden?",
+              "shape": "diamond"
+            },
+            {
+              "id": "x",
+              "label": "Exit 4 · el entregable no se toca",
+              "icon": "mdi:cancel"
+            },
+            {
+              "id": "g1",
+              "label": "pre:vendor: vendor del kit, build y bundle",
+              "icon": "mdi:package-variant-closed"
+            },
+            {
+              "id": "g2",
+              "label": "docs:diagramas y docs:publicar",
+              "icon": "mdi:file-document-multiple-outline"
+            },
+            {
+              "id": "g3",
+              "label": "mirror-guardian",
+              "icon": "mdi:shield-sync-outline"
+            },
+            {
+              "id": "g4",
+              "label": "check-inbox-cero: local, staging y prod",
+              "icon": "mdi:inbox-outline"
+            },
+            {
+              "id": "g5",
+              "label": "patch-cleanup",
+              "icon": "mdi:broom"
+            },
+            {
+              "id": "fin-x",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "G",
+          "label": "Gate (pruebas)",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "h",
+              "label": "¿Hay otro host en el puerto del gate?",
+              "shape": "diamond"
+            },
+            {
+              "id": "h2",
+              "label": "Arranca su propio host y espera /api/info",
+              "icon": "mdi:server-plus"
+            },
+            {
+              "id": "t1",
+              "label": "oxlint",
+              "icon": "mdi:format-list-checks"
+            },
+            {
+              "id": "t2",
+              "label": "test:all",
+              "icon": "mdi:test-tube"
+            },
+            {
+              "id": "t3",
+              "label": "tsc --noEmit",
+              "icon": "mdi:language-typescript"
+            },
+            {
+              "id": "baja",
+              "label": "Baja el host siempre",
+              "icon": "mdi:server-off"
+            },
+            {
+              "id": "q",
+              "label": "¿Todo en verde?",
+              "shape": "diamond"
+            }
+          ]
+        },
+        {
+          "id": "E",
+          "label": "Entregable y mirror",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "w",
+              "label": "Escribe en el entregable solo lo que cambió",
+              "icon": "mdi:content-save-move-outline"
+            },
+            {
+              "id": "p",
+              "label": "Post: dependencias en package.json, renombres de mayúsculas y estado",
+              "icon": "mdi:cog-transfer-outline"
+            },
+            {
+              "id": "c",
+              "label": "Checkpoint: commit y push del mirror",
+              "icon": "mdi:source-commit"
+            },
+            {
+              "id": "fin",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "ini",
+          "to": "s"
+        },
+        {
+          "id": "e2",
+          "from": "s",
+          "to": "v"
+        },
+        {
+          "id": "e3",
+          "from": "v",
+          "to": "x",
+          "label": "falla"
+        },
+        {
+          "id": "e4",
+          "from": "v",
+          "to": "g1",
+          "label": "ok"
+        },
+        {
+          "id": "e5",
+          "from": "g1",
+          "to": "g2"
+        },
+        {
+          "id": "e6",
+          "from": "g2",
+          "to": "g3"
+        },
+        {
+          "id": "e7",
+          "from": "g3",
+          "to": "g4"
+        },
+        {
+          "id": "e8",
+          "from": "g4",
+          "to": "g5"
+        },
+        {
+          "id": "e9",
+          "from": "g5",
+          "to": "h"
+        },
+        {
+          "id": "e10",
+          "from": "h",
+          "to": "x",
+          "label": "sí"
+        },
+        {
+          "id": "e11",
+          "from": "h",
+          "to": "h2",
+          "label": "no"
+        },
+        {
+          "id": "e12",
+          "from": "h2",
+          "to": "t1"
+        },
+        {
+          "id": "e13",
+          "from": "t1",
+          "to": "t2"
+        },
+        {
+          "id": "e14",
+          "from": "t2",
+          "to": "t3"
+        },
+        {
+          "id": "e15",
+          "from": "t3",
+          "to": "baja"
+        },
+        {
+          "id": "e16",
+          "from": "baja",
+          "to": "q"
+        },
+        {
+          "id": "e17",
+          "from": "q",
+          "to": "x",
+          "label": "no"
+        },
+        {
+          "id": "e18",
+          "from": "q",
+          "to": "w",
+          "label": "sí"
+        },
+        {
+          "id": "e19",
+          "from": "w",
+          "to": "p"
+        },
+        {
+          "id": "e20",
+          "from": "p",
+          "to": "c"
+        },
+        {
+          "id": "e21",
+          "from": "c",
+          "to": "fin"
+        },
+        {
+          "id": "e22",
+          "from": "x",
+          "to": "fin-x"
+        }
+      ]
+    }
+  },
+  "oficial": false
+}

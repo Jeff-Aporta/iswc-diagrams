@@ -1,0 +1,397 @@
+{
+  "slug": "tareas-programadas",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-tareas-programadas.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Tareas programadas",
+      "actors": [
+        {
+          "id": "H",
+          "label": "Host (func start)",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "R",
+          "label": "Runner de parches",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "T",
+          "label": "Timers",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "H",
+          "to": "H",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=H]": {
+                      "nodes": {
+                        "[id=start]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 1,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m2",
+          "from": "H",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=flag]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 2,
+          "stepLabel": "1.4.1"
+        },
+        {
+          "id": "m3",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e18]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 3,
+          "stepLabel": "1.4.2"
+        },
+        {
+          "id": "m4",
+          "from": "T",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=d1]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 4,
+          "stepLabel": "1.5"
+        },
+        {
+          "id": "m5",
+          "from": "T",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=nada]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 5,
+          "stepLabel": "1.5.1"
+        },
+        {
+          "id": "m6",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=cierra]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "1.5.2"
+        },
+        {
+          "id": "m7",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=purga]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 7,
+          "stepLabel": "1.5.3"
+        },
+        {
+          "id": "m8",
+          "from": "H",
+          "to": "R",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=R]": {
+                      "nodes": {
+                        "[id=runner]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 8,
+          "stepLabel": "1.1"
+        },
+        {
+          "id": "m9",
+          "from": "R",
+          "to": "H",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=H]": {
+                      "nodes": {
+                        "[id=estado]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 9,
+          "stepLabel": "1.2"
+        },
+        {
+          "id": "m10",
+          "from": "H",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=H]": {
+                      "nodes": {
+                        "[id=barrido]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 10,
+          "stepLabel": "1.3"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m2",
+            "m3",
+            "m4",
+            "m5",
+            "m6",
+            "m7"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e7]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m5"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e11]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f3",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m6",
+            "m7"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e12]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f4",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m8",
+            "m9",
+            "m10"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-tareas-programadas.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e3]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

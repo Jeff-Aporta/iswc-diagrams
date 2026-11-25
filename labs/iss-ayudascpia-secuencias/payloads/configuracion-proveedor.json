@@ -1,0 +1,322 @@
+{
+  "slug": "configuracion-proveedor",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-configuracion-proveedor.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Proveedor del modelo (/proveedor)",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Consola / ISW",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "V",
+          "label": "ISS · TProviderController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        },
+        {
+          "id": "X_ai",
+          "label": {
+            "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+            "query": {
+              "payload": {
+                "componentDiagram": {
+                  "components": {
+                    "[id=openai-models]": {
+                      "name": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "icon": "mdi:cloud-outline",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "C",
+          "to": "V",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "V",
+          "to": "V",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=V]": {
+                      "nodes": {
+                        "[id=d1]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "V",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=V]": {
+                      "nodes": {
+                        "[id=get]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 3,
+          "stepLabel": "1.1"
+        },
+        {
+          "id": "m4",
+          "from": "V",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=V]": {
+                      "nodes": {
+                        "[id=put]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 4,
+          "stepLabel": "1.2"
+        },
+        {
+          "id": "m5",
+          "from": "V",
+          "to": "X_ai",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=V]": {
+                      "nodes": {
+                        "[id=cfg]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 5,
+          "stepLabel": "1.3.1"
+        },
+        {
+          "id": "m6",
+          "from": "V",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e16]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "1.3.2"
+        },
+        {
+          "id": "m7",
+          "from": "V",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e18]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 7,
+          "stepLabel": "1.3.3"
+        },
+        {
+          "id": "m8",
+          "from": "V",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=V]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 8,
+          "stepLabel": "2"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m3"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e4]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m4"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e5]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f3",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m5",
+            "m6",
+            "m7"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-proveedor.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e6]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

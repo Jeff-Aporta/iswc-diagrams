@@ -1,0 +1,262 @@
+{
+  "slug": "configuracion-cfg",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-configuracion-cfg.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Configuración en caliente (CFG)",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Consola / ISW",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "S",
+          "label": "ISS · TSysValueController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "C",
+          "to": "S",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "S",
+          "to": "S",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=seg]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "S",
+          "to": "S",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=d1]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 3,
+          "stepLabel": "2"
+        },
+        {
+          "id": "m4",
+          "from": "S",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=lee]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 4,
+          "stepLabel": "2.1"
+        },
+        {
+          "id": "m5",
+          "from": "S",
+          "to": "S",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=push]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 5,
+          "stepLabel": "2.2"
+        },
+        {
+          "id": "m6",
+          "from": "S",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=guarda]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "2.3"
+        },
+        {
+          "id": "m7",
+          "from": "S",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 7,
+          "stepLabel": "3"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m4"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e5]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m5",
+            "m6"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-configuracion-cfg.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e6]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

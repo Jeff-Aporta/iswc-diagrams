@@ -1,0 +1,27 @@
+// @vendor 2026-11-25T17:48:10.142Z Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c src/styles/_kit.scss
+// _kit.scss — los estilos que el kit repite, en un solo sitio.
+//
+// Aqui no hay CSS: solo las puertas de entrada. Los parciales viven en src/styles/kit/:
+//
+//   _funciones.scss  em(), escala(), tono(), espacio()
+//   _mixins.scss     los mixins genericos (oculto, foco-visible, flex, transicion…)
+//   _familias.scss   las bases por familia (campo, capa, grafico, tarjeta, lienzo)
+//
+// Las reglas del repo (specs/estilos.md):
+//
+//   1. El mixin emite el CSS EXACTAMENTE igual que la regla que sustituye: mismos valores, mismo
+//      orden, misma especificidad. Si el CSS cambia, no es un refactor, es un cambio de estilo.
+//      Por eso scripts/sondas/css-equivalente.mjs compara el CSS compilado antes y despues.
+//   2. El mixin no elige la especificidad por su cuenta: quien llama decide. Ningun mixin envuelve
+//      nada en :host(...) por su cuenta: los de aqui se llaman DENTRO de :host { }.
+//   3. Sin @import: solo @use y @forward.
+//
+// src/styles es loadPath global del build, asi que desde cualquier componente se llega con:
+//
+//   @use 'kit' as *;
+//
+// y desde un archivo de src/styles/ con @use 'kit' as *; o @forward 'kit';.
+
+@forward 'kit/funciones';
+@forward 'kit/mixins';
+@forward 'kit/familias';

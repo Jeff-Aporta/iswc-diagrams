@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es" data-theme="dark" data-palette="delfin">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor de diagramas</title>
+<meta name="robots" content="noindex">
+<script src="../../dist/cdn/boot.js"></script>
+<!-- iswc:precarga:inicio -->
+<!-- iswc:precarga:fin -->
+<link rel="stylesheet" href="../../dist/cdn/view/estudio/studio.css">
+</head>
+<body>
+<div id="studio"></div>
+<script type="module">
+  import { bootDiagramStudio } from '../../dist/cdn/js/diagrams/utils/diagram-studio.min.mjs';
+  await bootDiagramStudio('edit');
+  document.documentElement.setAttribute('data-app-ready', '');
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+// @contexto INDICE.md · skills/iswc-foundation/SKILL.md
+/**
+ * Behavior migrado desde HTML inline de iswd-org-chart.
+ * Se ejecuta en mount() tras pintar la definition JSON.
+ */
+
+import type { OrgSelectDetail, OrgToggleDetail } from "../../consts/schemas/org-chart.preview.schemas.js";
+export async function mount(ctx: import('@jeff-aporta/iswc-base/previews/_kit/schemas/preview.schemas.ts').PreviewMountContext): Promise<void> {
+  void ctx.main;
+  const log = document.getElementById('log');
+  for (const org of document.querySelectorAll<HTMLElement>('iswd-org-chart')) {
+    org.addEventListener('iswc-select', (e: Event) => {
+      if (!log) return;
+      const detail = (e as CustomEvent<OrgSelectDetail>).detail;
+      log.textContent = `[${org.id}] ${detail.node.title || ''}: ${detail.node.name}\n` + log.textContent;
+    });
+    org.addEventListener('iswc-toggle', (e: Event) => {
+      if (!log) return;
+      const detail = (e as CustomEvent<OrgToggleDetail>).detail;
+      log.textContent = `[${org.id}] toggle ${detail.id} → collapsed=${detail.collapsed}\n` + log.textContent;
+    });
+    org.addEventListener('iswc-open-viewer', () => {
+      if (!log) return;
+      log.textContent = `[${org.id}] abrir visor\n` + log.textContent;
+    });
+  }
+}
+
+export function unmount(): void {
+  /* no-op: listeners del HTML legado no tenían teardown */
+}

@@ -1,0 +1,431 @@
+{
+  "slug": "ruta-seguridad-autorizacion",
+  "module": "010-General",
+  "tag": "iswc-flowchart",
+  "script": "diagrams/flowchart.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "payload": {
+    "vectorFlow": {
+      "title": "Autorización de una ruta (puerta SEG)",
+      "steps": "auto",
+      "columns": [
+        {
+          "id": "cliente",
+          "label": "Cliente",
+          "tipo": "clientes",
+          "align": "center",
+          "nodes": [
+            {
+              "id": "cliente",
+              "label": "TPermissionsClient",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/../fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TPermissionsClient]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Cliente",
+          "tipo": "componentes",
+          "groups": [
+            {
+              "id": "propios-patyia-api",
+              "label": "Propios (PatyIA API)"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "api",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-permisos]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "component",
+              "component": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-permisos]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "stereotype": true,
+                      "items": true,
+                      "provides": true,
+                      "icon": true
+                    }
+                  }
+                ]
+              },
+              "ref": "grp-permisos",
+              "group": "propios-patyia-api"
+            },
+            {
+              "id": "fin",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "B",
+          "label": "ISS · TBasePatyIA",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "id",
+              "label": "Id SEG por prefijo (METHOD:/ruta · QUERY:/ruta · CFG:/ruta)",
+              "icon": "mdi:identifier"
+            },
+            {
+              "id": "fila",
+              "label": "Busca la fila de USR para el id",
+              "icon": "mdi:database-search-outline"
+            },
+            {
+              "id": "d1",
+              "label": "¿La ruta exige JWT?",
+              "shape": "diamond"
+            },
+            {
+              "id": "publica",
+              "label": "Pasa sin token (ruta pública)",
+              "icon": "mdi:door-open"
+            },
+            {
+              "id": "jwt",
+              "label": "Verifica el JWT HS384 (sin token o inválido: 401)",
+              "icon": "mdi:key-chain-variant"
+            },
+            {
+              "id": "rol",
+              "label": "Rol vigente del contacto (sin rol: USR; lectura fallida: 503)",
+              "icon": "mdi:shield-account-outline"
+            },
+            {
+              "id": "valor",
+              "label": "Valor efectivo del id para el rol y el verbo",
+              "icon": "mdi:scale-balance"
+            },
+            {
+              "id": "d2",
+              "label": "¿Qué permite el valor efectivo?",
+              "shape": "diamond"
+            },
+            {
+              "id": "deny",
+              "label": "401 · Sin permiso",
+              "icon": "mdi:account-cancel-outline"
+            },
+            {
+              "id": "handler",
+              "label": "Corre el handler",
+              "icon": "mdi:cog-play-outline"
+            }
+          ]
+        },
+        {
+          "id": "controllers",
+          "label": "Controllers",
+          "tipo": "controllers",
+          "nodes": [
+            {
+              "id": "perm",
+              "label": "TPermissionsController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/../fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TPermissionsController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL · seg_*",
+          "tipo": "tablas",
+          "groups": [
+            {
+              "id": "clientesis-seguridad",
+              "label": "ClientesIS · Seguridad"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "trec",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_accionesrecursos]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_accionesrecursos]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": {
+                        "[name=isysrecurso]": true,
+                        "[name=iaccion]": true,
+                        "[name=itdvalor]": true,
+                        "[name=valordefecto]": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "group": "clientesis-seguridad"
+            },
+            {
+              "id": "trol",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_rolescontacto]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_rolescontacto]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": {
+                        "[name=itercero]": true,
+                        "[name=irol]": true,
+                        "[name=icontacto]": true,
+                        "[name=finicial]": true,
+                        "[name=ffinal]": true,
+                        "[name=bprincipal]": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "group": "clientesis-seguridad"
+            },
+            {
+              "id": "tacc",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_accionesxrol]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=seg_accionesxrol]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": {
+                        "[name=itercero]": true,
+                        "[name=isysrecurso]": true,
+                        "[name=iaccion]": true,
+                        "[name=irol]": true,
+                        "[name=valor]": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "group": "clientesis-seguridad"
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "cliente",
+          "to": "api",
+          "label": "HTTP"
+        },
+        {
+          "id": "e2",
+          "from": "id",
+          "to": "fila"
+        },
+        {
+          "id": "e3",
+          "from": "fila",
+          "to": "d1"
+        },
+        {
+          "id": "e4",
+          "from": "fila",
+          "to": "trec",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e5",
+          "from": "d1",
+          "to": "publica",
+          "label": "sin fila o protected false"
+        },
+        {
+          "id": "e6",
+          "from": "d1",
+          "to": "jwt",
+          "label": "exige JWT"
+        },
+        {
+          "id": "e7",
+          "from": "jwt",
+          "to": "rol"
+        },
+        {
+          "id": "e8",
+          "from": "rol",
+          "to": "valor"
+        },
+        {
+          "id": "e9",
+          "from": "valor",
+          "to": "d2"
+        },
+        {
+          "id": "e10",
+          "from": "rol",
+          "to": "trol",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e11",
+          "from": "valor",
+          "to": "tacc",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e12",
+          "from": "d2",
+          "to": "deny",
+          "label": "false"
+        },
+        {
+          "id": "e13",
+          "from": "d2",
+          "to": "handler",
+          "label": "protected, true o capacidad"
+        },
+        {
+          "id": "e14",
+          "from": "publica",
+          "to": "handler"
+        },
+        {
+          "id": "e15",
+          "from": "handler",
+          "to": "fin"
+        },
+        {
+          "id": "e16",
+          "from": "deny",
+          "to": "fin"
+        },
+        {
+          "id": "e17",
+          "from": "fin",
+          "to": "api",
+          "label": "respuesta"
+        }
+      ]
+    }
+  }
+}

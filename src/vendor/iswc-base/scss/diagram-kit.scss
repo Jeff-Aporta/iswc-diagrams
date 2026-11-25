@@ -1,0 +1,97 @@
+// @vendor 2026-11-25T17:48:10.142Z Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c src/core/diagram-kit.scss
+@charset "UTF-8";
+@use 'kit' as *;
+/**
+ * Kit visual compartido por charts y diagramas.
+ *
+ * Define el lenguaje que estrenó <iswc-sequence-diagram>: tooltip de vidrio,
+ * chip de etiqueta, atenuación de lo no enfocado y tipografía inline. Cada
+ * componente lo importa desde su propio .css y encima pone solo su geometría.
+ *
+ * El tema claro se marca con `[data-theme="light"]` en el contenedor, puesto
+ * desde JS: :host-context() no existe en Firefox ni Safari.
+ */
+/* ── Tokens de lectura compartidos por gráficas y diagramas ──
+   En :host porque deben resolverse con las superficies del contexto (papeles de panda incluidos).
+   Los colores de serie vienen de la capa de paletas: --iswc-chart-1..8. */
+:host { --chart-text: var(--iswc-text); --chart-muted: var(--iswc-text-dim); --chart-surface: var(--iswc-bg-elev); --iswc-chart-grid-color: var(--grid-color, color-mix(in srgb, var(--iswc-border) 85%, transparent)); --chart-axis-color: var(--iswc-border); }
+
+/* ── Tooltip de vidrio ── */
+.dg-tooltip {
+  position: absolute;
+  z-index: 30;
+  pointer-events: none;
+  max-inline-size: 29.3333em;
+  max-block-size: 60vh;
+  overflow: auto;
+  padding: 0.4em 0.65em;
+  border-radius: 0.625em;
+  border: 1px solid var(--iswc-border);
+  background: color-mix(in srgb, var(--iswc-bg-elev) 88%, transparent);
+  backdrop-filter: blur(1.3333em) saturate(160%);
+  -webkit-backdrop-filter: blur(1.3333em) saturate(160%);
+  color: var(--iswc-text);
+  box-shadow: var(--iswc-shadow);
+  white-space: nowrap;
+  font-size: 0.78em;
+  line-height: 1.4;
+}
+
+.dg-tooltip[hidden] { display: none; }
+
+.dg-tooltip {
+  /* Los diagramas muestran descripciones largas; ahí sí conviene que fluya. */
+}
+
+.dg-tooltip.iswc-rich { white-space: normal; }
+.dg-tooltip__title { display: block; font-weight: 700; font-size: 0.75em; color: inherit; }
+.dg-tooltip__step { opacity: 0.7; margin-inline-end: 0.25em; }
+.dg-tooltip__desc { display: block; margin-block-start: 0.35em; line-height: 1.45; opacity: 0.92; white-space: normal; }
+.dg-tooltip__desc img { max-inline-size: 100%; block-size: auto; border-radius: .375em; margin: .25em 0; }
+.dg-tooltip__row { display: flex; align-items: center; gap: 0.4em; opacity: 0.92; }
+.dg-tooltip__value { margin-inline-start: auto; padding-inline-start: 0.75em; font-variant-numeric: tabular-nums; font-weight: 600; opacity: 1; }
+.dg-swatch { inline-size: 0.6em; block-size: 0.6em; border-radius: 50%; flex: none; }
+.dg-swatch--square { border-radius: 0.2em; }
+
+/* ── Chip de etiqueta (tortuga y anotaciones) ── */
+.dg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+  max-inline-size: 21em;
+  padding: .3em .8em .3em .4em;
+  border-radius: .7em;
+  border: 1px solid currentColor;
+  background: color-mix(in srgb, var(--iswc-bg-elev) 94%, transparent);
+  color: var(--iswc-text);
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: .625em;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: normal;
+  box-shadow: var(--iswc-shadow);
+}
+
+.dg-chip__idx { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; inline-size: 1.7778em; block-size: 1.7778em; border-radius: 50%; font-size: .5625em; font-weight: 700; }
+
+/* ── Hover: se resalta lo enfocado y se atenúa el resto ── */
+.dg-mark,
+.dg-dimmable { transition: opacity 0.18s ease, filter 0.12s ease-out; }
+.dg-dimmable.iswc-dim { opacity: 0.35; }
+.dg-dimmable.iswc-active { filter: brightness(1.06); }
+
+/* ── Leyenda ── */
+.dg-legend-item { display: inline-flex; align-items: center; gap: 0.4em; background: none; border: none; border-radius: var(--iswc-radius-sm); color: inherit; cursor: pointer; padding: 0.15em 0.3em; font: inherit; transition: opacity 120ms ease-out, background-color 120ms ease-out; }
+.dg-legend-item:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.dg-legend-item:focus-visible { @include foco-visible(var(--iswc-focus), 2px, 1px); }
+.dg-legend-item[aria-pressed=false] { opacity: 0.45; }
+.dg-legend-item[aria-pressed=false] .dg-legend-label { text-decoration: line-through; }
+
+/* ── Tipografía inline (markdown de las etiquetas) ── */
+.tk-inline-code { font-family: var(--iswc-mono); font-size: 0.88em; padding: 0.08em 0.32em; border-radius: .2841em; background: color-mix(in srgb, var(--iswc-accent) 12%, transparent); }
+.tk-inline-link { color: var(--iswc-brand-text); }
+.tk-inline-icon { inline-size: 0.95em; block-size: 0.95em; vertical-align: -0.12em; margin: 0 0.22em; }
+
+/* ── Rejilla y ejes recesivos ── */
+.dg-grid-line { stroke-width: 1; opacity: 0.6; shape-rendering: crispEdges; }
+

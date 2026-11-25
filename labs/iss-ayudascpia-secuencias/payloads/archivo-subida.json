@@ -1,0 +1,332 @@
+{
+  "slug": "archivo-subida",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-archivo-subida.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Subida de archivos (POST /archivo)",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Portal / app",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "F",
+          "label": "ISS · TFileStorageController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        },
+        {
+          "id": "X_r2",
+          "label": {
+            "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+            "query": {
+              "payload": {
+                "componentDiagram": {
+                  "components": {
+                    "[id=r2-bucket]": {
+                      "name": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "icon": "mdi:cloud-outline",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "C",
+          "to": "F",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "F",
+          "to": "F",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=val]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "F",
+          "to": "F",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=bytes]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 3,
+          "stepLabel": "2"
+        },
+        {
+          "id": "m4",
+          "from": "F",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=cuenta]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 4,
+          "stepLabel": "3"
+        },
+        {
+          "id": "m5",
+          "from": "F",
+          "to": "F",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=d1]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 5,
+          "stepLabel": "4"
+        },
+        {
+          "id": "m6",
+          "from": "F",
+          "to": "X_r2",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=img]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "4.1"
+        },
+        {
+          "id": "m7",
+          "from": "F",
+          "to": "X_r2",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=aud]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 7,
+          "stepLabel": "4.2"
+        },
+        {
+          "id": "m8",
+          "from": "F",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=reg]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 8,
+          "stepLabel": "5"
+        },
+        {
+          "id": "m9",
+          "from": "F",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=F]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 9,
+          "stepLabel": "6"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m6"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e9]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m7"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-archivo-subida.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e10]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

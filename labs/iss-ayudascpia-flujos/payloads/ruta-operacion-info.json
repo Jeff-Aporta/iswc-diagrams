@@ -1,0 +1,425 @@
+{
+  "slug": "ruta-operacion-info",
+  "module": "010-General",
+  "tag": "iswc-flowchart",
+  "script": "diagrams/flowchart.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "payload": {
+    "vectorFlow": {
+      "title": "Salud del servidor (GET /info)",
+      "steps": "auto",
+      "columns": [
+        {
+          "id": "cliente",
+          "label": "Cliente",
+          "tipo": "clientes",
+          "align": "center",
+          "nodes": [
+            {
+              "id": "cliente",
+              "label": "TInfoClient",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TInfoClient]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Monitor / agente",
+          "tipo": "componentes",
+          "groups": [
+            {
+              "id": "propios-patyia-api",
+              "label": "Propios (PatyIA API)"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "api",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-ops]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "component",
+              "component": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-ops]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "stereotype": true,
+                      "items": true,
+                      "provides": true,
+                      "icon": true
+                    }
+                  },
+                  {
+                    "op": "insert",
+                    "valor": {
+                      "items": [
+                        "GET /info"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "ref": "grp-ops",
+              "group": "propios-patyia-api"
+            },
+            {
+              "id": "fin",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "I",
+          "label": "ISS · TInfoController",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "fork",
+              "label": "",
+              "shape": "bar"
+            },
+            {
+              "id": "db",
+              "label": "SELECT 1 con tiempo de conexión",
+              "icon": "mdi:database-clock-outline"
+            },
+            {
+              "id": "err",
+              "label": "¿Hay errores abiertos en la bandeja?",
+              "icon": "mdi:inbox-outline"
+            },
+            {
+              "id": "pat",
+              "label": "Parches aplicados, fallidos y el último",
+              "icon": "mdi:database-cog-outline"
+            },
+            {
+              "id": "geo",
+              "label": "Ubicación del servidor",
+              "icon": "mdi:map-marker-outline"
+            },
+            {
+              "id": "join",
+              "label": "",
+              "shape": "bar"
+            },
+            {
+              "id": "ok",
+              "label": "200 siempre: versión, sello, BD, parches, runner, erroresPorAtender",
+              "icon": "mdi:heart-pulse"
+            },
+            {
+              "id": "n-200",
+              "label": "Un fallo de una lectura queda en su campo; nunca 5xx",
+              "shape": "comment",
+              "about": "ok"
+            }
+          ]
+        },
+        {
+          "id": "controllers",
+          "label": "Controllers",
+          "tipo": "controllers",
+          "nodes": [
+            {
+              "id": "ctl",
+              "label": "TInfoController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TInfoController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "dueno-TErrorController",
+              "label": "TErrorController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TErrorController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "dueno-TErrorController-R",
+              "label": "rowsByCriteria()",
+              "shape": "bridge",
+              "of": "dueno-TErrorController",
+              "op": "R"
+            },
+            {
+              "id": "dueno-TSysValueController",
+              "label": "TSysValueController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TSysValueController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "dueno-TSysValueController-R",
+              "label": "filaCrudaPorPk()",
+              "shape": "bridge",
+              "of": "dueno-TSysValueController",
+              "op": "R"
+            }
+          ]
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "tipo": "tablas",
+          "groups": [
+            {
+              "id": "patyia-operativa",
+              "label": "PatyIA · Operativa"
+            },
+            {
+              "id": "patyia-configuracion",
+              "label": "PatyIA · Configuración"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "terr",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_errores]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_errores]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": {
+                        "[name=ierror]": true,
+                        "[name=batendido]": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-operativa"
+            },
+            {
+              "id": "tsys",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": true
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-configuracion"
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "cliente",
+          "to": "api",
+          "label": "HTTP GET /info"
+        },
+        {
+          "id": "e2",
+          "from": "api",
+          "to": "ctl",
+          "label": "GET /info"
+        },
+        {
+          "id": "e3",
+          "from": "ctl",
+          "to": "fork"
+        },
+        {
+          "id": "e4",
+          "from": "fork",
+          "to": "db"
+        },
+        {
+          "id": "e5",
+          "from": "db",
+          "to": "join"
+        },
+        {
+          "id": "e6",
+          "from": "fork",
+          "to": "err"
+        },
+        {
+          "id": "e7",
+          "from": "err",
+          "to": "join"
+        },
+        {
+          "id": "e8",
+          "from": "fork",
+          "to": "pat"
+        },
+        {
+          "id": "e9",
+          "from": "pat",
+          "to": "join"
+        },
+        {
+          "id": "e10",
+          "from": "fork",
+          "to": "geo"
+        },
+        {
+          "id": "e11",
+          "from": "geo",
+          "to": "join"
+        },
+        {
+          "id": "e12",
+          "from": "join",
+          "to": "ok"
+        },
+        {
+          "id": "e13",
+          "from": "ok",
+          "to": "fin"
+        },
+        {
+          "id": "e14",
+          "from": "fin",
+          "to": "api",
+          "label": "respuesta"
+        },
+        {
+          "id": "e15",
+          "from": "err",
+          "to": "dueno-TErrorController-R",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e16",
+          "from": "dueno-TErrorController-R",
+          "to": "terr",
+          "kind": "dashed"
+        },
+        {
+          "id": "e17",
+          "from": "pat",
+          "to": "dueno-TSysValueController-R",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e18",
+          "from": "dueno-TSysValueController-R",
+          "to": "tsys",
+          "kind": "dashed"
+        }
+      ]
+    }
+  }
+}

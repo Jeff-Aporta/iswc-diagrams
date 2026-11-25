@@ -1,0 +1,458 @@
+{
+  "slug": "ruta-configuracion-proveedor",
+  "module": "010-General",
+  "tag": "iswc-flowchart",
+  "script": "diagrams/flowchart.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "payload": {
+    "vectorFlow": {
+      "title": "Proveedor del modelo (/proveedor)",
+      "steps": "auto",
+      "columns": [
+        {
+          "id": "cliente",
+          "label": "Cliente",
+          "tipo": "clientes",
+          "align": "center",
+          "nodes": [
+            {
+              "id": "cliente",
+              "label": "TProviderClient",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TProviderClient]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "C",
+          "label": "Consola / ISW",
+          "tipo": "componentes",
+          "groups": [
+            {
+              "id": "propios-patyia-api",
+              "label": "Propios (PatyIA API)"
+            },
+            {
+              "id": "openai",
+              "label": "OpenAI"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "api",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-config]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "component",
+              "component": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=grp-config]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "stereotype": true,
+                      "items": true,
+                      "provides": true,
+                      "icon": true
+                    }
+                  },
+                  {
+                    "op": "insert",
+                    "valor": {
+                      "items": [
+                        "GET|PUT /proveedor/{iproveedor}",
+                        "GET|PUT /proveedor/{iproveedor}/cfg"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "ref": "grp-config",
+              "group": "propios-patyia-api"
+            },
+            {
+              "id": "ai",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=openai-models]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "component",
+              "component": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/componentes.json",
+                "query": {
+                  "payload": {
+                    "componentDiagram": {
+                      "components": {
+                        "[id=openai-models]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "stereotype": true,
+                      "items": true,
+                      "provides": true,
+                      "icon": true
+                    }
+                  }
+                ]
+              },
+              "ref": "openai-models",
+              "group": "openai"
+            },
+            {
+              "id": "fin",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "V",
+          "label": "ISS · TProviderController",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "d1",
+              "label": "¿Qué pide?",
+              "shape": "diamond"
+            },
+            {
+              "id": "get",
+              "label": "Lee la fila (404) y enmascara los secretos de jcuenta",
+              "icon": "mdi:eye-off-outline"
+            },
+            {
+              "id": "put",
+              "label": "Merge sobre la fila: un secreto enmascarado no pisa el real",
+              "icon": "mdi:merge"
+            },
+            {
+              "id": "cfg",
+              "label": "Configuración OPENAI y modelos verificados en la cuenta",
+              "icon": "mdi:robot-outline"
+            },
+            {
+              "id": "ok",
+              "label": "Respuesta con la cuenta siempre enmascarada",
+              "icon": "mdi:reply-outline"
+            }
+          ]
+        },
+        {
+          "id": "controllers",
+          "label": "Controllers",
+          "tipo": "controllers",
+          "nodes": [
+            {
+              "id": "ctl",
+              "label": "TProviderController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TProviderController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "ctl-R",
+              "label": "get()",
+              "shape": "bridge",
+              "of": "ctl",
+              "op": "R"
+            },
+            {
+              "id": "dueno-TSysValueController",
+              "label": "TSysValueController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TSysValueController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "dueno-TSysValueController-R",
+              "label": "get()",
+              "shape": "bridge",
+              "of": "dueno-TSysValueController",
+              "op": "R"
+            },
+            {
+              "id": "dueno-TSysValueController-U",
+              "label": "update()",
+              "shape": "bridge",
+              "of": "dueno-TSysValueController",
+              "op": "U"
+            }
+          ]
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "tipo": "tablas",
+          "groups": [
+            {
+              "id": "patyia-configuracion",
+              "label": "PatyIA · Configuración"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "tprov",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_providers]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_providers]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": true
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-configuracion"
+            },
+            {
+              "id": "tsys",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": true
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-configuracion"
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "cliente",
+          "to": "api",
+          "label": "HTTP GET · PUT /proveedor/{iproveedor}"
+        },
+        {
+          "id": "e2",
+          "from": "api",
+          "to": "ctl",
+          "label": "petición con token"
+        },
+        {
+          "id": "e3",
+          "from": "ctl",
+          "to": "d1"
+        },
+        {
+          "id": "e4",
+          "from": "d1",
+          "to": "get",
+          "label": "GET"
+        },
+        {
+          "id": "e5",
+          "from": "d1",
+          "to": "put",
+          "label": "PUT"
+        },
+        {
+          "id": "e6",
+          "from": "d1",
+          "to": "cfg",
+          "label": "…/cfg"
+        },
+        {
+          "id": "e7",
+          "from": "cfg",
+          "to": "ai",
+          "kind": "dashed",
+          "label": "models.list"
+        },
+        {
+          "id": "e8",
+          "from": "get",
+          "to": "ok"
+        },
+        {
+          "id": "e9",
+          "from": "put",
+          "to": "ok"
+        },
+        {
+          "id": "e10",
+          "from": "cfg",
+          "to": "ok"
+        },
+        {
+          "id": "e11",
+          "from": "ok",
+          "to": "fin"
+        },
+        {
+          "id": "e12",
+          "from": "fin",
+          "to": "api",
+          "label": "respuesta"
+        },
+        {
+          "id": "e13",
+          "from": "get",
+          "to": "ctl-R",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e14",
+          "from": "ctl-R",
+          "to": "tprov",
+          "kind": "dashed"
+        },
+        {
+          "id": "e15",
+          "from": "put",
+          "to": "ctl-R",
+          "kind": "dashed",
+          "label": "SELECT UPSERT"
+        },
+        {
+          "id": "e16",
+          "from": "cfg",
+          "to": "dueno-TSysValueController-R",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e17",
+          "from": "dueno-TSysValueController-R",
+          "to": "tsys",
+          "kind": "dashed"
+        },
+        {
+          "id": "e18",
+          "from": "cfg",
+          "to": "dueno-TSysValueController-U",
+          "kind": "dashed",
+          "label": "UPDATE"
+        },
+        {
+          "id": "e19",
+          "from": "dueno-TSysValueController-U",
+          "to": "tsys",
+          "kind": "dashed"
+        }
+      ]
+    }
+  }
+}

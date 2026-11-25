@@ -1,0 +1,201 @@
+{
+  "slug": "operacion-info",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-operacion-info.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Salud del servidor (GET /info)",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Monitor / agente",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "I",
+          "label": "ISS · TInfoController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "I",
+          "to": "I",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-info.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=I]": {
+                      "nodes": {
+                        "[id=db]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 1,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m2",
+          "from": "I",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-info.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=I]": {
+                      "nodes": {
+                        "[id=err]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 2,
+          "stepLabel": "2"
+        },
+        {
+          "id": "m3",
+          "from": "I",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-info.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=I]": {
+                      "nodes": {
+                        "[id=pat]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 3,
+          "stepLabel": "3"
+        },
+        {
+          "id": "m4",
+          "from": "I",
+          "to": "I",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-info.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=I]": {
+                      "nodes": {
+                        "[id=geo]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 4,
+          "stepLabel": "4"
+        },
+        {
+          "id": "m5",
+          "from": "I",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-info.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=I]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 5,
+          "stepLabel": "5"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m1"
+          ]
+        },
+        {
+          "id": "f2",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m2"
+          ]
+        },
+        {
+          "id": "f3",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m3"
+          ]
+        },
+        {
+          "id": "f4",
+          "name": "par",
+          "kind": "par",
+          "messages": [
+            "m4"
+          ]
+        }
+      ]
+    }
+  }
+}

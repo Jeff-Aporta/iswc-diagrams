@@ -1,0 +1,452 @@
+{
+  "slug": "ruta-tareas-programadas",
+  "module": "010-General",
+  "tag": "iswc-flowchart",
+  "script": "diagrams/flowchart.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "payload": {
+    "vectorFlow": {
+      "title": "Tareas programadas",
+      "steps": "auto",
+      "columns": [
+        {
+          "id": "H",
+          "label": "Host (func start)",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "ini",
+              "label": "Inicio",
+              "shape": "start"
+            },
+            {
+              "id": "start",
+              "label": "app.hook.appStart, sin esperar el trabajo",
+              "icon": "mdi:rocket-launch-outline"
+            },
+            {
+              "id": "fork",
+              "label": "",
+              "shape": "bar"
+            },
+            {
+              "id": "estado",
+              "label": "Publica el estado del runner (/api/info)",
+              "icon": "mdi:information-outline"
+            },
+            {
+              "id": "barrido",
+              "label": "Barrido de cierre inmediato",
+              "icon": "mdi:broom"
+            },
+            {
+              "id": "fin-arranque",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "R",
+          "label": "Runner de parches",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "runner",
+              "label": "applyPendingPatches(): patchdb y parches pendientes, por controllers",
+              "icon": "mdi:database-cog-outline"
+            }
+          ]
+        },
+        {
+          "id": "T",
+          "label": "Timers",
+          "tipo": "flujo",
+          "nodes": [
+            {
+              "id": "flag",
+              "label": "Lee runtime.timers (flag ausente = encendido)",
+              "icon": "mdi:timer-cog-outline"
+            },
+            {
+              "id": "n-cada",
+              "label": "Cada 30 minutos, los dos timers en paralelo",
+              "shape": "comment",
+              "about": "flag"
+            },
+            {
+              "id": "d1",
+              "label": "¿Flag encendido?",
+              "shape": "diamond"
+            },
+            {
+              "id": "nada",
+              "label": "Sale sin hacer nada",
+              "icon": "mdi:skip-next-outline"
+            },
+            {
+              "id": "cierra",
+              "label": "Cierra las conversaciones inactivas",
+              "icon": "mdi:archive-lock-outline"
+            },
+            {
+              "id": "purga",
+              "label": "Purga el log de conversaciones",
+              "icon": "mdi:delete-sweep-outline"
+            },
+            {
+              "id": "fin",
+              "label": "Fin",
+              "shape": "end"
+            }
+          ]
+        },
+        {
+          "id": "controllers",
+          "label": "Controllers",
+          "tipo": "controllers",
+          "nodes": [
+            {
+              "id": "cconv",
+              "label": "TConversacionController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/../fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TConversacionController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "clog",
+              "label": "TConversationLogController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/../fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TConversationLogController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "cconv-U",
+              "label": "timerCerrarConversaciones()",
+              "shape": "bridge",
+              "of": "cconv",
+              "op": "U"
+            },
+            {
+              "id": "dueno-TSysValueController",
+              "label": "TSysValueController",
+              "kind": "class",
+              "class": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/../fuentes/codigo.json",
+                "query": {
+                  "clases": {
+                    "[name=TSysValueController]": {
+                      "uml": true
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "dueno-TSysValueController-R",
+              "label": "get()",
+              "shape": "bridge",
+              "of": "dueno-TSysValueController",
+              "op": "R"
+            },
+            {
+              "id": "clog-D",
+              "label": "deleteBatch()",
+              "shape": "bridge",
+              "of": "clog",
+              "op": "D"
+            }
+          ]
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "tipo": "tablas",
+          "groups": [
+            {
+              "id": "patyia-configuracion",
+              "label": "PatyIA · Configuración"
+            },
+            {
+              "id": "patyia-operativa",
+              "label": "PatyIA · Operativa"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "tsys",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_sys_values]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": true
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-configuracion"
+            },
+            {
+              "id": "tconv",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_conversaciones]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_conversaciones]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": {
+                        "[name=iconversacion]": true,
+                        "[name=itdestado]": true,
+                        "[name=fhultact]": true
+                      }
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-operativa"
+            },
+            {
+              "id": "tlog",
+              "label": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_conversacion_log]": {
+                          "name": true
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": "tableder",
+              "table": {
+                "path": "../../../tests/fixtures/ayudas-ejemplo/docs-experimental/diagramas/der.json",
+                "query": {
+                  "payload": {
+                    "erDiagram": {
+                      "entities": {
+                        "[name=patyia_conversacion_log]": true
+                      }
+                    }
+                  }
+                },
+                "actions": [
+                  {
+                    "op": "get",
+                    "query": {
+                      "name": true,
+                      "attributes": true
+                    }
+                  }
+                ]
+              },
+              "group": "patyia-operativa"
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "e1",
+          "from": "ini",
+          "to": "start"
+        },
+        {
+          "id": "e2",
+          "from": "start",
+          "to": "fork"
+        },
+        {
+          "id": "e3",
+          "from": "fork",
+          "to": "runner",
+          "label": "trabajo de arranque en segundo plano"
+        },
+        {
+          "id": "e4",
+          "from": "runner",
+          "to": "estado"
+        },
+        {
+          "id": "e5",
+          "from": "estado",
+          "to": "barrido"
+        },
+        {
+          "id": "e6",
+          "from": "barrido",
+          "to": "fin-arranque"
+        },
+        {
+          "id": "e7",
+          "from": "fork",
+          "to": "cconv",
+          "label": "timers"
+        },
+        {
+          "id": "e8",
+          "from": "cconv",
+          "to": "clog",
+          "kind": "dashed",
+          "label": "klass"
+        },
+        {
+          "id": "e9",
+          "from": "cconv",
+          "to": "flag"
+        },
+        {
+          "id": "e10",
+          "from": "flag",
+          "to": "d1"
+        },
+        {
+          "id": "e11",
+          "from": "d1",
+          "to": "nada",
+          "label": "false"
+        },
+        {
+          "id": "e12",
+          "from": "d1",
+          "to": "cierra",
+          "label": "encendido"
+        },
+        {
+          "id": "e13",
+          "from": "cierra",
+          "to": "purga"
+        },
+        {
+          "id": "e14",
+          "from": "purga",
+          "to": "fin"
+        },
+        {
+          "id": "e15",
+          "from": "nada",
+          "to": "fin"
+        },
+        {
+          "id": "e16",
+          "from": "barrido",
+          "to": "cconv-U",
+          "kind": "dashed",
+          "label": "UPDATE"
+        },
+        {
+          "id": "e17",
+          "from": "cconv-U",
+          "to": "tconv",
+          "kind": "dashed"
+        },
+        {
+          "id": "e18",
+          "from": "flag",
+          "to": "dueno-TSysValueController-R",
+          "kind": "dashed",
+          "label": "SELECT"
+        },
+        {
+          "id": "e19",
+          "from": "dueno-TSysValueController-R",
+          "to": "tsys",
+          "kind": "dashed"
+        },
+        {
+          "id": "e20",
+          "from": "cierra",
+          "to": "cconv-U",
+          "kind": "dashed",
+          "label": "UPDATE"
+        },
+        {
+          "id": "e21",
+          "from": "purga",
+          "to": "clog-D",
+          "kind": "dashed",
+          "label": "DELETE"
+        },
+        {
+          "id": "e22",
+          "from": "clog-D",
+          "to": "tlog",
+          "kind": "dashed"
+        }
+      ]
+    }
+  }
+}

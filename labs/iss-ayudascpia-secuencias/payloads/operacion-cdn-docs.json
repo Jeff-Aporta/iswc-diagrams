@@ -1,0 +1,286 @@
+{
+  "slug": "operacion-cdn-docs",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-operacion-cdn-docs.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "SDK y visor de documentación (/cdn, /docs)",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Navegador / SDK",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "K",
+          "label": "ISS · TCdnController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "S",
+          "label": "ISS · TSysValueController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "C",
+          "to": "K",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e1]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "K",
+          "to": "K",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=K]": {
+                      "nodes": {
+                        "[id=d1]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "K",
+          "to": "K",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=K]": {
+                      "nodes": {
+                        "[id=front]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 3,
+          "stepLabel": "1.1"
+        },
+        {
+          "id": "m4",
+          "from": "K",
+          "to": "K",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=K]": {
+                      "nodes": {
+                        "[id=otro]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 4,
+          "stepLabel": "1.2"
+        },
+        {
+          "id": "m5",
+          "from": "K",
+          "to": "S",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=S]": {
+                      "nodes": {
+                        "[id=doc]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 5,
+          "stepLabel": "1.3.1"
+        },
+        {
+          "id": "m6",
+          "from": "S",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e12]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "1.3.2"
+        },
+        {
+          "id": "m7",
+          "from": "K",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=K]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 7,
+          "stepLabel": "2"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m3"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m4"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e3]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f3",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m5",
+            "m6"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-operacion-cdn-docs.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e4]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

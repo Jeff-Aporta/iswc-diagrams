@@ -1,0 +1,385 @@
+{
+  "slug": "conversacion-tiquete",
+  "module": "020-Conversaciones",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-conversacion-tiquete.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Alta del tiquete",
+      "actors": [
+        {
+          "id": "P",
+          "label": "Portal",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "T",
+          "label": "ISS · TConversationTicketController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "D",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "P",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "T",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=val]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "T",
+          "to": "D",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=lee]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 3,
+          "stepLabel": "2"
+        },
+        {
+          "id": "m4",
+          "from": "T",
+          "to": "T",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=dec]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 4,
+          "stepLabel": "3"
+        },
+        {
+          "id": "m5",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=e401]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 5,
+          "stepLabel": "3.1"
+        },
+        {
+          "id": "m6",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=e404]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 6,
+          "stepLabel": "3.2"
+        },
+        {
+          "id": "m7",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=e400]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 7,
+          "stepLabel": "3.3"
+        },
+        {
+          "id": "m8",
+          "from": "T",
+          "to": "D",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=ins]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 8,
+          "stepLabel": "3.4"
+        },
+        {
+          "id": "m9",
+          "from": "T",
+          "to": "D",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=cierra]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 9,
+          "stepLabel": "3.5"
+        },
+        {
+          "id": "m10",
+          "from": "T",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=T]": {
+                      "nodes": {
+                        "[id=ok]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 10,
+          "stepLabel": "3.6"
+        }
+      ],
+      "fragments": [
+        {
+          "id": "f1",
+          "name": "alt",
+          "kind": "alt",
+          "messages": [
+            "m5"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e6]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f2",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m6"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e7]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f3",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m7"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e8]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": "f4",
+          "name": "else",
+          "kind": "alt",
+          "messages": [
+            "m8",
+            "m9",
+            "m10"
+          ],
+          "condition": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-conversacion-tiquete.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e9]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

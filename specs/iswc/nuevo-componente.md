@@ -1,0 +1,94 @@
+---
+name: nuevo-componente
+description: Crear un componente iswd-* en una app iswc. Úsala cada vez que nace una pieza visible nueva o se migra una existente al estándar.
+---
+
+# Nuevo componente `iswd-<x>`
+
+Referencia viva: `<iswd-hola>` (`view/hola/components/`). Copia su forma.
+
+## 1. Antes de escribir
+
+0. **Todo es componente**: cualquier estructura de UI (figura, fila de metadatos, pie, paginador, caja vacía) es un componente; nunca HTML suelto en vistas, renders ni `index.html`.
+1. ¿El kit ya lo resuelve? Busca la intención en [`kit/catalog.md`](kit/catalog.md) y [`kit/reference.md`](kit/reference.md) (intención → componente). Botones, campos, diálogos, tablas, toasts, iconos, formatos: **siempre `iswc-*`**. Un `iswd-*` traduce datos de la app a esos controles.
+2. ¿Dónde vive? Si lo usa una sola vista → `view/<vista>/components/`; si lo usan varias → `src/js/components/iswd/`. Una vista no importa componentes de otra.
+3. Escribe su WHAT en la spec fundación (`specs/foundation/20-…` o la del dominio) con IDs `[W-CAT-NN]`.
+
+## 2. Los cuatro archivos hermanos (mismo nombre base, misma carpeta)
+
+Los exige `tests/vistas/contrato-componentes.test.ts`: un tag de `kit-tags.ts` sin alguno de ellos deja el gate en rojo.
+
+| Archivo | Contenido |
+| --- | --- |
+| `iswd-<x>.ts` | Lógica de pintado y eventos. Nada de CSS dentro. Lógica de dominio en `utils/` |
+| `iswd-<x>.scss` | Estilos: `@use "tokens" as t; @use "mixins" as m;`, colores solo `--iswc-*`, anidado, `prefers-reduced-motion` si anima |
+| `iswd-<x>.md` | Ficha: front matter `name`/`description` y H2 exactos `Anatomía`, `Atributos observados`, `Props`, `Eventos`, `Slots`, `Ejemplos` (excluir con `<!-- exclude: X -->`; Anatomía nunca) |
+| `iswd-<x>.json` | Playground `iswc-preview/v1` (ver [`demo-componente.md`](demo-componente.md)) |
+
+## 3. El `.ts`
+
+Forma canónica del molde del kit: estáticos `tag`/`css`/`deps`, el CSS por `iswc:css` y `define(Clase)`. Tres bases,
+según lo que tenga el componente: `Componente<P>` (objeto `props` con Zod, el caso de abajo), `IswcReactive` (atributos
+sueltos con `@prop`) o `IswcElement` (estático).
+
+```ts
+import { define } from '@jeff-aporta/iswc-base/core/iswc-element.min.mjs';
+import css from 'iswc:css';
+import { Componente, html } from '../../../src/js/base/componente.js';
+import type { IswdXProps } from '../../../src/js/consts/schemas/componentes.schemas.js';
+
+class IswdX extends Componente<IswdXProps> {
+  static override tag = 'iswd-x';
+  static override css = css;
+  static override observed = ['color'];
+  static override deps = ['iswc-button'];
+
+  protected override inicial(): IswdXProps {
+    return { /* defaults */ };
+  }
+
+  protected override pintar(root: ShadowRoot, props: IswdXProps): void {
+    root.append(html`<iswc-button oniswc-click=${() => this.emit('iswd-x-accion', { /* detail */ })}>…</iswc-button>`);
+  }
+}
+
+define(IswdX);
+```
+
+- `static tag` es exactamente el nombre del archivo; `define(Clase)` lo lee de ahí (idempotente).
+- `import css from 'iswc:css'`: el build incrusta el `.css` compilado de su `.scss` hermano y el molde lo adopta (una
+  hoja por clase). En Deno (`deno task check`) resuelve a `''` (`deno.json` → `src/utils/iswc-css-vacio.ts`).
+- `static observed`: atributos observados (`onAttributeChanged(nombre, viejo, nuevo)`); nada de
+  `static get observedAttributes`. `static deps`: tags del kit que pinta; el molde los pide al loader al conectar.
+- Eventos `iswd-<dominio>-<acción>` con `this.emit(nombre, detail)` (bubbles + composed), `detail` mínimo.
+- Repintado parcial: `protected override parcial(props, previos)` devuelve `true` si ya aplicó el cambio.
+- Sin `props` pero con atributos o estado: `class X extends IswcReactive`
+  (`import { IswcReactive, prop, state } from '@jeff-aporta/iswc-base/core/iswc-reactive.min.mjs'`) con
+  `@prop() accessor label = ''`, `@prop({ type: 'bool' }) accessor abierto = false`, `@prop({ enum: [...] })`,
+  `@state()` para lo interno; el atributo es el nombre en kebab-case y se refleja. **Nunca** un par get/set que lee y
+  escribe el atributo a mano, ni el mismo atributo en `static observed`.
+- Estático (sin props ni atributos): `class X extends IswcElement`
+  (`import { IswcElement, define } from '@jeff-aporta/iswc-base/core/iswc-element.min.mjs'`) con `static template`.
+  Referencia: `<iswd-hola-mundo>`.
+- Los estáticos van sin `override` (el molde llega como JS publicado y TypeScript no los ve declarados); los
+  métodos (`onConnected`, `pintar`, `inicial`, `parcial`) sí lo llevan.
+- Nunca `adoptCss`, `<link>` a la hoja hermana ni `fetch` del CSS: eso era la base anterior al molde.
+
+## 4. Props con Zod
+
+1. Schema en `src/js/consts/schemas/componentes.schemas.ts`: `export const IswdXPropsSchema = z.object({...})` y su `type … = z.infer<…>`.
+2. Registro en `src/js/base/props-registro.ts`: `registrarClaves('iswd-x', IswdXPropsSchema)`.
+3. Datos de fuera (API, URL, almacenamiento): `safeParse`, nunca `as`.
+
+## 5. Registro (una vez)
+
+- `src/js/kit-tags.ts`: en `APP_TAGS` (transversal) o en `VIEW_TAGS.<vista>`. Si usa un `iswc-*` nuevo, añádelo a `KIT_TAGS`.
+- Barril: `import './iswd-x.js';` en el `all.ts` de su carpeta (hijos antes que el shell).
+- Si se ve en el primer pintado y es del kit, va también en `SHELL_CRITICO` (su cierre se precarga desde el HTML).
+- Galería: su línea en `view/demo/manifest.json`, con demo y playground (`controls`); el guardián de demos falla si falta.
+- ¿Es general (sin dominio de la app)? Marca en su `.json`: `"reuso": { "candidato": "iswc-base", "motivo": "…", "propuesta": "iswc-…" }`.
+
+## 6. Cierre
+
+Pruebas WHAT de su comportamiento (`tests/componentes/` o `tests/vistas/`, formato común) y
+`deno task test:all` en verde. Actualiza la spec (`W2H.md`).

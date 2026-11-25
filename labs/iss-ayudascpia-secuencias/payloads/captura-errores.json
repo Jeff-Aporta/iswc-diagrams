@@ -1,0 +1,332 @@
+{
+  "slug": "captura-errores",
+  "module": "010-General",
+  "tag": "iswc-sequence-diagram",
+  "script": "diagrams/sequence-diagram.min.mjs",
+  "attrs": {
+    "diagram-style": "insoft"
+  },
+  "_fuente": "Derivado de ruta-captura-errores.json por docs-experimental/gen/tools/seq-de-vec.mjs. No editar a mano: se edita el vector.",
+  "payload": {
+    "sequence": {
+      "title": "Captura de errores 5xx",
+      "actors": [
+        {
+          "id": "C",
+          "label": "Cliente",
+          "icon": "mdi:monitor-cellphone",
+          "kind": "participant"
+        },
+        {
+          "id": "W",
+          "label": "Host · makeDispatchHandler",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "E",
+          "label": "ISS · TErrorController",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "H",
+          "label": "Controller de la ruta",
+          "icon": "mdi:server",
+          "kind": "participant"
+        },
+        {
+          "id": "P",
+          "label": "PostgreSQL",
+          "icon": "mdi:database",
+          "kind": "participant"
+        }
+      ],
+      "messages": [
+        {
+          "id": "m1",
+          "from": "C",
+          "to": "W",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "edges": {
+                    "[id=e2]": {
+                      "label": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 1,
+          "stepLabel": ""
+        },
+        {
+          "id": "m2",
+          "from": "W",
+          "to": "W",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=W]": {
+                      "nodes": {
+                        "[id=llega]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 2,
+          "stepLabel": "1"
+        },
+        {
+          "id": "m3",
+          "from": "W",
+          "to": "E",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=E]": {
+                      "nodes": {
+                        "[id=envuelve]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 3,
+          "stepLabel": "2"
+        },
+        {
+          "id": "m4",
+          "from": "E",
+          "to": "H",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=H]": {
+                      "nodes": {
+                        "[id=ejecuta]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 4,
+          "stepLabel": "3"
+        },
+        {
+          "id": "m5",
+          "from": "H",
+          "to": "H",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=H]": {
+                      "nodes": {
+                        "[id=lanza]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 5,
+          "stepLabel": "4"
+        },
+        {
+          "id": "m6",
+          "from": "H",
+          "to": "E",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=E]": {
+                      "nodes": {
+                        "[id=excluye]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 6,
+          "stepLabel": "5"
+        },
+        {
+          "id": "m7",
+          "from": "E",
+          "to": "E",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=E]": {
+                      "nodes": {
+                        "[id=censura]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 7,
+          "stepLabel": "6"
+        },
+        {
+          "id": "m8",
+          "from": "E",
+          "to": "P",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=E]": {
+                      "nodes": {
+                        "[id=guarda]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 8,
+          "stepLabel": "7"
+        },
+        {
+          "id": "m9",
+          "from": "E",
+          "to": "E",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=E]": {
+                      "nodes": {
+                        "[id=relanza]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "self",
+          "step": 9,
+          "stepLabel": "8"
+        },
+        {
+          "id": "m10",
+          "from": "E",
+          "to": "W",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=W]": {
+                      "nodes": {
+                        "[id=responde]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "sync",
+          "step": 10,
+          "stepLabel": "9.1"
+        },
+        {
+          "id": "m11",
+          "from": "W",
+          "to": "C",
+          "label": {
+            "path": "../../iss-ayudascpia-flujos/payloads/ruta-captura-errores.json",
+            "query": {
+              "payload": {
+                "vectorFlow": {
+                  "columns": {
+                    "[id=W]": {
+                      "nodes": {
+                        "[id=responde]": {
+                          "label": true
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "kind": "reply",
+          "step": 11,
+          "stepLabel": "9.2"
+        }
+      ],
+      "fragments": []
+    }
+  }
+}

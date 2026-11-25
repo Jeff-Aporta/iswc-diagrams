@@ -1,0 +1,865 @@
+// labs/iss-ayudascpia-flujos/rutas-ricas.mjs
+// Compone las rutas ilustradas (diagramas combinados) de los procesos del ISS-AyudasCPIA con piezas
+// REALES del ISS: componentes y endpoints (componentes.json), clases de controlador y POJO (clases.json),
+// tablas del DER (der.json) y sistemas externos (OpenAI, DataSnap). Cada ruta sigue el modelo del tiquete:
+//
+//   - carril del cliente: el componente con su URL abre el flujo y recibe la respuesta (fin → componente);
+//   - carril del controlador: la clase «uses» su POJO (grupo «Clases») y de ahí los pasos;
+//   - carril de la BD: las tablas; cada paso las usa con una punteada SELECT / INSERT / UPDATE / DELETE;
+//   - sistemas externos (OpenAI, DataSnap): su componente; los pasos los llaman con una punteada;
+//   - numeración automática (todo 1..N), íconos por paso, comentarios en globo, barras para paralelismo.
+//
+// Escribe `payloads/ruta-<slug>.json` (formato de los editables del ISS) y, con `--iss`, también en
+// `docs-experimental/diagramas` del ISS (la fuente de los docs). Exporta `ruta()` para `eps-iss.mjs`.
+// Uso: deno run -A --no-check labs/iss-ayudascpia-flujos/rutas-ricas.mjs
+//      ISS_DIR=<checkout del ISS> deno run -A --no-check labs/iss-ayudascpia-flujos/rutas-ricas.mjs [--iss]
+// Sin ISS_DIR, los datos salen del fixture versionado (tests/fixtures/iss-ayudascpia): el kit es
+// hermético y no lee otras carpetas locales por defecto.
+
+import { dirname, join, relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { readFile, writeFile } from 'node:fs/promises';
+
+const LAB = dirname(fileURLToPath(import.meta.url));
+/** Fixture versionado del ISS (datos fuente del lab): las refs de los payloads del lab apuntan aquí. */
+export const FIXTURE = join(LAB, '..', '..', 'tests', 'fixtures', 'iss-ayudascpia', 'docs-experimental', 'diagramas');
+/** Editables del ISS: un checkout explícito (ISS_DIR) o, por defecto, el fixture. */
+export const ISS = process.env.ISS_DIR ? join(process.env.ISS_DIR, 'docs-experimental', 'diagramas') : FIXTURE;
+if (process.argv.includes('--iss') && !process.env.ISS_DIR) throw new Error('rutas-ricas --iss: define ISS_DIR (checkout del ISS)');
+const leer = async (f) => JSON.parse(await readFile(join(ISS, f), 'utf8')).payload;
+
+const componentes = new Map((await leer('componentes.json')).componentDiagram.components.map((c) => [c.id, c]));
+// Por id o por su alias corto (`tiq`, `conv`…, ver clases-trios.mjs del ISS).
+const clases = new Map((await leer('clases.json')).classDiagram.classes.flatMap((c) => [[c.id, c], ...(c.alias ? [[c.alias, c]] : [])]));
+const der = (await leer('der.json')).erDiagram;
+const tablas = new Map(der.entities.map((e) => [e.name, e]));
+/** Grupo del DER → «BD · dominio» (la raíz del grupo es la base de datos). */
+const grupoDer = new Map(der.groups.map((g) => [g.id, g]));
+const dominioDe = (tabla) => {
+  const g = grupoDer.get(tablas.get(tabla)?.group);
+  if (!g) return 'BD';
+  let raiz = g;
+  while (raiz.parent && grupoDer.get(raiz.parent)) raiz = grupoDer.get(raiz.parent);
+  return raiz === g ? g.name : `${raiz.name} · ${g.name}`;
+};
+const diagComp = await leer('componentes.json');
+const paquetes = new Map(diagComp.componentDiagram.packages.map((p) => [p.id, p]));
+/** Grupo de un componente: externos por proveedor (su paquete); propios como «Propios (paquete)». */
+const grupoComponente = (ref) => {
+  const p = paquetes.get(componentes.get(ref)?.package);
+  if (!p) return 'Componentes';
+  let raiz = p;
+  while (raiz.parent && paquetes.get(raiz.parent)) raiz = paquetes.get(raiz.parent);
+  const externo = raiz.id === 'pkg-ext';
+  return externo ? (p.id === raiz.id ? 'Externos' : p.name) : `Propios (${p.name})`;
+};
+/** Fuente de verdad de las clases, generada desde el código del ISS (codigo-a-fuentes.mjs). */
+const codigo = JSON.parse(await readFile(join(ISS, '..', 'fuentes', 'codigo.json'), 'utf8'));
+const enCodigo = new Set(codigo.clases.map((c) => c.name));
+const pojoDe = new Map(codigo.pares.map((p) => [p.controller, p.pojo]));
+/** Tabla → controller que la gobierna (su `nTbl`): todo acceso a una tabla pasa por él y su POJO. */
+const duenoDe = new Map(codigo.pares.filter((p) => p.nTbl).map((p) => [p.nTbl, p.controller]));
+/** Tabla detalle → { maestro, arreglo, clave } según el `sqlDetalle` del controller maestro. */
+const detalleDe = new Map(codigo.pares.flatMap((p) => (p.detalles ?? []).map((d) => [d.nTbl, { maestro: p.controller, arreglo: d.arreglo, clave: d.clave }])));
+
+/*
+ * Referencias { path, query, actions } (ver `Obj` del kit): los nodos no copian datos, citan su
+ * fuente de verdad. Las rutas son relativas a docs-experimental/diagramas del ISS; el lab las
+ * reescribe hacia allá al escribir (ver `escribir`).
+ */
+const refComponente = (ref, campo) => ({ path: './componentes.json', query: { payload: { componentDiagram: { components: { [`[id=${ref}]`]: campo ? { [campo]: true } : true } } } } });
+const refTabla = (nombre, campo) => ({ path: './der.json', query: { payload: { erDiagram: { entities: { [`[name=${nombre}]`]: campo ? { [campo]: true } : true } } } } });
+const refClase = (nombre, campo) => ({ path: '../fuentes/codigo.json', query: { clases: { [`[name=${nombre}]`]: campo ? { uml: { [campo]: true } } : { uml: true } } } });
+
+/** Arma una ruta: lanes + nodos + aristas con atajos para cada pieza del ISS. */
+export function ruta(meta, componer) {
+  const nodes = [];
+  const edges = [];
+  /** Clase ya presente → id de su nodo (una clase aparece una sola vez por ruta). */
+  const porClase = new Map();
+  /** Nodo de tabla → nombre de la tabla en el DER. */
+  const tablaDe = new Map();
+  /** id pedido por el generador → id real (cuando la clase ya estaba, p. ej. el POJO automático). */
+  const alias = new Map();
+  const real = (id) => alias.get(id) ?? id;
+  const n = (x) => (nodes.push(x), x.id);
+  const arista = (e) => {
+    const x = { ...e, from: real(e.from), to: real(e.to) };
+    if (!edges.some((y) => y.from === x.from && y.to === x.to && (y.kind ?? '') === (x.kind ?? ''))) edges.push(x);
+  };
+  const nombreDe = (ref) => {
+    const c = clases.get(ref);
+    // En clases.json el nombre es una referencia a codigo.json ({ query: { clases: { "[name=X]": … } } }) o un texto.
+    // El selector es `[name=X]` o, si el nombre se repite en el código (TBasePatyIA client/server), `[file=…]`.
+    const selector = c && typeof c.name !== 'string' ? Object.keys(c.name.query.clases)[0] : '';
+    const crudo = !c ? ref : typeof c.name === 'string' ? c.name
+      : selector.startsWith('[file=') ? codigo.clases.find((x) => x.file === selector.slice(6, -1))?.name ?? ref
+      : selector.slice(6, -1);
+    const name = crudo.replace(/<.*>$/, '');
+    // El nombre manda el código: si clases.json lo escribe distinto (p. ej. TError vs TError_), se
+    // usa el real y se avisa para corregir clases.json.
+    const real = enCodigo.has(name) ? name : [`${name}_`].find((x) => enCodigo.has(x));
+    if (!real) throw new Error(`clase ${ref} (${name}) no está en fuentes/codigo.json`);
+    if (real !== name) console.warn(`[rutas] clases.json dice ${name}; en el código es ${real}`);
+    return real;
+  };
+  const b = {
+    componente(id, ref, lane, items) {
+      if (!componentes.has(ref)) throw new Error(`componente ${ref} no está en componentes.json`);
+      // Nombre, estereotipo e ítems desde componentes.json; los ítems propios de la ruta, si los hay, los pisan.
+      const component = { ...refComponente(ref), actions: [{ op: 'get', query: { name: true, stereotype: true, items: true, provides: true, icon: true } }, ...(items ? [{ op: 'insert', valor: { items } }] : [])] };
+      return n({ id, label: refComponente(ref, 'name'), kind: 'component', lane, component, ref });
+    },
+    clase(id, ref, lane, fill) {
+      const name = nombreDe(ref);
+      if (porClase.has(name)) { alias.set(id, porClase.get(name)); return porClase.get(name); }
+      porClase.set(name, id);
+      // El color lo pone el diagrama por tipo de entidad (sin repetir entre tipos); el `fill` de la
+      // ruta se ignora a propósito.
+      void fill;
+      n({ id, label: name, kind: 'class', lane, class: refClase(name) });
+      // Todo controller va con su POJO (fuente: los pares de codigo.json), unidos por «uses».
+      const pojo = pojoDe.get(name);
+      if (pojo && !porClase.has(pojo)) {
+        const pid = `${id}-pojo`;
+        porClase.set(pojo, pid);
+        n({ id: pid, label: pojo, kind: 'class', lane, class: refClase(pojo) });
+        arista({ from: id, to: pid, kind: 'dashed', label: '«uses»' });
+      }
+      return id;
+    },
+    tabla(id, nombre, lane, columnas) {
+      const t = tablas.get(nombre);
+      if (!t) throw new Error(`tabla ${nombre} no está en der.json`);
+      for (const c of columnas ?? []) if (!t.attributes.some((a) => a.name === c)) throw new Error(`columna ${c} no está en ${nombre} (der.json)`);
+      // La tabla del DER; con `columnas`, solo esas (get conserva la estructura { name, attributes }).
+      const table = { ...refTabla(nombre), actions: [{ op: 'get', query: { name: true, attributes: columnas ? Object.fromEntries(columnas.map((c) => [`[name=${c}]`, true])) : true } }] };
+      tablaDe.set(id, nombre);
+      return n({ id, label: refTabla(nombre, 'name'), kind: 'tableder', lane, table });
+    },
+    paso: (id, label, lane, icon) => n({ id, label, lane, ...(icon ? { icon } : {}) }),
+    /** Declaración de variables (config que se lee y se usa más adelante en el flujo). */
+    vars: (id, label, lane, vars) => n({ id, label, shape: 'vars', lane, vars }),
+    decision: (id, label, lane) => n({ id, label, shape: 'diamond', lane }),
+    inicio: (id, lane) => n({ id, label: 'Inicio', shape: 'start', lane }),
+    fin: (id, lane) => n({ id, label: 'Fin', shape: 'end', lane }),
+    barra: (id, lane) => n({ id, label: '', shape: 'bar', lane }),
+    nota: (id, about, label) => n({ id, label, shape: 'comment', about: real(about) }),
+    flujo: (from, to, label) => arista({ from, to, ...(label ? { label } : {}) }),
+    uso: (from, to, label) => arista({ from, to, kind: 'dashed', label }),
+    cadena: (...ids) => ids.slice(1).forEach((to, i) => arista({ from: ids[i], to })),
+  };
+  componer(b);
+  // Puentes `-(O=`: ningún paso toca una tabla directo. Cada acceso entra al puente de la acción
+  // (CRUD) del controller que gobierna la tabla y el puente lo redirige a la tabla. Su texto es la
+  // FUNCIÓN del controller que hace la operación (`get()`, `list()`…): la curada en el editable del
+  // ISS se conserva al escribir (ver escribir); ACCION es solo el marcador de lo que falta curar. El detalle
+  // de un maestro sale del puente del maestro hacia el del detalle. Los POJOs no aportan: se retiran.
+  const VERBO = { SELECT: 'R', INSERT: 'C', UPDATE: 'U', DELETE: 'D' };
+  const ACCION = { R: 'leer()', C: 'insertar()', U: 'actualizar()', D: 'borrar()' };
+  const puente = (controller, op, lane) => {
+    const ctlId = porClase.get(controller) ?? b.clase(`dueno-${controller}`, controller, lane);
+    const id = `${ctlId}-${op}`;
+    if (!nodes.some((x) => x.id === id)) n({ id, label: ACCION[op], shape: 'bridge', of: ctlId, op, lane: nodes.find((x) => x.id === ctlId)?.lane ?? lane });
+    return id;
+  };
+  for (const e of [...edges]) {
+    const tabla = e.kind === 'dashed' ? tablaDe.get(e.to) : null;
+    const dueno = tabla && duenoDe.get(tabla);
+    if (!dueno) continue;
+    edges.splice(edges.indexOf(e), 1);
+    const texto = String(e.label ?? '');
+    const verbos = [...new Set(texto.match(/SELECT|INSERT|UPDATE|DELETE/g) ?? ['SELECT'])];
+    const resto = texto.replace(/SELECT|INSERT|UPDATE|DELETE|·/g, ' ').replace(/\s+/g, ' ').trim();
+    const lane = nodes.find((x) => x.id === e.from)?.lane;
+    for (const verbo of verbos) {
+      const op = VERBO[verbo];
+      const p = puente(dueno, op, lane);
+      const det = detalleDe.get(tabla);
+      if (det && porClase.has(det.maestro) && det.maestro !== dueno) {
+        const maestro = puente(det.maestro, op, lane);
+        arista({ from: e.from, to: maestro, kind: 'dashed', label: verbo });
+        // La columna que une maestro y detalle ya está en el DER: aquí basta el arreglo.
+        arista({ from: maestro, to: p, kind: 'dashed', label: `detalle ${det.arreglo}` });
+      } else {
+        // La acción de BD (con su ícono) y, si la ruta la nombra, qué pide (p. ej. «patchdb»).
+        arista({ from: e.from, to: p, kind: 'dashed', label: [verbo, resto].filter(Boolean).join(' ') });
+      }
+      // Salida del puente a su tabla: sin texto (la letra CRUD y el ícono del puente ya dicen la acción).
+      arista({ from: p, to: e.to, kind: 'dashed' });
+    }
+  }
+  // Sin POJOs (ni sus aristas): el controller es el puente con la BD.
+  const esPojo = (x) => x.kind === 'class' && !/Controller$/.test(x.label) && !/Client$/.test(x.label);
+  const pojos = new Set(nodes.filter(esPojo).map((x) => x.id));
+  for (const id of pojos) nodes.splice(nodes.findIndex((x) => x.id === id), 1);
+  for (let k = edges.length - 1; k >= 0; k--) if (pojos.has(edges[k].from) || pojos.has(edges[k].to)) edges.splice(k, 1);
+  // Paralelismo: un nodo que no decide (ni es barra) y reparte su flujo continuo a varios procesos
+  // lo hace por una barra negra; nunca salen dos caminos del mismo riel.
+  for (const nd of [...nodes]) {
+    if (nd.shape === 'diamond' || nd.shape === 'bar' || nd.shape === 'comment') continue;
+    const salen = edges.filter((e) => e.from === nd.id && e.kind !== 'dashed');
+    if (salen.length < 2) continue;
+    const bar = `${nd.id}-par`;
+    nodes.splice(nodes.indexOf(nd) + 1, 0, { id: bar, label: '', shape: 'bar', lane: nd.lane });
+    for (const e of salen) e.from = bar;
+    edges.push({ from: nd.id, to: bar });
+    console.warn(`[rutas] ${meta.slug}: ${nd.id} reparte a ${salen.length} procesos → barra ${bar}`);
+  }
+  // Columnas estándar (de izquierda a derecha): cliente (centrado) · componente con su inicio y sus
+  // fines · flujo del servicio · clases (grupos Controllers y Modelos) · BD · terceros. Así cada
+  // región es una columna y ningún grupo abraza piezas ajenas.
+  let lanes = [...meta.lanes];
+  const clasesEn = nodes.filter((x) => x.kind === 'class');
+  const principal = clasesEn.find((x) => /Controller$/.test(x.label));
+  if (principal) {
+    // Clases: una columna para los controllers y otra para los modelos (cada una es su región).
+    const servicio = principal.lane;
+    const i = lanes.findIndex((l) => l.id === servicio);
+    lanes.splice(i + 1, 0, { id: 'controllers', label: 'Controllers' }, { id: 'modelos', label: 'Modelos' });
+    for (const c of clasesEn) c.lane = /Controller$/.test(c.label) ? 'controllers' : 'modelos';
+    // Los puentes van con su controller.
+    for (const pz of nodes.filter((x) => x.shape === 'bridge')) pz.lane = 'controllers';
+  }
+  // Columna de componentes: la primera si inicia con un componente; si no y hay componentes, una
+  // propia al frente; sin componentes, no hay (el proceso arranca en el flujo).
+  const hayComponentes = nodes.some((x) => x.kind === 'component');
+  let llamador = nodes.some((x) => x.kind === 'component' && x.lane === lanes[0]?.id) ? lanes[0].id : null;
+  if (!llamador && hayComponentes) { llamador = 'componentes'; lanes.unshift({ id: 'componentes', label: 'Componentes' }); }
+  // Todos los componentes (propios y de terceros) en la columna de componentes, agrupados.
+  for (const c of nodes.filter((x) => x.kind === 'component')) {
+    c.lane = llamador;
+    c.context = grupoComponente(c.ref);
+  }
+  // Tablas agrupadas por BD y dominio (grupos del DER).
+  for (const t of nodes.filter((x) => x.kind === 'tableder')) t.context = dominioDe(tablaDe.get(t.id));
+  // Propagación maestro → detalle entre tablas presentes (del sqlDetalle del maestro).
+  for (const [tid, tabla] of tablaDe) {
+    const det = detalleDe.get(tabla);
+    if (!det) continue;
+    const maestroTabla = codigo.pares.find((p) => p.controller === det.maestro)?.nTbl;
+    const maestro = [...tablaDe].find(([, nombre]) => nombre === maestroTabla)?.[0];
+    // Entre tablas apiladas el riel corre en vertical: su texto también.
+    if (maestro) arista({ from: maestro, to: tid, kind: 'dashed', label: `detalle ${det.arreglo}`, labelVertical: true });
+  }
+  // Qué hace la ruta con cada tabla (verbos SQL de sus punteadas): así ningún «uses» queda vago.
+  const opsDe = (tabla) => {
+    const ids = [...tablaDe].filter(([, nombre]) => nombre === tabla).map(([id]) => id);
+    const verbos = edges.filter((e) => ids.includes(e.to)).flatMap((e) => String(e.label ?? '').match(/SELECT|INSERT|UPDATE|DELETE/g) ?? []);
+    return [...new Set(verbos)];
+  };
+  // Controller → su POJO: `klass` y lo que se hace con su tabla en esta ruta.
+  for (const e of edges.filter((x) => x.label === '«uses»')) {
+    const ctl = nodes.find((x) => x.id === e.from)?.label;
+    const tabla = codigo.pares.find((p) => p.controller === ctl)?.nTbl;
+    const ops = tabla ? opsDe(tabla) : [];
+    e.label = ops.length ? `klass · ${ops.join(', ')}` : 'klass';
+  }
+  // Modelo maestro → modelo detalle (los arreglos que trae su sqlDetalle), con lo que se hace con el detalle.
+  for (const p of codigo.pares) {
+    for (const d of p.detalles ?? []) {
+      const m = porClase.get(p.pojo);
+      const det = porClase.get(codigo.pares.find((x) => x.controller === d.controller)?.pojo);
+      if (!m || !det || !nodes.some((x) => x.id === m) || !nodes.some((x) => x.id === det)) continue;
+      const ops = opsDe(d.nTbl);
+      arista({ from: m, to: det, kind: 'dashed', label: `detalle ${d.arreglo}${ops.length ? ` · ${ops.join(', ')}` : ''}` });
+    }
+  }
+  // Columnas de terceros que quedaron vacías se quitan.
+  lanes = lanes.filter((l) => l.id === llamador || nodes.some((x) => x.lane === l.id) || l.id === 'cliente');
+  // El cliente va solo en su columna: sin recuadro de grupo.
+  for (const c of nodes.filter((x) => x.lane === 'cliente')) c.context = '';
+  // Los fines van en la columna del componente que inicia (abajo); el componente, arriba.
+  if (llamador) for (const f of nodes.filter((x) => x.shape === 'end')) f.lane = llamador;
+  // Controller de cliente: el que declara la ruta o el del POJO del controller principal.
+  const pojoPrincipal = principal ? pojoDe.get(principal.label) : null;
+  const cliente = meta.cliente ?? codigo.clientes?.find((c) => c.pojo === pojoPrincipal && c.client !== 'TBasePatyIA')?.client;
+  const componenteInicial = nodes.find((x) => x.kind === 'component' && x.lane === llamador);
+  if (cliente && componenteInicial) {
+    lanes.unshift({ id: 'cliente', label: 'Cliente', align: 'center' });
+    nodes.unshift({ id: 'cliente', label: cliente, kind: 'class', lane: 'cliente', class: refClase(cliente) });
+    // El llamado del cliente dice qué es: «HTTP POST /conversacion» (el primer ítem del componente).
+    const items = componenteInicial.component?.actions?.find((x) => x.op === 'insert')?.valor?.items ?? [];
+    const llamado = items[0] ? `HTTP ${String(items[0]).replace(/\|/g, ' · ')}` : 'HTTP';
+    edges.unshift({ from: 'cliente', to: componenteInicial.id, label: llamado });
+  }
+  return {
+    slug: `ruta-${meta.slug}`,
+    module: meta.module,
+    tag: 'iswc-flowchart',
+    script: 'diagrams/flowchart.min.mjs',
+    attrs: { 'diagram-style': 'insoft' },
+    payload: { vectorFlow: aVector(meta.title, lanes, nodes, edges, llamador) },
+  };
+}
+
+/**
+ * Ruta → «diagrama de flujo en vector»: cada carril es una columna con su tipo (clientes,
+ * componentes, flujo, controllers, modelos, tablas), los contextos son sus grupos y cada nodo vive en
+ * su columna. El kit valida que nada quede donde no corresponde.
+ */
+function aVector(title, lanes, nodes, edges, llamador) {
+  const tipoDeNodo = (n) => {
+    if (n.kind === 'component') return 'componente';
+    if (n.kind === 'tableder') return 'tabla';
+    if (n.kind === 'class') return /Client$/.test(n.label) ? 'cliente' : /Controller$/.test(n.label) ? 'controller' : 'pojo';
+    if (n.shape === 'bridge') return 'puente';
+    return 'flujo';
+  };
+  const tipoColumna = (l, ns) => {
+    if (l.id === 'cliente') return 'clientes';
+    if (l.id === llamador) return 'componentes';
+    if (l.id === 'controllers') return 'controllers';
+    if (l.id === 'modelos') return 'modelos';
+    const tipos = new Set(ns.filter((n) => n.shape !== 'comment').map(tipoDeNodo));
+    if (tipos.size === 1 && tipos.has('tabla')) return 'tablas';
+    if ([...tipos].every((t) => t === 'flujo')) return 'flujo';
+    return 'custom';
+  };
+  const slug = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // Una nota va en la columna de lo que comenta.
+  for (const n of nodes) if (n.shape === 'comment' && !n.lane) n.lane = nodes.find((x) => x.id === n.about)?.lane;
+  const columns = lanes.map((l) => {
+    const ns = nodes.filter((n) => n.lane === l.id);
+    const tipo = tipoColumna(l, ns);
+    const contextos = [...new Set(ns.map((n) => n.context).filter(Boolean))];
+    const custom = tipo === 'custom'
+      ? { accepts: [...new Set(ns.map((n) => {
+        const t = tipoDeNodo(n);
+        if (t !== 'flujo') return t;
+        return n.shape === 'diamond' ? 'decision' : n.shape === 'vars' ? 'variables' : n.shape === 'bar' ? 'barra' : n.shape === 'end' ? 'fin' : n.shape === 'start' ? 'inicio' : n.shape === 'comment' ? 'nota' : n.kind === 'nested' ? 'anidado' : 'paso';
+      }))] }
+      : {};
+    return {
+      id: l.id, label: l.label, tipo, ...custom,
+      ...(l.align ? { align: l.align } : {}),
+      ...(contextos.length ? { groups: contextos.map((c) => ({ id: slug(c), label: c })) } : {}),
+      nodes: ns.map(({ lane: _l, context, ...n }) => ({ ...n, ...(context ? { group: slug(context) } : {}) })),
+    };
+  });
+  // Cada arista con id estable: la Seq derivada (seq-de-vec del ISS) referencia sus etiquetas.
+  return { title, steps: 'auto', columns, edges: edges.map((e, k) => ({ id: e.id ?? `e${k + 1}`, ...e })) };
+}
+
+const RUTAS = [];
+
+// ── 020 · Alta del tiquete (POST /tiquete) ──────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'conversacion-tiquete', module: '020-Conversaciones', title: 'Alta del tiquete',
+  lanes: [{ id: 'P', label: 'Portal' }, { id: 'T', label: 'ISS · TConversationTicketController' }, { id: 'D', label: 'PostgreSQL' }],
+}, (b) => {
+  b.componente('api', 'grp-mensaje-tiquete', 'P', ['POST /tiquete']);
+  b.clase('ctl', 'tiq', 'T', 'app');
+  b.clase('pojo', 'm_tiq', 'T', 'leaf');
+  b.paso('val', 'Valida el body: iconversacion e itiquete enteros positivos', 'T', 'mdi:shield-check-outline');
+  b.paso('lee', 'Lee la conversación', 'T', 'mdi:database-search-outline');
+  b.tabla('tconv', 'patyia_conversaciones', 'D', ['iconversacion', 'itercero', 'icontacto', 'itdestado', 'bautoriza_visualizacion']);
+  b.decision('dec', '¿Estado de la conversación?', 'T');
+  b.paso('e401', '401 · solo el propietario crea tiquetes', 'T', 'mdi:account-cancel-outline');
+  b.paso('e404', '404 (500 si no se pudo leer)', 'T', 'mdi:file-question-outline');
+  b.paso('e400', '400 · cerrada o eliminada', 'T', 'mdi:lock-outline');
+  b.paso('ins', 'Inserta el tiquete (si ya existe ese número, lo relee)', 'T', 'mdi:ticket-confirmation-outline');
+  b.tabla('ttiq', 'patyia_tiquetesconversacion', 'D');
+  b.paso('cierra', 'Cierra y/o autoriza la visualización, si se pidió', 'T', 'mdi:check-decagram-outline');
+  b.paso('ok', '{ ticket, sideEffects }', 'T', 'mdi:reply-outline');
+  b.fin('fin', 'T');
+  b.flujo('api', 'ctl', 'POST /tiquete');
+  b.uso('ctl', 'pojo', '«uses»');
+  b.cadena('ctl', 'val', 'lee', 'dec');
+  b.uso('lee', 'tconv', 'SELECT');
+  b.flujo('dec', 'e401', 'no es del dueño estricto');
+  b.flujo('dec', 'e404', 'no existe');
+  b.flujo('dec', 'e400', 'cerrada o eliminada');
+  b.flujo('dec', 'ins', 'abierta y del dueño');
+  b.uso('ins', 'ttiq', 'INSERT');
+  b.cadena('ins', 'cierra', 'ok', 'fin');
+  b.uso('cierra', 'tconv', 'UPDATE');
+  for (const e of ['e401', 'e404', 'e400']) b.flujo(e, 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 020 · Turno de conversación (POST /conversacion, SSE) ───────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'conversacion-turno', module: '020-Conversaciones', title: 'Turno de conversación',
+  lanes: [{ id: 'C', label: 'Portal' }, { id: 'T', label: 'ISS · TConversacionController' }, { id: 'P', label: 'PostgreSQL' }, { id: 'O', label: 'OpenAI' }],
+}, (b) => {
+  b.componente('api', 'grp-conv-portal', 'C', ['POST /conversacion']);
+  b.clase('ctl', 'conv', 'T', 'app');
+  b.clase('pojo', 'm_conv', 'T', 'leaf');
+  b.paso('seg', 'Puerta SEG, body estricto, contexto, prompt o adjuntos, modo libre', 'T', 'mdi:shield-check-outline');
+  b.decision('dec', '¿Continúa una conversación?', 'T');
+  b.paso('sigue', 'Valida que es del dueño y está abierta; fhultact = ahora', 'T', 'mdi:database-edit-outline');
+  b.paso('nueva', 'Alta: título e hilo provisionales, qmensajes = 1', 'T', 'mdi:database-plus-outline');
+  b.tabla('tconv', 'patyia_conversaciones', 'P', ['iconversacion', 'itercero', 'icontacto', 'titulo', 'hilo', 'qmensajes', 'qtokens', 'fhultact']);
+  b.paso('begin', '200 text/event-stream · begin y los log que esperaban', 'T', 'mdi:broadcast');
+  // Config del turno: se lee una vez y se usa más adelante (modelos, topes, cada cuánto el título).
+  b.vars('cfg', 'Config del turno', 'T', [
+    { name: 'openaiCfg', value: 'TSysValueController.getOpenaiCfg()', desc: 'cliente del proveedor; null si está degradado' },
+    { name: 'convModel', value: 'TConversacionController.runtimeOpenai().conversationModel', desc: 'modelo de la respuesta' },
+    { name: 'opModel', value: 'TConversacionController.runtimeOpenai().operativeModel', desc: 'clasificar y titular' },
+  ]);
+  b.tabla('tprov', 'patyia_providers', 'P');
+  b.tabla('tsys', 'patyia_sys_values', 'P');
+  // OpenAI: un componente por API, cada uno con su interfaz -(O- (componentes.json).
+  b.componente('ai-voz', 'openai-whisper', 'O');
+  b.componente('ai-op', 'openai-completions', 'O');
+  b.componente('ai-hilo', 'openai-conversations', 'O');
+  b.componente('ai-resp', 'openai-responses', 'O');
+  b.decision('dvoz', '¿Trae notas de voz?', 'T');
+  b.paso('voz', 'Transcribe cada nota con {{openaiCfg}} y valida el texto', 'T', 'mdi:microphone-outline');
+  b.decision('dctx', '¿Modo libre o contexto forzado?', 'T');
+  b.paso('clasif', 'Clasifica la consulta con {{opModel}} (tdconsulta) y elige vector stores', 'T', 'mdi:tag-search-outline');
+  b.decision('dhilo', '¿La conversación ya tiene hilo de OpenAI?', 'T');
+  b.paso('hilo', 'Crea el hilo y lo guarda en la conversación', 'T', 'mdi:forum-outline');
+  b.paso('resp', 'Responses API en stream con {{convModel}}, instrucciones y file_search', 'T', 'mdi:robot-outline');
+  b.paso('delta', 'Reenvía cada delta al cliente (message)', 'T', 'mdi:message-arrow-right-outline');
+  b.nota('n-delta', 'delta', 'Se repite por cada fragmento del stream');
+  b.decision('dok', '¿El turno salió bien?', 'T');
+  b.vars('vn', 'Título', 'T', [{ name: 'N', value: 'TSysValueController.valor("conversacion").recalcularTituloCadaMensajesUsuario', desc: 'cada cuántos mensajes se retitula' }]);
+  b.decision('dtit', '¿(qmensajes − 1) % {{N}} = 0?', 'T');
+  b.paso('titulo', 'Regenera el título con {{opModel}} (operativo 9999.1)', 'T', 'mdi:format-title');
+  b.paso('consultas', 'Extrae y clasifica las consultas del mensaje', 'T', 'mdi:text-search');
+  b.tabla('tqry', 'patyia_consultas', 'P');
+  b.paso('hist', 'Guarda el historial del turno, bajo bloqueo', 'T', 'mdi:database-lock-outline');
+  b.tabla('tlog', 'patyia_conversacion_log', 'P');
+  b.paso('cuenta', 'Actualiza qmensajes, qtokens, hilo, título y fhultact', 'T', 'mdi:database-edit-outline');
+  b.paso('end', 'end · meta con traza, imensaje y stream_ok', 'T', 'mdi:flag-checkered');
+  b.nota('n-log', 'begin', 'Cada paso emite además un evento log');
+  b.fin('fin', 'T');
+  b.flujo('api', 'ctl', 'POST /conversacion');
+  b.uso('ctl', 'pojo', '«uses»');
+  b.cadena('ctl', 'seg', 'dec');
+  b.flujo('dec', 'sigue', 'continúa');
+  b.flujo('dec', 'nueva', 'nueva');
+  b.uso('sigue', 'tconv', 'UPDATE');
+  b.uso('nueva', 'tconv', 'INSERT');
+  b.flujo('sigue', 'begin');
+  b.flujo('nueva', 'begin');
+  b.cadena('begin', 'cfg', 'dvoz');
+  b.uso('cfg', 'tprov', 'SELECT');
+  b.uso('cfg', 'tsys', 'SELECT');
+  b.flujo('dvoz', 'voz', 'sí');
+  b.flujo('dvoz', 'dctx', 'no');
+  b.uso('voz', 'ai-voz', 'transcribe');
+  b.flujo('voz', 'dctx');
+  b.flujo('dctx', 'clasif', 'no');
+  b.flujo('dctx', 'dhilo', 'sí');
+  b.uso('clasif', 'ai-op', 'clasifica');
+  b.flujo('clasif', 'dhilo');
+  b.flujo('dhilo', 'hilo', 'no');
+  b.flujo('dhilo', 'resp', 'sí');
+  b.uso('hilo', 'ai-hilo', 'create');
+  b.uso('hilo', 'tconv', 'UPDATE');
+  b.flujo('hilo', 'resp');
+  b.uso('resp', 'ai-resp', 'stream');
+  b.cadena('resp', 'delta', 'dok');
+  b.flujo('dok', 'vn', 'sí');
+  b.flujo('dok', 'hist', 'no');
+  b.uso('vn', 'tsys', 'SELECT');
+  b.flujo('vn', 'dtit');
+  b.flujo('dtit', 'titulo', 'sí');
+  b.flujo('dtit', 'consultas', 'no');
+  b.uso('titulo', 'ai-op', 'generarTitulo');
+  b.flujo('titulo', 'consultas');
+  b.uso('consultas', 'ai-op', 'extrae y clasifica');
+  b.uso('consultas', 'tqry', 'INSERT');
+  b.flujo('consultas', 'hist');
+  b.uso('hist', 'tlog', 'INSERT');
+  b.cadena('hist', 'cuenta', 'end', 'fin');
+  b.uso('cuenta', 'tconv', 'UPDATE');
+  b.flujo('fin', 'api', 'respuesta (stream)');
+}));
+
+// ── 020 · Traza del turno (eventos SSE) ─────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'traza-turno', module: '020-Conversaciones', title: 'Traza del turno',
+  lanes: [{ id: 'C', label: 'Portal (SSE)' }, { id: 'T', label: 'ISS · TConversacionController' }, { id: 'H', label: 'Historial' }],
+}, (b) => {
+  b.componente('api', 'grp-conv-portal', 'C', ['POST /conversacion']);
+  b.paso('begin', 'Emite begin', 'T', 'mdi:broadcast');
+  b.paso('ev', 'Emite un event log (seq, ms, nivel, etapa, mensaje)', 'T', 'mdi:text-box-search-outline');
+  b.nota('n-ev', 'ev', 'Se repite en cada paso del pipeline');
+  b.paso('guarda', 'Guarda el mensaje assistant con others.traza hasta ese momento', 'T', 'mdi:database-plus-outline');
+  b.tabla('tlog', 'patyia_conversacion_log', 'H');
+  b.paso('termina', 'Emite event log · Turno terminado (con dur)', 'T', 'mdi:timer-check-outline');
+  b.paso('end', 'Emite end con meta.traza = la traza completa', 'T', 'mdi:flag-checkered');
+  b.fin('fin', 'T');
+  b.flujo('api', 'begin', 'POST /conversacion');
+  b.cadena('begin', 'ev', 'guarda', 'termina', 'end', 'fin');
+  b.uso('guarda', 'tlog', 'INSERT');
+  b.flujo('fin', 'api', 'eventos SSE');
+}));
+
+// ── 020 · Calificación de un mensaje (POST /mensaje) ────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'calificacion-mensaje', module: '020-Conversaciones', title: 'Calificación de un mensaje',
+  lanes: [{ id: 'P', label: 'Portal' }, { id: 'T', label: 'ISS · TQualifiedMessageController' }, { id: 'D', label: 'PostgreSQL' }],
+}, (b) => {
+  b.componente('api', 'grp-mensaje-tiquete', 'P', ['POST /mensaje']);
+  b.clase('ctl', 'msg', 'T', 'app');
+  b.clase('pojo', 'm_msg', 'T', 'leaf');
+  b.decision('d1', '¿Body estricto y token?', 'T');
+  b.paso('r1', '400 · 401', 'T', 'mdi:shield-alert-outline');
+  b.paso('lee', 'Lee la conversación', 'T', 'mdi:database-search-outline');
+  b.tabla('tconv', 'patyia_conversaciones', 'D', ['iconversacion', 'itercero', 'icontacto', 'itdestado']);
+  b.decision('d2', '¿Existe y no está borrada?', 'T');
+  b.paso('r2', '400', 'T', 'mdi:file-question-outline');
+  b.decision('d3', '¿Está cerrada?', 'T');
+  b.paso('r3', '400 · cerrada', 'T', 'mdi:lock-outline');
+  b.paso('r4', '401 · sin alcance de auditoría', 'T', 'mdi:shield-account-outline');
+  b.decision('d4', '¿Es el dueño estricto?', 'T');
+  b.paso('r5', '401 · solo el propietario puede calificarla', 'T', 'mdi:account-cancel-outline');
+  b.decision('d5', '¿Es una respuesta del asistente, sin calificar?', 'T');
+  b.tabla('tlog', 'patyia_conversacion_log', 'D');
+  b.paso('r6', '400 · no calificable', 'T', 'mdi:message-alert-outline');
+  b.paso('ins', 'Registra la calificación', 'T', 'mdi:thumb-up-outline');
+  b.tabla('tmsg', 'patyia_mensajescalificados', 'D');
+  b.fin('fin', 'T');
+  b.flujo('api', 'ctl', 'POST /mensaje');
+  b.uso('ctl', 'pojo', '«uses»');
+  b.flujo('ctl', 'd1');
+  b.flujo('d1', 'r1', 'no');
+  b.flujo('d1', 'lee', 'sí');
+  b.uso('lee', 'tconv', 'SELECT');
+  b.flujo('lee', 'd2');
+  b.flujo('d2', 'r2', 'no');
+  b.flujo('d2', 'd3', 'sí');
+  b.flujo('d3', 'r3', 'sí, sin calificar tarde');
+  b.flujo('d3', 'r4', 'sí, con bandera sin auditoría');
+  b.flujo('d3', 'd4', 'no, o con bandera y alcance');
+  b.flujo('d4', 'r5', 'no');
+  b.flujo('d4', 'd5', 'sí');
+  b.uso('d5', 'tlog', 'SELECT');
+  b.flujo('d5', 'r6', 'no');
+  b.flujo('d5', 'ins', 'sí');
+  b.uso('ins', 'tmsg', 'INSERT');
+  for (const r of ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'ins']) b.flujo(r, 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 020 · Acceso a una conversación ─────────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'seguridad-conversaciones', module: '020-Conversaciones', title: 'Acceso a una conversación',
+  lanes: [{ id: 'P', label: 'Portal' }, { id: 'T', label: 'ISS · TConversacionController' }, { id: 'D', label: 'PostgreSQL' }],
+}, (b) => {
+  b.componente('api', 'grp-conv-portal', 'P', ['GET|DELETE /conversacion/{iconversacion}']);
+  b.clase('ctl', 'conv', 'T', 'app');
+  b.paso('lee', 'Lee la conversación pedida', 'T', 'mdi:database-search-outline');
+  b.tabla('tconv', 'patyia_conversaciones', 'D', ['iconversacion', 'itercero', 'icontacto', 'bautoriza_visualizacion']);
+  b.decision('d1', '¿Existe?', 'T');
+  b.paso('n404', '404', 'T', 'mdi:file-question-outline');
+  b.decision('d2', '¿Mismo itercero e icontacto que el token?', 'T');
+  b.paso('duenio', 'Dueño: puede leer e interactuar', 'T', 'mdi:account-check-outline');
+  b.decision('d3', '¿La operación solo lee?', 'T');
+  b.paso('u401', '401 · solo el propietario puede…', 'T', 'mdi:account-cancel-outline');
+  b.decision('d4', '¿Capacidad auditoria (o logsAjenos para el historial)?', 'T');
+  b.decision('d5', '¿Mismo itercero y bautoriza_visualizacion?', 'T');
+  b.paso('lectura', 'Lee', 'T', 'mdi:eye-outline');
+  b.paso('u401b', '401', 'T', 'mdi:shield-alert-outline');
+  b.fin('fin', 'T');
+  b.flujo('api', 'ctl', 'petición con token');
+  b.cadena('ctl', 'lee', 'd1');
+  b.uso('lee', 'tconv', 'SELECT');
+  b.flujo('d1', 'n404', 'no');
+  b.flujo('d1', 'd2', 'sí');
+  b.flujo('d2', 'duenio', 'sí');
+  b.flujo('d2', 'd3', 'no');
+  b.flujo('d3', 'u401', 'no');
+  b.flujo('d3', 'd4', 'sí');
+  b.flujo('d4', 'lectura', 'sí');
+  b.flujo('d4', 'd5', 'no');
+  b.flujo('d5', 'lectura', 'sí');
+  b.flujo('d5', 'u401b', 'no');
+  for (const r of ['n404', 'duenio', 'u401', 'lectura', 'u401b']) b.flujo(r, 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 010 · Autorización de una ruta (puerta SEG) ─────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'seguridad-autorizacion', module: '010-General', title: 'Autorización de una ruta (puerta SEG)',
+  lanes: [{ id: 'C', label: 'Cliente' }, { id: 'B', label: 'ISS · TBasePatyIA' }, { id: 'P', label: 'PostgreSQL · seg_*' }],
+}, (b) => {
+  b.componente('api', 'grp-permisos', 'C');
+  b.clase('base', 'base', 'B', 'app');
+  b.clase('perm', 'perm', 'B', 'service');
+  b.paso('id', 'Id SEG por prefijo (METHOD:/ruta · QUERY:/ruta · CFG:/ruta)', 'B', 'mdi:identifier');
+  b.paso('fila', 'Busca la fila de USR para el id', 'B', 'mdi:database-search-outline');
+  b.tabla('trec', 'seg_accionesrecursos', 'P', ['isysrecurso', 'iaccion', 'itdvalor', 'valordefecto']);
+  b.decision('d1', '¿La ruta exige JWT?', 'B');
+  b.paso('publica', 'Pasa sin token (ruta pública)', 'B', 'mdi:door-open');
+  b.paso('jwt', 'Verifica el JWT HS384 (sin token o inválido: 401)', 'B', 'mdi:key-chain-variant');
+  b.paso('rol', 'Rol vigente del contacto (sin rol: USR; lectura fallida: 503)', 'B', 'mdi:shield-account-outline');
+  b.tabla('trol', 'seg_rolescontacto', 'P', ['itercero', 'irol', 'icontacto', 'finicial', 'ffinal', 'bprincipal']);
+  b.paso('valor', 'Valor efectivo del id para el rol y el verbo', 'B', 'mdi:scale-balance');
+  b.tabla('tacc', 'seg_accionesxrol', 'P', ['itercero', 'isysrecurso', 'iaccion', 'irol', 'valor']);
+  b.decision('d2', '¿Qué permite el valor efectivo?', 'B');
+  b.paso('deny', '401 · Sin permiso', 'B', 'mdi:account-cancel-outline');
+  b.paso('handler', 'Corre el handler', 'B', 'mdi:cog-play-outline');
+  b.fin('fin', 'B');
+  b.flujo('api', 'base', 'petición (con o sin Authorization)');
+  b.uso('base', 'perm', '«uses»');
+  b.cadena('base', 'id', 'fila', 'd1');
+  b.uso('fila', 'trec', 'SELECT');
+  b.flujo('d1', 'publica', 'sin fila o protected false');
+  b.flujo('d1', 'jwt', 'exige JWT');
+  b.cadena('jwt', 'rol', 'valor', 'd2');
+  b.uso('rol', 'trol', 'SELECT');
+  b.uso('valor', 'tacc', 'SELECT');
+  b.flujo('d2', 'deny', 'false');
+  b.flujo('d2', 'handler', 'protected, true o capacidad');
+  b.flujo('publica', 'handler');
+  b.flujo('handler', 'fin');
+  b.flujo('deny', 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 010 · Token de servidor (POST /JWT) ─────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'seguridad-jwt', module: '010-General', title: 'Token de servidor (POST /JWT)',
+  lanes: [{ id: 'C', label: 'ContaPyme / ISW' }, { id: 'I', label: 'ISS · TIdentityController' }, { id: 'D', label: 'DataSnap DSCLIENTES' }],
+}, (b) => {
+  b.componente('api', 'grp-identidad', 'C');
+  b.clase('ctl', 'ident', 'I', 'app');
+  b.decision('d1', '¿Llegan controlKey, iapp e idmaquina?', 'I');
+  b.paso('e400', '400', 'I', 'mdi:form-textbox');
+  b.paso('login', 'Consulta la sesión en DataSnap', 'I', 'mdi:server-network');
+  b.componente('ds', 'ds-login', 'D');
+  b.decision('d2', '¿Qué responde DataSnap?', 'I');
+  b.paso('e503', '503 · reintentar', 'I', 'mdi:cloud-alert-outline');
+  b.paso('e401', '401 · volver a iniciar sesión', 'I', 'mdi:account-cancel-outline');
+  b.paso('firma', 'Firma HS384, 24 h, con el secreto del código', 'I', 'mdi:key-chain-variant');
+  b.paso('token', '{ respuesta: { token } }', 'I', 'mdi:reply-outline');
+  b.fin('fin', 'I');
+  b.flujo('api', 'ctl', 'POST /JWT');
+  b.flujo('ctl', 'd1');
+  b.flujo('d1', 'e400', 'falta un dato');
+  b.flujo('d1', 'login', 'completos');
+  b.uso('login', 'ds', 'LogInContacto');
+  b.flujo('login', 'd2');
+  b.flujo('d2', 'e503', 'no responde o vacía');
+  b.flujo('d2', 'e401', 'rechaza la llave');
+  b.flujo('d2', 'firma', 'identidad válida');
+  b.cadena('firma', 'token', 'fin');
+  b.flujo('e400', 'fin');
+  b.flujo('e503', 'fin');
+  b.flujo('e401', 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 010 · Login del portal (POST /auth/portal-login) ────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'seguridad-portal-login', module: '010-General', title: 'Login del portal (POST /auth/portal-login)',
+  lanes: [{ id: 'P', label: 'Portal / ISW' }, { id: 'I', label: 'ISS · TIdentityController' }, { id: 'D', label: 'DataSnap DSCLIENTES' }],
+}, (b) => {
+  b.componente('api', 'grp-login', 'P');
+  b.clase('ctl', 'ident', 'I', 'app');
+  b.paso('norm', 'Normaliza el correo (sin @ → @contapyme.com) y cifra la contraseña (MD5)', 'I', 'mdi:email-edit-outline');
+  b.paso('existe', '¿Existe el contacto y tiene acceso web?', 'I', 'mdi:account-search-outline');
+  b.componente('ds', 'ds-login', 'D');
+  b.nota('n-ds', 'existe', 'DataSnap se consulta antes de validar las credenciales');
+  b.paso('empresas', 'Empresas a las que pertenece el contacto', 'I', 'mdi:domain');
+  b.decision('d1', '¿Cuántas empresas?', 'I');
+  b.paso('multi', '409 MULTI_EMPRESA · lista de empresas para que el portal pregunte y reintente', 'I', 'mdi:office-building-cog-outline');
+  b.paso('valida', 'Valida las credenciales', 'I', 'mdi:account-key-outline');
+  b.paso('firma', 'Firma el token (HS384, 24 h)', 'I', 'mdi:key-chain-variant');
+  b.paso('entrega', 'Entrega el token con usuario, nombre, vencimiento y claims', 'I', 'mdi:reply-outline');
+  b.fin('fin', 'I');
+  b.flujo('api', 'ctl', 'correo y contraseña (y empresa)');
+  b.cadena('ctl', 'norm', 'existe', 'empresas', 'd1');
+  b.uso('existe', 'ds', 'contacto');
+  b.uso('empresas', 'ds', 'empresas');
+  b.flujo('d1', 'multi', 'varias, sin itercero');
+  b.flujo('d1', 'valida', 'una, o itercero elegido');
+  b.uso('valida', 'ds', 'LogInContacto');
+  b.cadena('valida', 'firma', 'entrega', 'fin');
+  b.flujo('multi', 'fin');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 010 · Captura de errores 5xx ────────────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'captura-errores', module: '010-General', title: 'Captura de errores 5xx',
+  lanes: [{ id: 'C', label: 'Cliente' }, { id: 'W', label: 'Host · makeDispatchHandler' }, { id: 'E', label: 'ISS · TErrorController' }, { id: 'H', label: 'Controller de la ruta' }, { id: 'P', label: 'PostgreSQL' }],
+}, (b) => {
+  b.componente('api', 'grp-ops', 'C', ['cualquier ruta propia']);
+  b.paso('llega', 'Llega la petición y pasa la puerta SEG', 'W', 'mdi:door-open');
+  b.clase('err', 'err', 'E', 'app');
+  b.clase('pojo', 'm_err', 'E', 'leaf');
+  b.paso('envuelve', 'Envuelve el controller con la captura de errores', 'E', 'mdi:shield-bug-outline');
+  b.nota('n-timer', 'envuelve', 'Los timers pasan por la misma envoltura: referencia TIMER:/<nombre> y el host sigue');
+  b.paso('ejecuta', 'Ejecuta el método del controller', 'H', 'mdi:cog-play-outline');
+  b.paso('lanza', 'Lanza un 5xx inesperado (sin status o ≥ 500)', 'H', 'mdi:alert-octagon-outline');
+  b.nota('n-4xx', 'lanza', 'Los 4xx son errores del cliente: no se persisten');
+  b.paso('excluye', 'Excluye 503 y 4xx; también POST /error y GET|DELETE /errores', 'E', 'mdi:filter-remove-outline');
+  b.paso('censura', 'Censura tokens, hashes, claves de API y bearer del cuerpo', 'E', 'mdi:eye-off-outline');
+  b.paso('guarda', 'Registra el error (referencia METHOD:/ruta)', 'E', 'mdi:database-plus-outline');
+  b.tabla('terr', 'patyia_errores', 'P', ['ierror', 'jerror', 'batendido', 'fhcre', 'referencia', 'resumen']);
+  b.nota('n-dup', 'terr', 'Índice único parcial por referencia: el mismo fallo no se duplica');
+  b.paso('relanza', 'Vuelve a lanzar el error para el envelope', 'E', 'mdi:replay');
+  b.paso('responde', 'Responde 500 (o 503 si era una Rst503_)', 'W', 'mdi:reply-outline');
+  b.nota('n-stack', 'responde', 'Rutas montadas por el stack: capturarRespuesta ancla la 5xx (salvo 503)');
+  b.fin('fin', 'W');
+  b.flujo('api', 'llega', 'petición');
+  b.cadena('llega', 'err');
+  b.uso('err', 'pojo', '«uses»');
+  b.cadena('err', 'envuelve', 'ejecuta', 'lanza', 'excluye', 'censura', 'guarda', 'relanza', 'responde', 'fin');
+  b.uso('guarda', 'terr', 'INSERT');
+  b.flujo('fin', 'api', 'respuesta');
+}));
+
+// ── 010 · Tareas programadas al arrancar ────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'tareas-programadas', module: '010-General', title: 'Tareas programadas',
+  lanes: [{ id: 'H', label: 'Host (func start)' }, { id: 'R', label: 'Runner de parches' }, { id: 'T', label: 'Timers' }, { id: 'P', label: 'PostgreSQL' }],
+}, (b) => {
+  b.inicio('ini', 'H');
+  b.paso('start', 'app.hook.appStart, sin esperar el trabajo', 'H', 'mdi:rocket-launch-outline');
+  b.barra('fork', 'H');
+  b.paso('runner', 'applyPendingPatches(): patchdb y parches pendientes, por controllers', 'R', 'mdi:database-cog-outline');
+  b.paso('estado', 'Publica el estado del runner (/api/info)', 'H', 'mdi:information-outline');
+  b.paso('barrido', 'Barrido de cierre inmediato', 'H', 'mdi:broom');
+  b.fin('fin-arranque', 'H');
+  b.clase('cconv', 'conv', 'T', 'app');
+  b.clase('clog', 'log', 'T', 'app');
+  b.paso('flag', 'Lee runtime.timers (flag ausente = encendido)', 'T', 'mdi:timer-cog-outline');
+  b.nota('n-cada', 'flag', 'Cada 30 minutos, los dos timers en paralelo');
+  b.tabla('tsys', 'patyia_sys_values', 'P');
+  b.decision('d1', '¿Flag encendido?', 'T');
+  b.paso('nada', 'Sale sin hacer nada', 'T', 'mdi:skip-next-outline');
+  b.paso('cierra', 'Cierra las conversaciones inactivas', 'T', 'mdi:archive-lock-outline');
+  b.paso('purga', 'Purga el log de conversaciones', 'T', 'mdi:delete-sweep-outline');
+  b.tabla('tconv', 'patyia_conversaciones', 'P', ['iconversacion', 'itdestado', 'fhultact']);
+  b.tabla('tlog', 'patyia_conversacion_log', 'P');
+  b.fin('fin', 'T');
+  b.cadena('ini', 'start', 'fork');
+  b.flujo('fork', 'runner', 'trabajo de arranque en segundo plano');
+  b.cadena('runner', 'estado', 'barrido', 'fin-arranque');
+  b.uso('barrido', 'tconv', 'UPDATE');
+  b.flujo('fork', 'cconv', 'timers');
+  b.uso('cconv', 'clog', '«uses»');
+  b.cadena('cconv', 'flag', 'd1');
+  b.uso('flag', 'tsys', 'SELECT');
+  b.flujo('d1', 'nada', 'false');
+  b.flujo('d1', 'cierra', 'encendido');
+  b.cadena('cierra', 'purga', 'fin');
+  b.uso('cierra', 'tconv', 'UPDATE');
+  b.uso('purga', 'tlog', 'DELETE');
+  b.flujo('nada', 'fin');
+}));
+
+// ── Parches de datos (runner) ───────────────────────────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'parches-de-datos', module: '010-General', title: 'Parches de datos',
+  lanes: [{ id: 'R', label: 'Runner de parches · ZPatch' }, { id: 'P', label: 'PostgreSQL' }],
+}, (b) => {
+  b.inicio('ini', 'R');
+  b.paso('a', 'El parche .sql.ts devuelve un TPatch', 'R', 'mdi:file-code-outline');
+  b.decision('b', '¿ZPatch valida el objeto completo?', 'R');
+  b.paso('x', 'Falla sin escribir: va a la bandeja de errores', 'R', 'mdi:alert-octagon-outline');
+  b.tabla('terr', 'patyia_errores', 'P', ['ierror', 'jerror', 'referencia', 'resumen']);
+  b.paso('c', 'Pasada 1: solo lee y planifica, tabla por tabla', 'R', 'mdi:clipboard-search-outline');
+  b.componente('pg', 'db-pg', 'P');
+  b.decision('d', '¿Hay bloqueos?', 'R');
+  b.paso('f', 'Pasada 2: aplica y cada operación vuelve a leer', 'R', 'mdi:database-sync-outline');
+  b.paso('g', 'Registra el parche en patchdb', 'R', 'mdi:database-check-outline');
+  b.fin('fin', 'R');
+  b.cadena('ini', 'a', 'b');
+  b.flujo('b', 'x', 'no');
+  b.flujo('b', 'c', 'sí');
+  b.uso('c', 'pg', 'SELECT');
+  b.flujo('c', 'd');
+  b.flujo('d', 'x', 'sí');
+  b.flujo('d', 'f', 'no');
+  b.uso('f', 'pg', 'INSERT · UPDATE');
+  b.cadena('f', 'g', 'fin');
+  b.uso('g', 'pg', 'INSERT patchdb');
+  b.uso('x', 'terr', 'INSERT');
+  b.flujo('x', 'fin');
+}));
+
+// ── Gate del entregable (npm run sync:entregable) ───────────────────────────────────────────────
+RUTAS.push(ruta({
+  slug: 'gate-entregable', module: '010-General', title: 'Gate del entregable',
+  lanes: [{ id: 'S', label: 'sync:entregable' }, { id: 'G', label: 'Gate (pruebas)' }, { id: 'E', label: 'Entregable y mirror' }],
+}, (b) => {
+  b.inicio('ini', 'S');
+  b.paso('s', 'npm run sync:entregable', 'S', 'mdi:console');
+  b.decision('v', '¿Remotos del mirror y dependencias del compilado en orden?', 'S');
+  b.paso('x', 'Exit 4 · el entregable no se toca', 'S', 'mdi:cancel');
+  b.paso('g1', 'pre:vendor: vendor del kit, build y bundle', 'S', 'mdi:package-variant-closed');
+  b.paso('g2', 'docs:diagramas y docs:publicar', 'S', 'mdi:file-document-multiple-outline');
+  b.paso('g3', 'mirror-guardian', 'S', 'mdi:shield-sync-outline');
+  b.paso('g4', 'check-inbox-cero: local, staging y prod', 'S', 'mdi:inbox-outline');
+  b.paso('g5', 'patch-cleanup', 'S', 'mdi:broom');
+  b.decision('h', '¿Hay otro host en el puerto del gate?', 'G');
+  b.paso('h2', 'Arranca su propio host y espera /api/info', 'G', 'mdi:server-plus');
+  b.paso('t1', 'oxlint', 'G', 'mdi:format-list-checks');
+  b.paso('t2', 'test:all', 'G', 'mdi:test-tube');
+  b.paso('t3', 'tsc --noEmit', 'G', 'mdi:language-typescript');
+  b.paso('baja', 'Baja el host siempre', 'G', 'mdi:server-off');
+  b.decision('q', '¿Todo en verde?', 'G');
+  b.paso('w', 'Escribe en el entregable solo lo que cambió', 'E', 'mdi:content-save-move-outline');
+  b.paso('p', 'Post: dependencias en package.json, renombres de mayúsculas y estado', 'E', 'mdi:cog-transfer-outline');
+  b.paso('c', 'Checkpoint: commit y push del mirror', 'E', 'mdi:source-commit');
+  b.fin('fin', 'E');
+  b.fin('fin-x', 'S');
+  b.cadena('ini', 's', 'v');
+  b.flujo('v', 'x', 'falla');
+  b.flujo('v', 'g1', 'ok');
+  b.cadena('g1', 'g2', 'g3', 'g4', 'g5', 'h');
+  b.flujo('h', 'x', 'sí');
+  b.flujo('h', 'h2', 'no');
+  b.cadena('h2', 't1', 't2', 't3', 'baja', 'q');
+  b.flujo('q', 'x', 'no');
+  b.flujo('q', 'w', 'sí');
+  b.cadena('w', 'p', 'c', 'fin');
+  b.flujo('x', 'fin-x');
+}));
+
+/** Marcadores genéricos de los puentes (sin la función real del controller todavía). */
+const GENERICOS = new Set(['leer()', 'insertar()', 'actualizar()', 'borrar()']);
+
+/**
+ * El texto de cada puente es la función del controller que ejecuta la operación, curada a mano en
+ * el editable del ISS (leyendo el código): regenerar no la pisa. Un puente que siga con el marcador
+ * genérico se avisa.
+ */
+async function conservarFunciones(r) {
+  let previo = null;
+  for (const dir of [ISS, join(LAB, 'payloads')]) {
+    try { previo = JSON.parse(await readFile(join(dir, `${r.slug}.json`), 'utf8')); break; } catch { /* sigue */ }
+  }
+  const curadas = new Map((previo?.payload?.vectorFlow?.columns ?? []).flatMap((c) => c.nodes).filter((x) => x.shape === 'bridge').map((x) => [x.id, x.label]));
+  for (const c of r.payload?.vectorFlow?.columns ?? []) {
+    for (const x of c.nodes) {
+      if (x.shape !== 'bridge') continue;
+      const f = curadas.get(x.id);
+      if (f && !GENERICOS.has(f)) x.label = f;
+      else console.warn(`[rutas] ${r.slug}: el puente ${x.id} no tiene la función del controller (queda ${x.label})`);
+    }
+  }
+}
+
+/** Escribe cada editable en el lab y, con `--iss`, en los editables del ISS. */
+export async function escribir(editables) {
+  const destinos = [join(LAB, 'payloads'), ...(process.argv.includes('--iss') ? [ISS] : [])];
+  // En el lab, las referencias apuntan al fixture versionado (nunca a otra carpeta local).
+  const haciaIss = relative(join(LAB, 'payloads'), FIXTURE).split(sep).join('/');
+  const paraLab = (v) => Array.isArray(v) ? v.map(paraLab)
+    : v && typeof v === 'object'
+      ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k === 'path' && typeof x === 'string' && x.startsWith('.') ? `${haciaIss}/${x}`.replace(/\/\.\//g, '/') : paraLab(x)]))
+      : v;
+  for (const r of editables) {
+    await conservarFunciones(r);
+    for (const d of destinos) await writeFile(join(d, `${r.slug}.json`), `${JSON.stringify(d === ISS ? r : paraLab(r), null, 2)}
+`);
+    console.log(`OK ${r.slug}`);
+  }
+}
+
+if (import.meta.main) {
+  // `gate-entregable` no es un proceso de negocio: se dibuja pero no va a la doc oficial.
+  for (const r of RUTAS) if (r.slug === 'ruta-gate-entregable') r.oficial = false;
+  await escribir(RUTAS);
+  console.log(`${RUTAS.length} rutas ricas desde ${ISS}`);
+}

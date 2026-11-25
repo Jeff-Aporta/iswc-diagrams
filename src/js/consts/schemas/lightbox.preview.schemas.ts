@@ -1,0 +1,14 @@
+// @contexto INDICE.md · skills/iswc-foundation/SKILL.md
+/**
+ * lightbox.preview.ts — Zod schemas para los tipos extraídos de este módulo.
+ *
+ * Generado por `scripts/migrate-zod.py`. Refinar manualmente las
+ * entradas marcadas con TODO cuando se quiera validación runtime.
+ */
+import { z } from "zod";
+
+const LightboxLikeSchema = z.intersection(z.custom<HTMLElement>(() => true), z.object({
+  show: z.function({ input: [], output: z.void() }),
+}));
+export type LightboxLike = z.infer<typeof LightboxLikeSchema>;
+
