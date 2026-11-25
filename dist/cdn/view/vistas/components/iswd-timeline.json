@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-timeline",
   "category": "diagrams",
+  "navTitle": "Timeline",
   "title": "&lt;iswd-timeline&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-timeline",

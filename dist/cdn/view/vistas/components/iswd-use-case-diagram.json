@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-use-case-diagram",
   "category": "diagrams",
+  "navTitle": "Use Case Diagram",
   "title": "&lt;iswd-use-case-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-use-case-diagram",

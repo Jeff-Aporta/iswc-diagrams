@@ -3,6 +3,7 @@
   "anatomy": {},
   "tag": "iswd-diagram-view-app",
   "category": "diagrams",
+  "navTitle": "Diagram View App",
   "title": "Visor de diagramas (API)",
   "titleHtml": false,
   "description": "Abre cualquier diagrama con ?kind= y ?json= en base64url. La dirección no cambia al mirar el documento.",
@@ -18,5 +19,6 @@
         }
       ]
     }
-  ]
+  ],
+  "storageKey": "docs-iswd-diagram-view-app"
 }

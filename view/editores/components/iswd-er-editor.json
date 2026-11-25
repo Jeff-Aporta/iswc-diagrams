@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-er-editor",
   "category": "diagrams",
+  "navTitle": "ER Editor",
   "title": "&lt;iswd-er-editor&gt;",
   "titleHtml": false,
   "description": "Editor visual de entidad-relación. Compartir el resultado se hace con la app de edición, sin reescribir el enlace de entrada.",
@@ -24,5 +25,6 @@
         }
       ]
     }
-  ]
+  ],
+  "storageKey": "docs-iswd-er-editor"
 }

@@ -3,6 +3,7 @@
   "anatomy": {},
   "tag": "iswd-diagram-edit-app",
   "category": "diagrams",
+  "navTitle": "Diagram Edit App",
   "title": "Editor de diagramas (API)",
   "titleHtml": false,
   "description": "Edita el diagrama y comparte un enlace nuevo. El ?json= con el que se abrió la página se queda igual.",
@@ -18,5 +19,6 @@
         }
       ]
     }
-  ]
+  ],
+  "storageKey": "docs-iswd-diagram-edit-app"
 }

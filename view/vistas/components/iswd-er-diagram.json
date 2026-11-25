@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-er-diagram",
   "category": "diagrams",
+  "navTitle": "ER Diagram",
   "title": "&lt;iswd-er-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-er-diagram",

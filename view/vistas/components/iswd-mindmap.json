@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-mindmap",
   "category": "diagrams",
+  "navTitle": "Mindmap",
   "title": "&lt;iswd-mindmap&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-mindmap",

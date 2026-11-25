@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-quadrant-chart",
   "category": "diagrams",
+  "navTitle": "Quadrant Chart",
   "title": "&lt;iswd-quadrant-chart&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-quadrant-chart",

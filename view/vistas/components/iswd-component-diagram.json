@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-component-diagram",
   "category": "diagrams",
+  "navTitle": "Component Diagram",
   "title": "&lt;iswd-component-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-component-diagram",

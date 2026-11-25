@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-diagram-lightbox",
   "category": "diagrams",
+  "navTitle": "Diagram Lightbox",
   "title": "&lt;iswd-diagram-lightbox&gt;",
   "titleHtml": false,
   "styles": [

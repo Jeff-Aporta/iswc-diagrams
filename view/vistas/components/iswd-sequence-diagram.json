@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-sequence-diagram",
   "category": "diagrams",
+  "navTitle": "Sequence Diagram",
   "title": "&lt;iswd-sequence-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-sequence-diagram",

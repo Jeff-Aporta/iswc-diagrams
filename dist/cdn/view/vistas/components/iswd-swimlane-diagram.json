@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-swimlane-diagram",
   "category": "diagrams",
+  "navTitle": "Swimlane Diagram",
   "title": "&lt;iswd-swimlane-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-swimlane-diagram",

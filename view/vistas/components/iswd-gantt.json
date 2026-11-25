@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-gantt",
   "category": "diagrams",
+  "navTitle": "Gantt",
   "title": "&lt;iswd-gantt&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-gantt",

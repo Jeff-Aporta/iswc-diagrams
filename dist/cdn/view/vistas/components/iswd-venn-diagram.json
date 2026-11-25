@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-venn-diagram",
   "category": "diagrams",
+  "navTitle": "Venn Diagram",
   "title": "&lt;iswd-venn-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-venn-diagram",

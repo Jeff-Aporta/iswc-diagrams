@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-flowchart",
   "category": "diagrams",
+  "navTitle": "Flowchart",
   "title": "&lt;iswd-flowchart&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-flowchart",

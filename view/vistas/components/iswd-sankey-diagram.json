@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-sankey-diagram",
   "category": "diagrams",
+  "navTitle": "Sankey Diagram",
   "title": "&lt;iswd-sankey-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-sankey-diagram",

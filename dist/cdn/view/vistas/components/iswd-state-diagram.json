@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-state-diagram",
   "category": "diagrams",
+  "navTitle": "State Diagram",
   "title": "&lt;iswd-state-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-state-diagram",

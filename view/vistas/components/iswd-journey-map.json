@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-journey-map",
   "category": "diagrams",
+  "navTitle": "Journey Map",
   "title": "&lt;iswd-journey-map&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-journey-map",

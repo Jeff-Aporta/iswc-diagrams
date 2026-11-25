@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-block-diagram",
   "category": "diagrams",
+  "navTitle": "Block Diagram",
   "title": "&lt;iswd-block-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-block-diagram",

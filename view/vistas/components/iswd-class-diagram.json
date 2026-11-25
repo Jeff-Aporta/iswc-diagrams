@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-class-diagram",
   "category": "diagrams",
+  "navTitle": "Class Diagram",
   "title": "&lt;iswd-class-diagram&gt;",
   "titleHtml": false,
   "storageKey": "docs-iswd-class-diagram",

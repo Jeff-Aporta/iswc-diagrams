@@ -2,6 +2,7 @@
   "$schema": "iswc-preview/v1",
   "tag": "iswd-org-chart",
   "category": "diagrams",
+  "navTitle": "Org Chart",
   "title": "&lt;iswd-org-chart&gt;",
   "titleHtml": false,
   "styles": [
