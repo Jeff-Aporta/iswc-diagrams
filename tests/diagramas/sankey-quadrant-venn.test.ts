@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { resolveSankeySpec, computeSankeyLayout } from '../../src/js/diagrams/utils/sankey-spec.ts';
 import { resolveQuadrantSpec, computeQuadrantLayout } from '../../src/js/diagrams/utils/quadrant-spec.ts';
 import { resolveVennSpec, computeVennLayout } from '../../src/js/diagrams/utils/venn-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

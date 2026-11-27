@@ -22,7 +22,7 @@ let n = 0;
 for (const scss of [...listar(join(ROOT, 'src')), ...listar(join(ROOT, 'view'))]) {
   const { css } = sass.compile(scss, {
     style: 'expanded',
-    loadPaths: [dirname(scss), join(ROOT, 'src', 'styles'), join(ROOT, 'src', 'vendor', 'iswc-base', 'scss'), join(ROOT, 'src'), join(ROOT, 'view')],
+    loadPaths: [dirname(scss), join(ROOT, 'src', 'styles'), join(ROOT, '.cache', 'iswc-base', 'scss'), join(ROOT, 'src'), join(ROOT, 'view')],
   });
   const salida = join(STAGING, relative(ROOT, scss)).replace(/\.scss$/, '.css');
   mkdirSync(dirname(salida), { recursive: true });

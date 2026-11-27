@@ -1,6 +1,6 @@
 // labs/iss-ayudascpia-flujos/eps-iss.mjs
-// Endpoints del ISS que no tenían diagrama: para cada uno, la SECUENCIA pura (iswc-sequence-diagram)
-// y la SECUENCIA ENRIQUECIDA (ruta ilustrada, iswc-flowchart insoft) con piezas reales del ISS.
+// Endpoints del ISS que no tenían diagrama: para cada uno, la SECUENCIA pura (iswd-sequence-diagram)
+// y la SECUENCIA ENRIQUECIDA (ruta ilustrada, iswd-flowchart insoft) con piezas reales del ISS.
 // Los docs los muestran juntos en tabs (`---` + dos imágenes + `---`).
 //
 // Fuente de cada paso: el controller del EP (src/sources/020 Controllers/server) y el registro de
@@ -42,8 +42,8 @@ function secuencia(meta, actors, componer) {
   return {
     slug: meta.slug,
     module: meta.module,
-    tag: 'iswc-sequence-diagram',
-    script: 'diagrams/sequence-diagram.min.mjs',
+    tag: 'iswd-sequence-diagram',
+    script: 'view/vistas/components/iswd-sequence-diagram.min.mjs',
     attrs: { 'diagram-style': 'insoft' },
     payload: { sequence: { title: meta.title, actors: actors.map(([id, label]) => ({ id, label, kind: 'participant' })), messages, fragments } },
   };

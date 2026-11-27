@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import {
   computeComponentLayout,
   resolveComponentSpec,
-} from '../../src/components/diagrams/component-spec.ts';
+} from '../../src/js/diagrams/utils/component-spec.ts';
 import { pathPoints as parsePathPoints } from '../../src/components/_shared/diagram-arrow.ts';
 
 const LAB = dirname(fileURLToPath(import.meta.url));

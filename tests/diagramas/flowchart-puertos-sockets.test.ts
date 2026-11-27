@@ -15,7 +15,7 @@ import { RefObj } from '@jeff-aporta/iswc-base/lib/ref-obj.min.mjs';
 import { resolveFlowchartSpec } from '../../src/js/diagrams/utils/flowchart-spec.ts';
 import { pathPoints } from '../../src/js/diagrams/utils/diagram-edges.ts';
 import type { FlowLayout, FlowResolvedSpec } from '../../src/js/consts/schemas/flowchart-spec.schemas.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { layoutRuta, payloadsRutas, prepararLayouts, TIMEOUT_RUTAS_REALES } from '../_shared/rutas-reales.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 

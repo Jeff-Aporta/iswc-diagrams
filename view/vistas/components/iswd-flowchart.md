@@ -1,14 +1,21 @@
 ---
+name: iswd-flowchart
+description: Diagrama de flujo en SVG, sin Mermaid.
 tag: iswd-flowchart
 tags:
   - iswd-flowchart
 category: diagrams
 status: public
-source: ./flowchart.ts
-style: ./flowchart.scss
-preview: ./flowchart.json
+source: ./iswd-flowchart.ts
+style: ./iswd-flowchart.scss
+preview: ./iswd-flowchart.json
 ---
 # `<iswd-flowchart>`
+
+
+## Anatomía
+
+`<iswd-flowchart>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './flowchart.js';
+import './iswd-flowchart.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-flowchart open-on-click animation="flow">
   <script type="application/json">
@@ -48,8 +54,7 @@ import './flowchart.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `inline` \| `viewer` | Modo visor vs embebido. |
@@ -58,8 +63,7 @@ import './flowchart.js';
 | `animation` | tokens (`flow`, …) | Efectos opcionales (espacio-separados). Default: off. |
 | `persist` / `storage-key` | string | Persistencia de overrides en edit. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `animation` | lectura/escritura | Tokens (`flow`, …). Vacío = off. |
@@ -72,14 +76,12 @@ import './flowchart.js';
 | `turtle` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

@@ -1007,13 +1007,15 @@
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/_chunks/chunk-ZXO3BXIG.js": "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/_chunks/chunk-ZXO3BXIG.mjs",
     "playwright": "npm:playwright@^1.62.1",
     "@std/assert": "jsr:@std/assert@1",
-    "@std/testing": "jsr:@std/testing@1"
+    "@std/testing": "jsr:@std/testing@1",
+    "@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts": "./src/vendor/iswc-base/tools/pruebas.ts",
+    "@jeff-aporta/iswc-base/vendor-distributions/shared/testing/test-cooldown.ts": "./src/vendor/iswc-base/tools/test-cooldown.ts"
   },
   "tasks": {
     "vendor:scss": "deno run -A scripts/vendor/vendor-scss.mjs",
     "build:scss": "deno run -A scripts/build/build-scss.mjs",
     "icons": "deno run -A --reload=https://raw.githubusercontent.com/Jeff-Aporta/is-webcomponents/ assets/dl.js",
-    "build": "deno task icons ; deno task build:scss && deno run -A src/utils/build.ts",
+    "build": "deno task icons ; deno task vendor:scss && deno task build:scss && deno run -A src/utils/build.ts",
     "dev": "deno run -A src/utils/build.ts --watch",
     "serve": "deno run -A jsr:@std/http@1/file-server -p 4310 --host 127.0.0.1",
     "check": "deno check src/js/ view/",

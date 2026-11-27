@@ -1,14 +1,21 @@
 ---
+name: iswd-org-chart
+description: Organigrama jerárquico dibujado en SVG a partir de una lista plana de nodos con `parent`.
 tag: iswd-org-chart
 tags:
   - iswd-org-chart
 category: diagrams
 status: public
-source: ./org-chart.ts
-style: ./org-chart.scss
-preview: ./org-chart.json
+source: ./iswd-org-chart.ts
+style: ./iswd-org-chart.scss
+preview: ./iswd-org-chart.json
 ---
 # `<iswd-org-chart>`
+
+
+## Anatomía
+
+`<iswd-org-chart>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -33,11 +40,10 @@ para ideas radiales usar `<iswd-mindmap>`; para dependencia temporal usar
 ## Importación
 
 ```js
-import './org-chart.js';
+import './iswd-org-chart.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-org-chart>
   <script type="application/json">
@@ -53,8 +59,7 @@ import './org-chart.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `direction` | `down` (solo) | Sentido de crecimiento. El layout es **top-down**; `up`/`right` se aceptan pero aún no cambian el render. |
@@ -67,20 +72,17 @@ import './org-chart.js';
 Campos de un nodo: `id`, `title`, `name`, `parent`, y opcionalmente `photo`,
 `detail` (alias `tooltip`).
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `payload` | lectura/escritura | Arreglo de nodos u objeto `{ nodes: [...] }`. Al escribirlo sustituye al `<script>` hijo. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | (default) | Un `<script type="application/json">` con el arreglo de nodos. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

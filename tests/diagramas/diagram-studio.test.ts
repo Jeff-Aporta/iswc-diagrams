@@ -7,7 +7,7 @@ import {
   decodeJsonParam,
   encodeJsonParam,
 } from '../../src/js/diagrams/utils/diagram-studio.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

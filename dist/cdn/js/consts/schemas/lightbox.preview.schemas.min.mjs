@@ -1,1 +1,1 @@
-import{z as t}from"zod";var o=t.intersection(t.custom(()=>!0),t.object({show:t.function({input:[],output:t.void()})}));
+import{z as t}from"https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/lib/zod.min.mjs";var o=t.intersection(t.custom(()=>!0),t.object({show:t.function({input:[],output:t.void()})}));

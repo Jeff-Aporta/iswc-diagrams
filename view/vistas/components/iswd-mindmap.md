@@ -1,14 +1,21 @@
 ---
+name: iswd-mindmap
+description: Mapa mental en SVG, sin Mermaid.
 tag: iswd-mindmap
 tags:
   - iswd-mindmap
 category: diagrams
 status: public
-source: ./mindmap.ts
-style: ./mindmap.scss
-preview: ./mindmap.json
+source: ./iswd-mindmap.ts
+style: ./iswd-mindmap.scss
+preview: ./iswd-mindmap.json
 ---
 # `<iswd-mindmap>`
+
+
+## Anatomía
+
+`<iswd-mindmap>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './mindmap.js';
+import './iswd-mindmap.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-mindmap></iswd-mindmap>
 ```
@@ -42,14 +48,12 @@ import './mindmap.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -57,14 +61,12 @@ import './mindmap.js';
 | `spec` | solo lectura | Declarada por clase. |
 | `layout` | solo lectura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

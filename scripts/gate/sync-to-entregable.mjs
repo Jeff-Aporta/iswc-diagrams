@@ -13,7 +13,7 @@
 import { existsSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import process from 'node:process';
-import { codigoSync, correrSync, modoDeArgv } from '../../src/vendor/iswc-base/tools/sync-entregable.ts';
+import { codigoSync, correrSync, modoDeArgv } from '@jeff-aporta/iswc-base/vendor-distributions/shared/tools/sync-entregable.ts';
 
 const MIRROR = resolve(import.meta.dirname, '..', '..');
 const ENTREGABLE = process.env.ENTREGABLE ?? resolve(MIRROR, '..', '..', '_entregable', basename(MIRROR));

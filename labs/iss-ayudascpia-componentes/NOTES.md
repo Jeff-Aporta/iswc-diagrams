@@ -2,7 +2,7 @@
 
 **Inicio:** 2026-10-05  
 **Proyecto destino:** `PatyIA/_experimental/ISS-AyudasCPIA` (docs `999-Adjuntos/010-Diagramas`)  
-**Kit:** `<iswc-component-diagram theme="insoft">`
+**Kit:** `<iswd-component-diagram theme="insoft">`
 
 ## Objetivo
 
@@ -58,7 +58,7 @@ import { createRequire } from 'node:module';
 import { renderDiagram, writeDiagramOutputs } from './vendor/iswc-tools/index.ts';
 const { chromium } = createRequire(import.meta.url)('playwright');
 const r = await renderDiagram(
-  { scriptUrl: 'diagrams/component-diagram.min.mjs', payload, attrs: { theme: 'insoft-cd' } },
+  { scriptUrl: 'view/vistas/components/iswd-component-diagram.min.mjs', payload, attrs: { theme: 'insoft-cd' } },
   { chromium, serveRoot: pathToDistCdnParentOrKitRoot, timeoutMs: 900_000 },
 );
 await writeDiagramOutputs(r, 'out/componentes.svg');
@@ -76,7 +76,7 @@ cuando se cierre el diseño (publish-iswc-svg o a mano).
 
 ## Router de aristas (2026-10-06, reemplaza W54–W69)
 
-`src/components/diagrams/component-router.ts` — un solo algoritmo, reglas por construcción:
+`src/js/diagrams/utils/component-router.ts` — un solo algoritmo, reglas por construcción:
 
 1. **Distribución** (`component-spec.ts`): cada cara tiene capacidad de puertos a
    `lanePitch`; si se llena, las aristas pasan a otra cara (no se agranda la

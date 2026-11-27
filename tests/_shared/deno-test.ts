@@ -7,7 +7,7 @@
 //   export default lista();
 //
 // category: "how"
-import type { CuerpoT, OpcionesT } from '../../src/vendor/iswc-base/tools/schemas.ts';
+import type { CuerpoT, OpcionesT } from '@jeff-aporta/iswc-base/vendor-distributions/shared/schemas.ts';
 
 type Registrar = (nombre: string, a?: OpcionesT | CuerpoT, b?: CuerpoT) => void;
 /** `timeout` (ms) es propio del registrador común (no de Deno.test): el de la prueba, en vez del del archivo. */

@@ -3,7 +3,7 @@
 **Inicio:** 2026-10-07
 **Fuente:** `PatyIA/_experimental/ISS-AyudasCPIA/src/sources` (controllers `server` + `010 Objetos/models`)
 **Destino:** `ISS-AyudasCPIA/docs/010-General/999-Adjuntos/010-Diagramas/clases.svg` (editable `docs-experimental/diagramas/clases.json`)
-**Kit:** `<iswc-class-diagram>` en modo paquetes
+**Kit:** `<iswd-class-diagram>` en modo paquetes
 
 ## Cómo regenerar
 

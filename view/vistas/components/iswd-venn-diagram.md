@@ -1,14 +1,21 @@
 ---
+name: iswd-venn-diagram
+description: Diagrama de **Venn** de dos o tres conjuntos en SVG, sin Mermaid, con las posiciones canónicas y las regiones etiquetadas.
 tag: iswd-venn-diagram
 tags:
   - iswd-venn-diagram
 category: diagrams
 status: public
-source: ./venn-diagram.ts
-style: ./venn-diagram.scss
-preview: ./venn-diagram.json
+source: ./iswd-venn-diagram.ts
+style: ./iswd-venn-diagram.scss
+preview: ./iswd-venn-diagram.json
 ---
 # `<iswd-venn-diagram>`
+
+
+## Anatomía
+
+`<iswd-venn-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -30,11 +37,10 @@ regiones y el diagrama miente. Si lo que hay es jerarquía → `<iswd-mindmap>`.
 ## Importación
 
 ```js
-import './venn-diagram.js';
+import './iswd-venn-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-venn-diagram>
   <script type="application/json">
@@ -47,14 +53,12 @@ import './venn-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -62,14 +66,12 @@ import './venn-diagram.js';
 | `spec` | solo lectura | Declarada por clase. |
 | `layout` | solo lectura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

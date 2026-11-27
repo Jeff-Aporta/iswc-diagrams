@@ -1,8 +1,8 @@
 {
   "slug": "clases",
   "module": "010-General",
-  "tag": "iswc-class-diagram",
-  "script": "diagrams/class-diagram.min.mjs",
+  "tag": "iswd-class-diagram",
+  "script": "view/vistas/components/iswd-class-diagram.min.mjs",
   "attrs": {
     "diagram-style": "iswc"
   },

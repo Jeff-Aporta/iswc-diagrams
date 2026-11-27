@@ -19,7 +19,7 @@ import { computeSequenceLayout, resolveSequenceSpec } from '../../src/js/diagram
 import { lineColor, paletteColor, pickThemeMode, sequencePaint } from '../../src/js/diagrams/utils/theme.ts';
 import { ErThemeJsonSchema } from '../../src/js/consts/schemas/theme.schemas.ts';
 import { loadStylesDiagram, styleThemeFor } from '../../src/js/diagrams/utils/diagram-styles.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
@@ -171,8 +171,8 @@ denoTest('estilo iswc: trae tema de secuencia con tipografía, líneas por nombr
   assert(!JSON.stringify(raw).toUpperCase().includes('#F4B67B'));
   // Y el estilo lo publica junto a los otros tres.
   await loadStylesDiagram('iswc').catch(() => undefined);
-  assert(styleThemeFor('iswc', 'sequence') !== null || !existsSync(join(ROOT, 'dist', 'cdn', 'diagrams', 'themes', 'iswc-seq.json')));
-  assert(existsSync(join(ROOT, 'dist', 'cdn', 'diagrams', 'themes', 'iswc-seq.json')), 'el build no publicó iswc-seq.json');
+  assert(styleThemeFor('iswc', 'sequence') !== null || !existsSync(join(ROOT, 'dist', 'cdn', 'js', 'diagrams', 'utils', 'themes', 'iswc-seq.json')));
+  assert(existsSync(join(ROOT, 'dist', 'cdn', 'js', 'diagrams', 'utils', 'themes', 'iswc-seq.json')), 'el build no publicó iswc-seq.json');
 });
 
 denoTest('nested en secuencia: recuadro junto a la punta, contain, sin pisar lifelines ajenas ni la fila siguiente', () => {

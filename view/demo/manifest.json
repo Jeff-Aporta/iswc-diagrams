@@ -1,78 +1,78 @@
 [
   {
     "tag": "iswd-flowchart",
-    "file": "../vistas/components/iswd-flowchart.json"
+    "file": "../vistas/components/iswd-flowchart.json?v=a7e0e9da"
   },
   {
     "tag": "iswd-sequence-diagram",
-    "file": "../vistas/components/iswd-sequence-diagram.json"
+    "file": "../vistas/components/iswd-sequence-diagram.json?v=0ef41404"
   },
   {
     "tag": "iswd-diagram-lightbox",
-    "file": "../vistas/components/iswd-diagram-lightbox.json"
+    "file": "../vistas/components/iswd-diagram-lightbox.json?v=cd051aa3"
   },
   {
     "tag": "iswd-class-diagram",
-    "file": "../vistas/components/iswd-class-diagram.json"
+    "file": "../vistas/components/iswd-class-diagram.json?v=d7fc02a1"
   },
   {
     "tag": "iswd-state-diagram",
-    "file": "../vistas/components/iswd-state-diagram.json"
+    "file": "../vistas/components/iswd-state-diagram.json?v=3f601ddb"
   },
   {
     "tag": "iswd-er-diagram",
-    "file": "../vistas/components/iswd-er-diagram.json"
+    "file": "../vistas/components/iswd-er-diagram.json?v=31cb8d87"
   },
   {
     "tag": "iswd-block-diagram",
-    "file": "../vistas/components/iswd-block-diagram.json"
+    "file": "../vistas/components/iswd-block-diagram.json?v=31e08945"
   },
   {
     "tag": "iswd-component-diagram",
-    "file": "../vistas/components/iswd-component-diagram.json"
+    "file": "../vistas/components/iswd-component-diagram.json?v=591f4ebc"
   },
   {
     "tag": "iswd-mindmap",
-    "file": "../vistas/components/iswd-mindmap.json"
+    "file": "../vistas/components/iswd-mindmap.json?v=d5b095fc"
   },
   {
     "tag": "iswd-gantt",
-    "file": "../vistas/components/iswd-gantt.json"
+    "file": "../vistas/components/iswd-gantt.json?v=2a48ff8c"
   },
   {
     "tag": "iswd-timeline",
-    "file": "../vistas/components/iswd-timeline.json"
+    "file": "../vistas/components/iswd-timeline.json?v=1cd50d0b"
   },
   {
     "tag": "iswd-org-chart",
-    "file": "../vistas/components/iswd-org-chart.json"
+    "file": "../vistas/components/iswd-org-chart.json?v=02c7b413"
   },
   {
     "tag": "iswd-sankey-diagram",
-    "file": "../vistas/components/iswd-sankey-diagram.json"
+    "file": "../vistas/components/iswd-sankey-diagram.json?v=caec0f76"
   },
   {
     "tag": "iswd-quadrant-chart",
-    "file": "../vistas/components/iswd-quadrant-chart.json"
+    "file": "../vistas/components/iswd-quadrant-chart.json?v=aa456dac"
   },
   {
     "tag": "iswd-venn-diagram",
-    "file": "../vistas/components/iswd-venn-diagram.json"
+    "file": "../vistas/components/iswd-venn-diagram.json?v=ea855751"
   },
   {
     "tag": "iswd-use-case-diagram",
-    "file": "../vistas/components/iswd-use-case-diagram.json"
+    "file": "../vistas/components/iswd-use-case-diagram.json?v=9b437422"
   },
   {
     "tag": "iswd-swimlane-diagram",
-    "file": "../vistas/components/iswd-swimlane-diagram.json"
+    "file": "../vistas/components/iswd-swimlane-diagram.json?v=e4bff90c"
   },
   {
     "tag": "iswd-journey-map",
-    "file": "../vistas/components/iswd-journey-map.json"
+    "file": "../vistas/components/iswd-journey-map.json?v=b4b49160"
   },
   {
     "tag": "iswd-er-editor",
-    "file": "../editores/components/iswd-er-editor.json"
+    "file": "../editores/components/iswd-er-editor.json?v=00840c61"
   }
 ]

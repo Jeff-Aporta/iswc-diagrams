@@ -1,1 +1,1 @@
-import{z as e}from"zod";var n=e.object({scale:e.number(),x:e.number(),y:e.number()});
+import{z as e}from"https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/lib/zod.min.mjs";var n=e.object({scale:e.number(),x:e.number(),y:e.number()});

@@ -1,14 +1,21 @@
 ---
+name: iswd-state-diagram
+description: Diagrama de estados en SVG, sin Mermaid.
 tag: iswd-state-diagram
 tags:
   - iswd-state-diagram
 category: diagrams
 status: public
-source: ./state-diagram.ts
-style: ./state-diagram.scss
-preview: ./state-diagram.json
+source: ./iswd-state-diagram.ts
+style: ./iswd-state-diagram.scss
+preview: ./iswd-state-diagram.json
 ---
 # `<iswd-state-diagram>`
+
+
+## Anatomía
+
+`<iswd-state-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './state-diagram.js';
+import './iswd-state-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-state-diagram></iswd-state-diagram>
 ```
@@ -42,14 +48,12 @@ import './state-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -59,14 +63,12 @@ import './state-diagram.js';
 | `turtle` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

@@ -34,7 +34,7 @@ export const DiagramNodeKindSchema = z.union([z.literal('nested'), z.literal('ta
 /** Diagrama referenciado: mismo formato que el editable del ISS (tag/script/attrs/payload). */
 export const EmbeddedDiagramSchema = z.object({
   /** Web component que lo pinta (`iswd-flowchart`, `iswd-sequence-diagram`, …). */
-  tag: z.string().regex(/^iswc-[a-z0-9-]+$/),
+  tag: z.string().regex(/^iswd-[a-z0-9-]+$/),
   payload: z.unknown(),
   /** Bundle relativo a la raíz del CDN (`diagrams/sequence-diagram.min.mjs`); por defecto se deduce del tag. */
   script: z.string().optional(),
@@ -45,7 +45,7 @@ export type EmbeddedDiagram = z.infer<typeof EmbeddedDiagramSchema>;
 
 /** Archivo editable apuntado por `src`: el formato del ISS, o un payload suelto. */
 export const EmbeddedDiagramFileSchema = z.object({
-  tag: z.string().regex(/^iswc-[a-z0-9-]+$/).optional(),
+  tag: z.string().regex(/^iswd-[a-z0-9-]+$/).optional(),
   script: z.string().optional(),
   attrs: z.record(z.string(), z.string()).optional(),
   payload: z.unknown().optional(),

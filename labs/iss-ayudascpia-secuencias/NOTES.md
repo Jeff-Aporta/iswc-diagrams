@@ -3,7 +3,7 @@
 **Inicio:** 2026-10-07
 **Proyecto destino:** `PatyIA/_experimental/ISS-AyudasCPIA` (editables en
 `docs-experimental/diagramas/`, publicados en `docs/<módulo>/999-Adjuntos/010-Diagramas/`)
-**Kit:** `<iswc-sequence-diagram diagram-style="insoft">`
+**Kit:** `<iswd-sequence-diagram diagram-style="insoft">`
 
 ## Objetivo
 

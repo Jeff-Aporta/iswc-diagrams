@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { RefObj } from '@jeff-aporta/iswc-base/lib/ref-obj.min.mjs';
 import { computeClassLayout, resolveClassSpec } from '../../src/js/diagrams/utils/class-spec.ts';
 import { computeErLayout, resolveErSpec } from '../../src/js/diagrams/utils/er-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

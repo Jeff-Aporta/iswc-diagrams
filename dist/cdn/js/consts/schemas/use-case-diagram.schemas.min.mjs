@@ -1,1 +1,1 @@
-import{z as e}from"zod";var a=e.object({n:e.union([e.custom(()=>!0),e.custom(()=>!0)]),g:e.custom(()=>!0)}),o=e.object({l:e.custom(()=>!0),g:e.custom(()=>!0)});
+import{z as e}from"https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/lib/zod.min.mjs";var a=e.object({n:e.union([e.custom(()=>!0),e.custom(()=>!0)]),g:e.custom(()=>!0)}),o=e.object({l:e.custom(()=>!0),g:e.custom(()=>!0)});

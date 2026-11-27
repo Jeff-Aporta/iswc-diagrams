@@ -1,14 +1,21 @@
 ---
+name: iswd-swimlane-diagram
+description: Diagrama de **carriles** (cross-functional flowchart) en SVG, sin Mermaid: cada fila es un responsable y cada columna un momento del proceso.
 tag: iswd-swimlane-diagram
 tags:
   - iswd-swimlane-diagram
 category: diagrams
 status: public
-source: ./swimlane-diagram.ts
-style: ./swimlane-diagram.scss
-preview: ./swimlane-diagram.json
+source: ./iswd-swimlane-diagram.ts
+style: ./iswd-swimlane-diagram.scss
+preview: ./iswd-swimlane-diagram.json
 ---
 # `<iswd-swimlane-diagram>`
+
+
+## Anatomía
+
+`<iswd-swimlane-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -30,11 +37,10 @@ tinta. Si lo que importa es el reparto de una magnitud → `<iswd-sankey-diagram
 ## Importación
 
 ```js
-import './swimlane-diagram.js';
+import './iswd-swimlane-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-swimlane-diagram>
   <script type="application/json">
@@ -47,14 +53,12 @@ import './swimlane-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -63,14 +67,12 @@ import './swimlane-diagram.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenLanes` | lectura/escritura | Carriles ocultos por el visor. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

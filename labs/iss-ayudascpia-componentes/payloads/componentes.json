@@ -1,8 +1,8 @@
 {
   "slug": "componentes",
   "module": "010-General",
-  "tag": "iswc-component-diagram",
-  "script": "diagrams/component-diagram.min.mjs",
+  "tag": "iswd-component-diagram",
+  "script": "view/vistas/components/iswd-component-diagram.min.mjs",
   "attrs": {
     "diagram-style": "insoft"
   },

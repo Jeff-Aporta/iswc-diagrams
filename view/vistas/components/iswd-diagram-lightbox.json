@@ -54,6 +54,20 @@
             "            </iswc-button>",
             "          </div>",
             "          <iswd-diagram-lightbox id=\"lb\" kind=\"sequence\"></iswd-diagram-lightbox>"
+          ],
+          "controls": [
+            {
+              "control": "text",
+              "prop": "attr:animation",
+              "label": "animation",
+              "default": ""
+            },
+            {
+              "control": "text",
+              "prop": "attr:theme",
+              "label": "theme",
+              "default": ""
+            }
           ]
         }
       ]

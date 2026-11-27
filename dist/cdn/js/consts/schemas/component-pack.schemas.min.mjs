@@ -1,1 +1,1 @@
-import{z as o}from"zod";var r=o.object({items:o.array(o.custom(()=>!0))}),t=o.object({xs:o.array(o.number()),ys:o.array(o.number()),occ:o.array(o.array(o.boolean()))});
+import{z as o}from"https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/lib/zod.min.mjs";var r=o.object({items:o.array(o.custom(()=>!0))}),t=o.object({xs:o.array(o.number()),ys:o.array(o.number()),occ:o.array(o.array(o.boolean()))});

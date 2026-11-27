@@ -971,7 +971,7 @@ export type HostAttrs = Record<string, string>;
 
 /** Job sintético: el tool arma el HTML y carga el .min.js. */
 export type SyntheticDiagramJob = {
-  /** Tag del custom element. Default: iswc-component-diagram */
+  /** Tag del custom element. Default: iswd-component-diagram */
   tag?: string;
   /**
    * URL del módulo ESM del componente.
@@ -1114,7 +1114,7 @@ export const EditableLoteSchema = z.object({
   slug: z.string().optional(),
   /** Módulo de docs al que pertenece (entra en la huella). */
   module: z.string().optional(),
-  /** Custom element del kit (`iswc-flowchart`, `iswc-er-diagram`…). */
+  /** Custom element del kit (`iswd-flowchart`, `iswd-er-diagram`…). */
   tag: z.string(),
   /** Módulo relativo a `<kit>/dist/cdn/` (`diagrams/flowchart.min.mjs`). */
   script: z.string(),

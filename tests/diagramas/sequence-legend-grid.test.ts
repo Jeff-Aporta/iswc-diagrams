@@ -19,7 +19,7 @@
 // el test falla y señala exactamente qué invariante se rompió.
 
 import { resolveSequenceSpec, computeSequenceLayout } from '../../src/js/diagrams/utils/sequence-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

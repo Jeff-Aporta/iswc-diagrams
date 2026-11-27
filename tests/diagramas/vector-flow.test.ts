@@ -11,7 +11,7 @@ import { assert, assertEquals, assertThrows } from 'https://deno.land/std@0.224.
 import { validarVector, vectorAFlujo } from '../../src/js/diagrams/utils/vector-flow-spec.ts';
 import { ZVectorFlow } from '../../src/js/consts/schemas/vector-flow-spec.schemas.ts';
 import { computeFlowchartLayout, resolveFlowchartSpec } from '../../src/js/diagrams/utils/flowchart-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

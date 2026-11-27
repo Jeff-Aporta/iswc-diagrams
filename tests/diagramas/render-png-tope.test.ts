@@ -16,9 +16,10 @@ import { assert, assertEquals } from 'https://deno.land/std@0.224.0/assert/mod.t
 import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { IMPORT_MAP_HOST } from '../_shared/import-map.ts';
 import { PNG_MAX_PX, pngCanvasSize, renderDiagramBatch } from '@jeff-aporta/iswc-base/vendor-distributions/client/tools/render-diagram.ts';
-import type { RenderDiagramOptions } from '../../src/vendor/iswc-base/tools/schemas.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import type { RenderDiagramOptions } from '@jeff-aporta/iswc-base/vendor-distributions/shared/schemas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 import { lanzarChromium, TIMEOUT_RENDER_NAVEGADOR } from '../_shared/navegador.ts';
 
@@ -88,7 +89,7 @@ denoTest({
       edges: [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }],
     };
     const [r] = await renderDiagramBatch(
-      [{ id: 'chico', job: { tag: 'iswd-flowchart', scriptUrl: BUNDLE, payload, attrs: { 'flow-anim': 'off' } } }],
+      [{ id: 'chico', job: { tag: 'iswd-flowchart', scriptUrl: BUNDLE, payload, attrs: { 'flow-anim': 'off' }, importMap: IMPORT_MAP_HOST } }],
       { chromium: chromium!, serveRoot: RAIZ, png: true, settleMs: 200 },
     );
     assert(r?.result?.png && r.result.width && r.result.height, `render: ${r?.error ?? 'sin png'}`);

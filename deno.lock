@@ -18,7 +18,8 @@
     "npm:jsdom@29.1.1": "29.1.1",
     "npm:playwright@^1.62.1": "1.64.1",
     "npm:sass@^1.105.0": "1.107.1",
-    "npm:zod@4.4.3": "4.4.3"
+    "npm:zod@4.4.3": "4.4.3",
+    "npm:zod@^4.4.3": "4.4.3"
   },
   "jsr": {
     "@std/cli@1.0.32": {
@@ -893,12 +894,15 @@
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/navigation/tab-group.min.mjs": "911e8e7a049f3ace4fd5906f9525c6ddaea7543fee20b6758fa61820f11a7ff0",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/hosts.ts": "0587cadb3ae06ff09d3d08b3cf9de25acd5c476ef6c971ce6102cc85bdfa05f1",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/render-diagram.ts": "ab552deb6ea59e21706590d028584b797e44f3ce86e7d21e3eeed12d19d48fbd",
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/render-lote.mjs": "2fd0c310b1aafd87edf85d362b5c165ed62bff12bb8e4bba339ad6c53f167c7d",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/render-lote.ts": "ce0a24e9f85927c93c23756cad2d9b0cc888e907aebbc7dc62ac0e6320b68cbe",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/sanitize-svg.ts": "f2618044aefd55a8b60888370a297893b55d0e413d36a1530a1c3390db51d223",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/client/tools/static-server.ts": "811cd713627541fc98ee0b28e307aca6edfc1efd0926c72669ab9d892a08204f",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/shared/lib/obj.ts": "0d83350d9885dd0e498d45001b68418b3ca12c944c7d96b9ac10ee3a55c10e61",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/shared/lib/ref-obj.ts": "3bc5c5b0161d812add883816209737936f2baf59c50be7e93c971ea7819ad354",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/shared/schemas.ts": "c6b05c51e8eb8de51b754a92a18d8ff481ef02b3294a54ac0cd2a25bccce5f5f",
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/shared/testing/pruebas.ts": "c8ff60ed7cb846a56b0e0647c66c353d925efb4bea0c7cd40aeeb2b5a543a322",
+    "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@2a651e44bbd1316b96942f14f26ff1c6175ac2c8/dist/cdn/vendor-distributions/shared/testing/test-cooldown.ts": "2799c22044e6c6ba7add22174758dc6cf42f5e6bdc8cb7d2955ffd5b9ad69029",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/dist/cdn/_chunks/chunk-4B72DYVS.mjs": "d03830c9047370b3a7a1247323c0984a56b306b1f74da23db102290729f45693",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/dist/cdn/_chunks/chunk-7IBSWVMF.mjs": "9f1d5f8a1be7ebe37871d8e0e8c740b7f5e36f6fdaee6077842c4f91366e323a",
     "https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@92208c8e9e9bca9e0fa6fa944b5ee2ee98f08a0c/dist/cdn/_chunks/chunk-CMZVHIC2.mjs": "8bce1d3aa493e16931085499d11b51b9169c60048ccac5a3c4ca07fe72356f72",

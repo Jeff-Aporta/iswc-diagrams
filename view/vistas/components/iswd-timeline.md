@@ -1,14 +1,21 @@
 ---
+name: iswd-timeline
+description: Línea de tiempo de hitos en SVG, sin Mermaid.
 tag: iswd-timeline
 tags:
   - iswd-timeline
 category: diagrams
 status: public
-source: ./timeline.ts
-style: ./timeline.scss
-preview: ./timeline.json
+source: ./iswd-timeline.ts
+style: ./iswd-timeline.scss
+preview: ./iswd-timeline.json
 ---
 # `<iswd-timeline>`
+
+
+## Anatomía
+
+`<iswd-timeline>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './timeline.js';
+import './iswd-timeline.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-timeline></iswd-timeline>
 ```
@@ -42,14 +48,12 @@ import './timeline.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -58,14 +62,12 @@ import './timeline.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

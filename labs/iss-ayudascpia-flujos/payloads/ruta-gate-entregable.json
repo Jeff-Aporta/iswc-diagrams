@@ -1,8 +1,8 @@
 {
   "slug": "ruta-gate-entregable",
   "module": "010-General",
-  "tag": "iswc-flowchart",
-  "script": "diagrams/flowchart.min.mjs",
+  "tag": "iswd-flowchart",
+  "script": "view/vistas/components/iswd-flowchart.min.mjs",
   "attrs": {
     "diagram-style": "insoft"
   },

@@ -3,7 +3,7 @@
 **Inicio:** 2026-10-06
 **Fuente:** `PatyIA/_experimental/ISS-AyudasCPIA/docs-experimental/gen/diagrams/iswc/html/der.html` (cfg → `payload.json`)
 **Destino:** `ISS-AyudasCPIA/docs/010-General/999-Adjuntos/010-Diagramas/der.svg`
-**Kit:** `<iswc-er-diagram theme="insoft">`
+**Kit:** `<iswd-er-diagram theme="insoft">`
 
 ## Cómo regenerar
 

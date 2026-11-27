@@ -31,8 +31,8 @@ for (const f of files) {
   jobs.push({
     id: slug,
     job: {
-      tag: spec.tag || 'iswc-component-diagram',
-      scriptUrl: `dist/cdn/${spec.script || 'diagrams/component-diagram.min.mjs'}`,
+      tag: spec.tag || 'iswd-component-diagram',
+      scriptUrl: `dist/cdn/${spec.script || 'view/vistas/components/iswd-component-diagram.min.mjs'}`,
       payload: spec.payload,
       attrs: spec.attrs || { 'diagram-style': 'insoft' },
     },

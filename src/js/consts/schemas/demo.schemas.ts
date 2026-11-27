@@ -51,7 +51,7 @@ export const DefinicionDemoSchema = z.object({
 }).passthrough();
 export type DefinicionDemo = z.infer<typeof DefinicionDemoSchema>;
 
-export const ManifestDemoSchema = z.array(z.object({ tag: z.string(), file: z.string().endsWith('.json') }));
+export const ManifestDemoSchema = z.array(z.object({ tag: z.string(), file: z.string().regex(/\.json(\?v=[\w.-]+)?$/) }));
 export type ManifestDemo = z.infer<typeof ManifestDemoSchema>;
 
 /** Lo que la galería usa del loader del kit. */

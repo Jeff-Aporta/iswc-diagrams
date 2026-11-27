@@ -1,14 +1,21 @@
 ---
+name: iswd-block-diagram
+description: Diagrama de bloques en SVG, sin Mermaid.
 tag: iswd-block-diagram
 tags:
   - iswd-block-diagram
 category: diagrams
 status: public
-source: ./block-diagram.ts
-style: ./block-diagram.scss
-preview: ./block-diagram.json
+source: ./iswd-block-diagram.ts
+style: ./iswd-block-diagram.scss
+preview: ./iswd-block-diagram.json
 ---
 # `<iswd-block-diagram>`
+
+
+## Anatomía
+
+`<iswd-block-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -30,11 +37,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './block-diagram.js';
+import './iswd-block-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-block-diagram></iswd-block-diagram>
 ```
@@ -43,14 +49,12 @@ import './block-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -60,14 +64,12 @@ import './block-diagram.js';
 | `turtle` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

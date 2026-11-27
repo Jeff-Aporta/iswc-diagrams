@@ -15,7 +15,6 @@
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
-const DIST_ISWC_BASE = "D:/VPS/transversales/iswc-base/dist/cdn";
 const SHA_POR_DEFECTO = "2a651e44bbd1316b96942f14f26ff1c6175ac2c8";
 
 const args = Deno.args;
@@ -24,18 +23,16 @@ const sha = shaIdx >= 0 ? args[shaIdx + 1] : SHA_POR_DEFECTO;
 const escribir = args.includes("--escribir");
 const CDN = `https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@${sha}/dist/cdn/`;
 
-function recorrer(dir, rel = "") {
-  const salida = [];
-  for (const e of Deno.readDirSync(dir)) {
-    const r = rel ? `${rel}/${e.name}` : e.name;
-    if (e.isDirectory) salida.push(...recorrer(`${dir}/${e.name}`, r));
-    else if (r.endsWith(".ts") || r.endsWith(".mjs")) salida.push(r);
-  }
-  return salida;
+/** Archivos de dist/cdn del kit EN ESE SHA, por el listado plano de jsDelivr (hermético: nunca rutas locales). */
+async function listarKit(sha) {
+  const r = await fetch(`https://data.jsdelivr.com/v1/packages/gh/Jeff-Aporta/is-webcomponents@${sha}?structure=flat`);
+  if (!r.ok) throw new Error(`jsDelivr no lista el kit @${sha}: HTTP ${r.status}`);
+  const { files } = await r.json();
+  return files.map((f) => f.name).filter((n) => n.startsWith("/dist/cdn/") && (n.endsWith(".ts") || n.endsWith(".mjs"))).map((n) => n.slice("/dist/cdn/".length));
 }
 
 const entradas = new Map();
-for (const r of recorrer(DIST_ISWC_BASE)) {
+for (const r of await listarKit(sha)) {
   const stem = r.slice(0, r.lastIndexOf("."));
   entradas.set(`${CDN}${stem}.js`, `${CDN}${r}`);
 }
@@ -49,6 +46,7 @@ if (!escribir) {
 } else {
   const ruta = join(RAIZ, "deno.json");
   const cfg = JSON.parse(Deno.readTextFileSync(ruta));
+  for (const k of Object.keys(cfg.imports)) if (k.startsWith("https://cdn.jsdelivr.net/gh/Jeff-Aporta/is-webcomponents@")) delete cfg.imports[k]; // sin restos de otros SHA
   for (const [k, v] of entradas) cfg.imports[k] = v;
   cfg.imports["@jeff-aporta/iswc-base/"] = CDN;
   Deno.writeTextFileSync(ruta, JSON.stringify(cfg, null, 2) + "\n");

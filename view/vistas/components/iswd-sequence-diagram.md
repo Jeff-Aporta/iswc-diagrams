@@ -1,14 +1,21 @@
 ---
+name: iswd-sequence-diagram
+description: Diagrama de secuencia en SVG, sin Mermaid.
 tag: iswd-sequence-diagram
 tags:
   - iswd-sequence-diagram
 category: diagrams
 status: public
-source: ./sequence-diagram.ts
-style: ./sequence-diagram.scss
-preview: ./sequence-diagram.json
+source: ./iswd-sequence-diagram.ts
+style: ./iswd-sequence-diagram.scss
+preview: ./iswd-sequence-diagram.json
 ---
 # `<iswd-sequence-diagram>`
+
+
+## Anatomía
+
+`<iswd-sequence-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './sequence-diagram.js';
+import './iswd-sequence-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-sequence-diagram></iswd-sequence-diagram>
 ```
@@ -42,14 +48,12 @@ import './sequence-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -59,14 +63,12 @@ import './sequence-diagram.js';
 | `turtle` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

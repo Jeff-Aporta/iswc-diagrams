@@ -8,7 +8,7 @@
 import { computeComponentLayout, resolveComponentSpec, LOLLI_R, LOLLI_GAP, assemblyEntityMargin, parseHttpEndpoint } from '../../src/js/diagrams/utils/component-spec.ts';
 import { pathPoints as parsePathPoints } from '../../src/js/diagrams/utils/diagram-edges.ts';
 import { COL_GUTTER, EDGE_CLEARANCE, orthoPolysOverlap, pathHasDiagonal, pathIllegal, pathShareLen, pointInOrtho, segsFromPath, segmentoCortaCaja } from '../../src/js/diagrams/utils/component-pack.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

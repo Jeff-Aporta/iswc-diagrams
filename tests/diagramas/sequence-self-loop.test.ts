@@ -18,7 +18,7 @@
 // una esquina), el test detecta cuál invariante se rompió.
 
 import { routeSequenceSelf } from '../../src/js/diagrams/utils/diagram-routing.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

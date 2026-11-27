@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 import {
   resolveErSpec, computeErLayout, ER_KEY_ICON_IDS,
 } from '../../src/js/diagrams/utils/er-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 
@@ -52,15 +52,15 @@ test('diagramas/er-features', async () => {
   // viejo `<text>PK</text>`. Verificamos el source del componente (estático):
   // cualquier reescritura que vuelva a texto rompería el contrato visual.
   {
-    const erSrc = readFileSync(join(here, '..', '..', 'src', 'components', 'diagrams', 'er-diagram.ts'), 'utf8');
+    const erSrc = readFileSync(join(here, '..', '..', 'view', 'vistas', 'components', 'iswd-er-diagram.ts'), 'utf8');
     // svgIconGroup está importado y referenciado.
-    assert.match(erSrc, /import\s*\{[^}]*svgIconGroup[^}]*\}\s*from\s*['"][^'"]*core\/tk-text/, 'er-diagram.ts debe importar svgIconGroup (core/tk-text, antes tk-icon-inline)');
-    assert.match(erSrc, /svgIconGroup\s*\(\s*iconId/, 'er-diagram.ts debe invocar svgIconGroup para los marcadores PK/FK');
+    assert.match(erSrc, /import\s*\{[^}]*svgIconGroup[^}]*\}\s*from\s*['"][^'"]*core\/tk-text/, 'iswd-er-diagram.ts debe importar svgIconGroup (core/tk-text, antes tk-icon-inline)');
+    assert.match(erSrc, /svgIconGroup\s*\(\s*iconId/, 'iswd-er-diagram.ts debe invocar svgIconGroup para los marcadores PK/FK');
     // El viejo `<text>PK</text>` literal ya no debe quedar. Permitimos "PK" como
     // substring de identificadores (p.ej. ER_KEY_ICON_IDS.PK) y dentro de
     // strings de icono ("mdi:key-variant"), pero NO como textContent suelto.
     const stillTextBadge = /textContent\s*=\s*['"]PK['"]|textContent\s*=\s*['"]FK['"]/;
-    assert.ok(!stillTextBadge.test(erSrc), 'er-diagram.ts no debe emitir <text>PK</text> ni <text>FK</text>');
+    assert.ok(!stillTextBadge.test(erSrc), 'iswd-er-diagram.ts no debe emitir <text>PK</text> ni <text>FK</text>');
   }
 
   // Sanity: el spec no rompe cuando una entidad tiene PK/FK mezclados con

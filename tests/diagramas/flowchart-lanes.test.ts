@@ -160,7 +160,7 @@ Deno.test('decisión: R1 ramas por el mismo costado no comparten riel (cada una 
 
 // ── Diagramas combinados: usos punteados, vuelta al origen, clase e íconos ──────────────
 import { computeClassLayout, resolveClassSpec } from '../../src/js/diagrams/utils/class-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { layoutRuta, payloadsRutas, prepararLayouts, TIMEOUT_RUTAS_REALES } from '../_shared/rutas-reales.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 

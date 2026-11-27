@@ -1,14 +1,21 @@
 ---
+name: iswd-diagram-lightbox
+description: Visor a pantalla completa pensado para diagramas: hereda del <iswc-lightbox> genérico el zoom anclado al cursor, el pan y el dialog top-layer, y le suma la barra de la animación tortuga (play / pause / prev / next), el anillo de auto-replay, el panel de código JSON y el enlace compartible con el payload en ?d=.
 tag: iswd-diagram-lightbox
 tags:
   - iswd-diagram-lightbox
 category: diagrams
 status: public
-source: ./diagram-lightbox.ts
-style: ./diagram-lightbox.scss
-preview: ./diagram-lightbox.json
+source: ./iswd-diagram-lightbox.ts
+style: ./iswd-diagram-lightbox.scss
+preview: ./iswd-diagram-lightbox.json
 ---
 # `<iswd-diagram-lightbox>`
+
+
+## Anatomía
+
+`<iswd-diagram-lightbox>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -31,11 +38,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './diagram-lightbox.js';
+import './iswd-diagram-lightbox.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-diagram-lightbox id="lb" kind="sequence"></iswd-diagram-lightbox>
 <script type="module">
@@ -53,26 +59,21 @@ console.log('Compartir:', e.detail.url);
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `kind` | string | Tipo de diagrama. Por defecto `sequence`. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `kind` | lectura/escritura | Declarada por clase. |
 | `payload` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 No expone.
 
-### Eventos
-
-
+## Eventos
 | Evento | Descripción |
 | --- | --- |
 | `iswc-share` | Evento personalizado del componente (share). |

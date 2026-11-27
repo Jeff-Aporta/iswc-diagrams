@@ -3,7 +3,7 @@ import { computeComponentLayout, resolveComponentSpec } from '../../src/js/diagr
 import { placeEdgeActors, pointAtFraction } from '../../src/js/diagrams/utils/diagram-edge-actors.ts';
 import { pathPoints as parsePathPoints, spreadOrthogonalPaths } from '../../src/js/diagrams/utils/diagram-edges.ts';
 import { rectsOverlap as overlap } from '@jeff-aporta/iswc-base/core/diagram-grid.min.mjs';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

@@ -3,7 +3,7 @@
 **Inicio:** 2026-10-09
 **Proyecto destino:** `PatyIA/_experimental/ISS-AyudasCPIA` (editables en
 `docs-experimental/diagramas/`, publicados en `docs/<módulo>/999-Adjuntos/010-Diagramas/`)
-**Kit:** `<iswc-flowchart diagram-style="insoft">`
+**Kit:** `<iswd-flowchart diagram-style="insoft">`
 
 ## Objetivo
 
@@ -54,7 +54,7 @@ carril mide lo que piden sus nodos; aristas entre carriles con el router insoft 
 rombo se entra siempre por arriba (sus vértices laterales son salidas de rama). Con carriles, la rama
 principal de una decisión es la que sigue en su carril o, si ninguna, la del camino más largo. Si
 varias ramas comparten el primer tramo, cada etiqueta va junto al codo de su rama. Contrato y
-ejemplos en `src/components/diagrams/flowchart.md` § Carriles de contexto.
+ejemplos en `src/js/diagrams/utils/flowchart.md` § Carriles de contexto.
 
 ### Rutas ilustradas del ISS (`rutas-ricas.mjs`, `eps-iss.mjs`)
 
@@ -91,12 +91,12 @@ El editable del ISS no trae inicio ni fin; el payload del lab los añade
 ## Nodos especiales (`kind`)
 
 Contrato en `src/components/_shared/diagram-embed.schemas.ts`, documentado en
-`src/components/diagrams/flowchart.md` § Nodos especiales.
+`src/js/diagrams/utils/flowchart.md` § Nodos especiales.
 
 ```json
 { "id": "turno", "label": "Turno de conversación", "kind": "nested",
   "src": "docs-experimental/diagramas/conversacion-turno.json",
-  "diagram": { "tag": "iswc-sequence-diagram", "payload": { } },
+  "diagram": { "tag": "iswd-sequence-diagram", "payload": { } },
   "bg": "#FFFFFF" }
 ```
 
@@ -114,7 +114,7 @@ nodo (`kind` implícito) más `title`:
 ```json
 { "id": "m3", "from": "P", "to": "S", "label": "POST /conversaciones/{id}/mensajes",
   "nested": { "title": "Turno de conversación", "src": "…/conversacion-turno.json",
-              "diagram": { "tag": "iswc-flowchart", "payload": { } },
+              "diagram": { "tag": "iswd-flowchart", "payload": { } },
               "maxW": 200, "maxH": 200, "bg": "#FFFFFF" } }
 ```
 

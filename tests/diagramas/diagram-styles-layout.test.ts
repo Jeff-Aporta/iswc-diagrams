@@ -17,7 +17,7 @@ import {
 } from '../../src/js/diagrams/utils/diagram-styles.ts';
 import { computeComponentLayout, resolveComponentSpec } from '../../src/js/diagrams/utils/component-spec.ts';
 import { computeClassLayout, resolveClassSpec } from '../../src/js/diagrams/utils/class-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

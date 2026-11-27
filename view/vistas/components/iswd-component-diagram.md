@@ -1,14 +1,21 @@
 ---
+name: iswd-component-diagram
+description: Diagrama de **componentes UML** en SVG, sin Mermaid.
 tag: iswd-component-diagram
 tags:
   - iswd-component-diagram
 category: diagrams
 status: public
-source: ./component-diagram.ts
-style: ./component-diagram.scss
-preview: ./component-diagram.json
+source: ./iswd-component-diagram.ts
+style: ./iswd-component-diagram.scss
+preview: ./iswd-component-diagram.json
 ---
 # `<iswd-component-diagram>`
+
+
+## Anatomía
+
+`<iswd-component-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -48,11 +55,10 @@ semántica UML → `<iswd-block-diagram>`.
 ## Importación
 
 ```js
-import './component-diagram.js';
+import './iswd-component-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-component-diagram min-gap="64"></iswd-component-diagram>
 ```
@@ -74,14 +80,12 @@ import './component-diagram.js';
 | `isViewer` | solo lectura | True cuando el componente vive dentro de un lightbox. |
 | `minGap` | lectura/escritura | Refleja `min-gap`. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |
@@ -385,3 +389,11 @@ Visor: `demos/diagramas/app/view.html?kind=component&json=<base64url>`.
 Editor: `demos/diagramas/app/edit.html?kind=component&json=<base64url>`.
 
 `json` es el documento completo en base64url. Editar no reescribe ese parámetro: Compartir arma un enlace nuevo con el JSON resultante.
+
+## Props
+
+Ver «Atributos observados»: este componente no declara propiedades adicionales.
+
+## Atributos observados
+
+No declara atributos propios más allá de los de `IswcElement`.

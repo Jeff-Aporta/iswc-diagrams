@@ -1,8 +1,8 @@
 {
   "slug": "conversacion-borrado",
   "module": "020-Conversaciones",
-  "tag": "iswc-sequence-diagram",
-  "script": "diagrams/sequence-diagram.min.mjs",
+  "tag": "iswd-sequence-diagram",
+  "script": "view/vistas/components/iswd-sequence-diagram.min.mjs",
   "attrs": {
     "diagram-style": "insoft"
   },

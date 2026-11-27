@@ -10,7 +10,7 @@ import { computeClassLayout, resolveClassSpec, sentidoFlujoClase } from '../../s
 import { computeErLayout, resolveErSpec, sentidoFlujoEr } from '../../src/js/diagrams/utils/er-spec.ts';
 import { computeComponentLayout, resolveComponentSpec } from '../../src/js/diagrams/utils/component-spec.ts';
 import { computeSequenceLayout, resolveSequenceSpec } from '../../src/js/diagrams/utils/sequence-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

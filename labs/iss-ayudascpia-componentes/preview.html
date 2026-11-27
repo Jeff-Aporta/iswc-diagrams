@@ -16,8 +16,8 @@
       border: 1.5px solid #000; background: #F4B67B; }
     header button[aria-pressed="true"] { background: #7ACFF4; }
     main { padding: 8px; min-height: 0; }
-    iswc-component-diagram { width: 100%; min-height: 640px; display: block; }
-    iswc-component-diagram:not(:defined) { visibility: hidden; }
+    iswd-component-diagram { width: 100%; min-height: 640px; display: block; }
+    iswd-component-diagram:not(:defined) { visibility: hidden; }
   </style>
 </head>
 <body>
@@ -26,13 +26,13 @@
     <p>theme=insoft · no es demo de galería</p>
   </header>
   <main>
-    <iswc-component-diagram id="diag" theme="insoft" min-gap="72"></iswc-component-diagram>
+    <iswd-component-diagram id="diag" theme="insoft" min-gap="72"></iswd-component-diagram>
   </main>
   <script type="module">
     // CDN local del kit (lab). Tras ajustar el diagramador: rebuild + reload.
     const KIT = new URL('../../dist/cdn/', import.meta.url).href;
-    await import(`${KIT}diagrams/component-diagram.min.mjs`);
-    await customElements.whenDefined('iswc-component-diagram');
+    await import(`${KIT}view/vistas/components/iswd-component-diagram.min.mjs`);
+    await customElements.whenDefined('iswd-component-diagram');
 
     const diag = document.getElementById('diag');
     const load = async (file) => {

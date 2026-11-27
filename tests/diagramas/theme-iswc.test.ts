@@ -11,7 +11,7 @@ import {
   themeToDiagramTheme,
 } from '../../src/js/diagrams/utils/theme.ts';
 import { loadStylesDiagram, styleThemeFor } from '../../src/js/diagrams/utils/diagram-styles.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

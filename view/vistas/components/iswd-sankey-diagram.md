@@ -1,14 +1,21 @@
 ---
+name: iswd-sankey-diagram
+description: Diagrama de **Sankey** en SVG, sin Mermaid.
 tag: iswd-sankey-diagram
 tags:
   - iswd-sankey-diagram
 category: diagrams
 status: public
-source: ./sankey-diagram.ts
-style: ./sankey-diagram.scss
-preview: ./sankey-diagram.json
+source: ./iswd-sankey-diagram.ts
+style: ./iswd-sankey-diagram.scss
+preview: ./iswd-sankey-diagram.json
 ---
 # `<iswd-sankey-diagram>`
+
+
+## Anatomía
+
+`<iswd-sankey-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -31,11 +38,10 @@ Si los valores son categorías comparadas contra un eje → usa un gráfico de b
 ## Importación
 
 ```js
-import './sankey-diagram.js';
+import './iswd-sankey-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-sankey-diagram>
   <script type="application/json">
@@ -48,15 +54,13 @@ import './sankey-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 | `height` | number | Alto del área de datos en px (default 320). |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -65,14 +69,12 @@ import './sankey-diagram.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Grupos ocultos por el visor. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

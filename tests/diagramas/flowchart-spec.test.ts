@@ -2,7 +2,7 @@
 import assert from 'node:assert';
 import { resolveFlowchartSpec, computeFlowchartLayout } from '../../src/js/diagrams/utils/flowchart-spec.ts';
 import { pathPoints as parsePathPoints } from '../../src/js/diagrams/utils/diagram-edges.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

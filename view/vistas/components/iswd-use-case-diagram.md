@@ -1,14 +1,21 @@
 ---
+name: iswd-use-case-diagram
+description: Diagrama de **casos de uso UML** en SVG, sin Mermaid: actores fuera del límite del sistema, casos en elipses dentro, y relaciones con su estereotipo (`«include»`, `«extend»`) o su punta hueca de generalización.
 tag: iswd-use-case-diagram
 tags:
   - iswd-use-case-diagram
 category: diagrams
 status: public
-source: ./use-case-diagram.ts
-style: ./use-case-diagram.scss
-preview: ./use-case-diagram.json
+source: ./iswd-use-case-diagram.ts
+style: ./iswd-use-case-diagram.scss
+preview: ./iswd-use-case-diagram.json
 ---
 # `<iswd-use-case-diagram>`
+
+
+## Anatomía
+
+`<iswd-use-case-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -31,11 +38,10 @@ Si es la arquitectura interna → `<iswd-component-diagram>`.
 ## Importación
 
 ```js
-import './use-case-diagram.js';
+import './iswd-use-case-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-use-case-diagram>
   <script type="application/json">
@@ -48,14 +54,12 @@ import './use-case-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -64,14 +68,12 @@ import './use-case-diagram.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Grupos ocultos por el visor. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

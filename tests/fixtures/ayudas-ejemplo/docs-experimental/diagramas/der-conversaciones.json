@@ -1,8 +1,8 @@
 {
   "slug": "der-conversaciones",
   "module": "020-Conversaciones",
-  "tag": "iswc-er-diagram",
-  "script": "diagrams/er-diagram.min.mjs",
+  "tag": "iswd-er-diagram",
+  "script": "view/vistas/components/iswd-er-diagram.min.mjs",
   "attrs": {
     "diagram-style": "iswc"
   },

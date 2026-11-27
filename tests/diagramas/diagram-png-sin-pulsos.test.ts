@@ -12,9 +12,10 @@ import { assert, assertEquals } from 'https://deno.land/std@0.224.0/assert/mod.t
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
+import { IMPORT_MAP_HOST } from '../_shared/import-map.ts';
 import { renderDiagramBatch } from '@jeff-aporta/iswc-base/vendor-distributions/client/tools/render-diagram.ts';
-import type { RenderDiagramOptions } from '../../src/vendor/iswc-base/tools/schemas.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import type { RenderDiagramOptions } from '@jeff-aporta/iswc-base/vendor-distributions/shared/schemas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 import { lanzarChromium, TIMEOUT_RENDER_NAVEGADOR } from '../_shared/navegador.ts';
 import { diferenciaPng } from '../_shared/png.ts';
@@ -68,7 +69,7 @@ denoTest({
   sanitizeResources: false,
   sanitizeOps: false,
   async fn() {
-    const job = (attrs: Record<string, string>) => ({ tag: 'iswd-flowchart', scriptUrl: BUNDLE, payload: PAYLOAD, attrs: { 'diagram-style': 'iswc', ...attrs } });
+    const job = (attrs: Record<string, string>) => ({ tag: 'iswd-flowchart', scriptUrl: BUNDLE, payload: PAYLOAD, attrs: { 'diagram-style': 'iswc', ...attrs }, importMap: IMPORT_MAP_HOST });
     const r = await renderDiagramBatch(
       [{ id: 'vivo', job: job({}) }, { id: 'quieto', job: job({ 'flow-anim': 'off' }) }],
       { chromium: chromium!, serveRoot: RAIZ, png: true, settleMs: 200 },

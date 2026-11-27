@@ -15,10 +15,10 @@ const labs = (p) => join(LAB, '..', p);
 const BASES = [
   { id: 'flujo-ruta', file: labs('iss-ayudascpia-flujos/payloads/ruta-conversacion-detalle.json') },
   { id: 'flujo', file: labs('iss-ayudascpia-flujos/payloads/conversacion-detalle.json') },
-  { id: 'secuencia', file: labs('iss-ayudascpia-secuencias/payloads/archivo-subida.json'), tag: 'iswc-sequence-diagram', script: 'diagrams/sequence-diagram.min.mjs' },
-  { id: 'clases', file: labs('iss-ayudascpia-clases/payload.json'), tag: 'iswc-class-diagram', script: 'diagrams/class-diagram.min.mjs', attrs: { 'diagram-style': 'insoft' } },
-  { id: 'der', file: labs('iss-ayudascpia-der/payload.json'), tag: 'iswc-er-diagram', script: 'diagrams/er-diagram.min.mjs', attrs: { theme: 'insoft' } },
-  { id: 'componentes', file: labs('iss-ayudascpia-componentes/payload.json'), tag: 'iswc-component-diagram', script: 'diagrams/component-diagram.min.mjs', attrs: { theme: 'insoft-cd', 'min-gap': '72' } },
+  { id: 'secuencia', file: labs('iss-ayudascpia-secuencias/payloads/archivo-subida.json'), tag: 'iswd-sequence-diagram', script: 'view/vistas/components/iswd-sequence-diagram.min.mjs' },
+  { id: 'clases', file: labs('iss-ayudascpia-clases/payload.json'), tag: 'iswd-class-diagram', script: 'view/vistas/components/iswd-class-diagram.min.mjs', attrs: { 'diagram-style': 'insoft' } },
+  { id: 'der', file: labs('iss-ayudascpia-der/payload.json'), tag: 'iswd-er-diagram', script: 'view/vistas/components/iswd-er-diagram.min.mjs', attrs: { theme: 'insoft' } },
+  { id: 'componentes', file: labs('iss-ayudascpia-componentes/payload.json'), tag: 'iswd-component-diagram', script: 'view/vistas/components/iswd-component-diagram.min.mjs', attrs: { theme: 'insoft-cd', 'min-gap': '72' } },
 ];
 export const ESTILOS = ['orthogonal', 'curved', 'bezier', 'sketch'];
 
@@ -29,8 +29,8 @@ for (const b of BASES) {
   const raw = JSON.parse(await readFile(b.file, 'utf8'));
   const editable = raw.payload !== undefined;
   const payload = editable ? raw.payload : raw;
-  const tag = (editable && raw.tag) || b.tag || 'iswc-flowchart';
-  const script = (editable && raw.script) || b.script || 'diagrams/flowchart.min.mjs';
+  const tag = (editable && raw.tag) || b.tag || 'iswd-flowchart';
+  const script = (editable && raw.script) || b.script || 'view/vistas/components/iswd-flowchart.min.mjs';
   const attrs = (editable && raw.attrs) || b.attrs || { 'diagram-style': 'insoft' };
   for (const estilo of ESTILOS) {
     const sketch = estilo === 'sketch';

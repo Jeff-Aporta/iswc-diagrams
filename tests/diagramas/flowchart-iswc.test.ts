@@ -26,7 +26,7 @@ import {
   readNodeEmbed,
 } from '../../src/js/diagrams/utils/diagram-view.ts';
 import { pathPoints } from '../../src/js/diagrams/utils/diagram-edges.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

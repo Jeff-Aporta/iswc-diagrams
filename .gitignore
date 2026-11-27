@@ -19,3 +19,4 @@ view/**/*.css
 .tmp/
 tests/e2e/.artifacts/
 tests/e2e/.cobertura/
+.cache/

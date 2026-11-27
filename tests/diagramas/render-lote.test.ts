@@ -18,9 +18,10 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   anotarCache, CACHE_NOMBRE, leerCache, planificarLote, renderizarLote, VERSION,
-} from '@jeff-aporta/iswc-base/vendor-distributions/client/tools/render-lote.ts';
-import type { OpcionesLote, PlanLote, RenderDiagramOptions } from '../../src/vendor/iswc-base/tools/schemas.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+} from '@jeff-aporta/iswc-base/vendor-distributions/client/tools/render-lote.mjs';
+import type { OpcionesLote, PlanLote, RenderDiagramOptions } from '@jeff-aporta/iswc-base/vendor-distributions/shared/schemas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
+import { IMPORT_MAP_HOST } from '../_shared/import-map.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 import { lanzarChromium, TIMEOUT_RENDER_NAVEGADOR } from '../_shared/navegador.ts';
 
@@ -44,10 +45,10 @@ function fixtures(): { op: OpcionesLote; dir: string; fuentes: string; cache: st
   const fuentes = join(editables, '_fuentes.json');
   json(fuentes, { titulos: { a: 'Recibe', b: 'Responde' } });
   json(join(editables, 'a.json'), {
-    module: '010', tag: 'iswd-flowchart', script: 'diagrams/flowchart.min.mjs',
+    module: '010', tag: 'iswd-flowchart', script: 'view/vistas/components/iswd-flowchart.min.mjs',
     payload: { nodes: [{ id: 'n', label: { path: './_fuentes.json', query: { titulos: { a: true } } } }], edges: [] },
   });
-  json(join(editables, 'b.json'), { module: '010', tag: 'iswd-flowchart', script: 'diagrams/flowchart.min.mjs', payload: { nodes: [{ id: 'n', label: 'Fijo' }], edges: [] } });
+  json(join(editables, 'b.json'), { module: '010', tag: 'iswd-flowchart', script: 'view/vistas/components/iswd-flowchart.min.mjs', payload: { nodes: [{ id: 'n', label: 'Fijo' }], edges: [] } });
   const op: OpcionesLote = { carpeta: editables, salidaSvg: join(dir, 'svg'), salidaPng: join(dir, 'png'), kit: RAIZ, pinKit: 'pin-1' };
   return { op, dir, fuentes, cache: join(editables, CACHE_NOMBRE) };
 }
@@ -152,7 +153,7 @@ denoTest({
       const editables = join(dir, 'diagramas');
       mkdirSync(editables);
       json(join(editables, 'chico.json'), {
-        tag: 'iswd-flowchart', script: 'diagrams/flowchart.min.mjs', attrs: { 'flow-anim': 'off' },
+        tag: 'iswd-flowchart', script: 'view/vistas/components/iswd-flowchart.min.mjs', attrs: { 'flow-anim': 'off' }, importMap: IMPORT_MAP_HOST,
         payload: { nodes: [{ id: 'a', label: 'Recibe' }, { id: 'b', label: 'Responde' }], edges: [{ from: 'a', to: 'b' }] },
       });
       const lineas: string[] = [];

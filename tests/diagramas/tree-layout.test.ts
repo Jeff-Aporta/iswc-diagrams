@@ -3,7 +3,7 @@
 import assert from 'node:assert';
 import { buildTree, layoutTree, layoutRadialTree, squarify } from '@jeff-aporta/iswc-base/core/tree-layout.min.mjs';
 import { rectsOverlap } from '@jeff-aporta/iswc-base/core/diagram-grid.min.mjs';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

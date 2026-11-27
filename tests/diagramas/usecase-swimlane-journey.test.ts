@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { resolveUseCaseSpec, computeUseCaseLayout } from '../../src/js/diagrams/utils/use-case-spec.ts';
 import { resolveSwimlaneSpec, computeSwimlaneLayout } from '../../src/js/diagrams/utils/swimlane-spec.ts';
 import { resolveJourneySpec, computeJourneyLayout } from '../../src/js/diagrams/utils/journey-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

@@ -1,14 +1,21 @@
 ---
+name: iswd-er-editor
+description: Editor visual del diagrama entidad-relación.
 tag: iswd-er-editor
 tags:
   - iswd-er-editor
 category: diagrams
 status: public
-source: ./er-editor.ts
-preview: ./er-editor.json
-style: ./er-editor.scss
+source: ./iswd-er-editor.ts
+preview: ./iswd-er-editor.json
+style: ./iswd-er-editor.scss
 ---
 # `<iswd-er-editor>`
+
+
+## Anatomía
+
+`<iswd-er-editor>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -17,7 +24,7 @@ Editor visual del diagrama entidad-relación. Monta `<iswd-er-diagram>` y añade
 ## Importación
 
 ```js
-import './er-editor.js';
+import './iswd-er-editor.js';
 ```
 
 ## Cuándo usarlo
@@ -74,8 +81,7 @@ el.addEventListener('iswc-state-change', (e) => {
 | Lienzo vacío | Sin entidades, el lienzo muestra una invitación («Lienzo vacío») en vez de un hueco |
 | Tema | Todo el chrome sale de los tokens `--iswc-*` de la página: claro/oscuro sin reglas propias. La hoja es `er-editor.scss`, incrustada en el bundle por el build |
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-er-editor>
   <script type="application/json">
@@ -84,8 +90,7 @@ el.addEventListener('iswc-state-change', (e) => {
 </iswd-er-editor>
 ```
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |
@@ -107,3 +112,15 @@ La barra es un `role="toolbar"` con grupos rotulados, y cada botón tiene `aria-
 - Para mostrar un diagrama sin editarlo, usa `<iswd-er-diagram>`.
 - En una app completa, enlaza a la página `diagram-edit-app`.
 - Lee el resultado por la API de la ficha: no parsees el SVG.
+
+## Props
+
+Ver «Atributos observados»: este componente no declara propiedades adicionales.
+
+## Atributos observados
+
+No declara atributos propios más allá de los de `IswcElement`.
+
+## Slots
+
+No declara slots: el contenido se configura por JSON (`<script type="application/json">` o la propiedad `payload`).

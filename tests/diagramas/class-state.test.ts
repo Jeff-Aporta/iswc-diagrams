@@ -3,7 +3,7 @@
 import assert from 'node:assert';
 import { resolveClassSpec, computeClassLayout } from '../../src/js/diagrams/utils/class-spec.ts';
 import { resolveStateSpec, computeStateLayout } from '../../src/js/diagrams/utils/state-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 

@@ -1,14 +1,21 @@
 ---
+name: iswd-journey-map
+description: Mapa de **recorrido de usuario** en SVG, sin Mermaid: fases arriba, pasos en orden y la curva de satisfacción que los atraviesa.
 tag: iswd-journey-map
 tags:
   - iswd-journey-map
 category: diagrams
 status: public
-source: ./journey-map.ts
-style: ./journey-map.scss
-preview: ./journey-map.json
+source: ./iswd-journey-map.ts
+style: ./iswd-journey-map.scss
+preview: ./iswd-journey-map.json
 ---
 # `<iswd-journey-map>`
+
+
+## Anatomía
+
+`<iswd-journey-map>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -30,11 +37,10 @@ bifurcaciones → `<iswd-flowchart>`.
 ## Importación
 
 ```js
-import './journey-map.js';
+import './iswd-journey-map.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-journey-map>
   <script type="application/json">
@@ -47,14 +53,12 @@ import './journey-map.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -63,14 +67,12 @@ import './journey-map.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenPhases` | lectura/escritura | Fases ocultas por el visor. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

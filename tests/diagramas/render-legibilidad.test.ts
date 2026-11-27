@@ -6,7 +6,7 @@ import { resolveTimelineSpec, computeTimelineLayout } from '../../src/js/diagram
 import { resolveStateSpec, computeStateLayout } from '../../src/js/diagrams/utils/state-spec.ts';
 import { resolveVennSpec, computeVennLayout } from '../../src/js/diagrams/utils/venn-spec.ts';
 import { sequenceThemeLight, sequenceThemeDark } from '../../src/js/diagrams/utils/sequence-spec.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });
 
@@ -111,8 +111,9 @@ test('diagramas/render-legibilidad', async () => {
     'class-diagram.ts', 'er-diagram.ts', 'flowchart.ts',
     'state-diagram.ts', 'swimlane-diagram.ts', 'use-case-diagram.ts',
   ];
+  // Los diagramas viven en view/vistas/components/ como componentes `iswd-*` (los entry-points se movieron de src/js/diagrams).
   for (const archivo of conChip) {
-    const src = readFileSync(new URL(`../../src/js/diagrams/${archivo}`, import.meta.url), 'utf8');
+    const src = readFileSync(new URL(`../../view/vistas/components/iswd-${archivo}`, import.meta.url), 'utf8');
     assert.ok(src.includes('edgeChipFill') || src.includes('edgeChipFromStroke'),
       `${archivo}: el chip de arista debe usar edgeChipFill/edgeChipFromStroke (bg = color arista)`);
   }
@@ -158,7 +159,7 @@ test('diagramas/render-legibilidad', async () => {
   
   /* ── 6. Diagrama de componentes: paquete translúcido y etiquetas encima ── */
   
-  const cd = readFileSync(new URL('../../src/js/diagrams/component-diagram.ts', import.meta.url), 'utf8');
+  const cd = readFileSync(new URL('../../view/vistas/components/iswd-component-diagram.ts', import.meta.url), 'utf8');
   assert.ok(/hsla\(\$\{p\.hue\},60%,50%,0\.06\)/.test(cd),
     'component: el paquete con `hue` volvió al relleno sólido y ahoga a los componentes de dentro');
   assert.ok(cd.includes('this.svg.appendChild(this.#etiquetasEdges)'),

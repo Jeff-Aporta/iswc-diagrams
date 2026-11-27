@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { RefObj } from '@jeff-aporta/iswc-base/lib/ref-obj.min.mjs';
 import { computeSequenceLayout, resolveSequenceSpec } from '../../src/js/diagrams/utils/sequence-spec.ts';
 import { pathPoints as parsePathPoints } from '../../src/js/diagrams/utils/diagram-edges.ts';
-import { coleccionPruebas } from '../../src/vendor/iswc-base/tools/pruebas.ts';
+import { coleccionPruebas } from '@jeff-aporta/iswc-base/vendor-distributions/shared/testing/pruebas.ts';
 import { denoTestCon } from '../_shared/deno-test.ts';
 
 const { test, lista } = coleccionPruebas({ categoria: 'what' });

@@ -7,27 +7,27 @@ Diagramas: flujo, clases, estados, ER, Gantt y demas, en SVG.
 <!-- generado:componentes -->
 | Tag | Título | Documento |
 |---|---|---|
-| `iswc-flowchart` | Diagrama de flujo | [flowchart.md](flowchart.md) |
-| `iswc-sequence-diagram` | Diagrama de secuencia | [sequence-diagram.md](sequence-diagram.md) |
-| `iswc-diagram-lightbox` | Visor de diagramas | [diagram-lightbox.md](diagram-lightbox.md) |
-| `iswc-class-diagram` | Diagrama de clases | [class-diagram.md](class-diagram.md) |
-| `iswc-state-diagram` | Diagrama de estados | [state-diagram.md](state-diagram.md) |
-| `iswc-er-diagram` | Diagrama entidad-relación | [er-diagram.md](er-diagram.md) |
-| `iswc-er-editor` | Editor entidad-relación | [er-editor.md](er-editor.md) |
+| `iswd-flowchart` | Diagrama de flujo | [flowchart.md](flowchart.md) |
+| `iswd-sequence-diagram` | Diagrama de secuencia | [sequence-diagram.md](sequence-diagram.md) |
+| `iswd-diagram-lightbox` | Visor de diagramas | [diagram-lightbox.md](diagram-lightbox.md) |
+| `iswd-class-diagram` | Diagrama de clases | [class-diagram.md](class-diagram.md) |
+| `iswd-state-diagram` | Diagrama de estados | [state-diagram.md](state-diagram.md) |
+| `iswd-er-diagram` | Diagrama entidad-relación | [er-diagram.md](er-diagram.md) |
+| `iswd-er-editor` | Editor entidad-relación | [er-editor.md](er-editor.md) |
 | `iswc-diagram-view-app` | Visor de diagramas (API) | [diagram-view-app.md](diagram-view-app.md) |
 | `iswc-diagram-edit-app` | Editor de diagramas (API) | [diagram-edit-app.md](diagram-edit-app.md) |
-| `iswc-block-diagram` | Diagrama de bloques | [block-diagram.md](block-diagram.md) |
-| `iswc-component-diagram` | Diagrama de componentes | [component-diagram.md](component-diagram.md) |
-| `iswc-mindmap` | Mapa mental | [mindmap.md](mindmap.md) |
-| `iswc-gantt` | Diagrama de Gantt | [gantt.md](gantt.md) |
-| `iswc-timeline` | Línea de tiempo | [timeline.md](timeline.md) |
-| `iswc-org-chart` | Org Chart | [org-chart.md](org-chart.md) |
-| `iswc-sankey-diagram` | Diagrama de Sankey | [sankey-diagram.md](sankey-diagram.md) |
-| `iswc-quadrant-chart` | Matriz de cuadrantes | [quadrant-chart.md](quadrant-chart.md) |
-| `iswc-venn-diagram` | Diagrama de Venn | [venn-diagram.md](venn-diagram.md) |
-| `iswc-use-case-diagram` | Diagrama de casos de uso | [use-case-diagram.md](use-case-diagram.md) |
-| `iswc-swimlane-diagram` | Diagrama de carriles | [swimlane-diagram.md](swimlane-diagram.md) |
-| `iswc-journey-map` | Mapa de recorrido | [journey-map.md](journey-map.md) |
+| `iswd-block-diagram` | Diagrama de bloques | [block-diagram.md](block-diagram.md) |
+| `iswd-component-diagram` | Diagrama de componentes | [component-diagram.md](component-diagram.md) |
+| `iswd-mindmap` | Mapa mental | [mindmap.md](mindmap.md) |
+| `iswd-gantt` | Diagrama de Gantt | [gantt.md](gantt.md) |
+| `iswd-timeline` | Línea de tiempo | [timeline.md](timeline.md) |
+| `iswd-org-chart` | Org Chart | [org-chart.md](org-chart.md) |
+| `iswd-sankey-diagram` | Diagrama de Sankey | [sankey-diagram.md](sankey-diagram.md) |
+| `iswd-quadrant-chart` | Matriz de cuadrantes | [quadrant-chart.md](quadrant-chart.md) |
+| `iswd-venn-diagram` | Diagrama de Venn | [venn-diagram.md](venn-diagram.md) |
+| `iswd-use-case-diagram` | Diagrama de casos de uso | [use-case-diagram.md](use-case-diagram.md) |
+| `iswd-swimlane-diagram` | Diagrama de carriles | [swimlane-diagram.md](swimlane-diagram.md) |
+| `iswd-journey-map` | Mapa de recorrido | [journey-map.md](journey-map.md) |
 <!-- /generado:componentes -->
 
 ## Reglas del dominio

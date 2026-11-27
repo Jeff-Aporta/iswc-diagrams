@@ -1,14 +1,21 @@
 ---
+name: iswd-er-diagram
+description: Diagrama entidad-relación en SVG, sin Mermaid.
 tag: iswd-er-diagram
 tags:
   - iswd-er-diagram
 category: diagrams
 status: public
-source: ./er-diagram.ts
-style: ./er-diagram.scss
-preview: ./er-diagram.json
+source: ./iswd-er-diagram.ts
+style: ./iswd-er-diagram.scss
+preview: ./iswd-er-diagram.json
 ---
 # `<iswd-er-diagram>`
+
+
+## Anatomía
+
+`<iswd-er-diagram>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -29,11 +36,10 @@ No inventar schemas ni usar specs/layout como custom elements.
 ## Importación
 
 ```js
-import './er-diagram.js';
+import './iswd-er-diagram.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-er-diagram></iswd-er-diagram>
 ```
@@ -42,14 +48,12 @@ import './er-diagram.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -59,14 +63,12 @@ import './er-diagram.js';
 | `turtle` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Declarada por clase. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Contenido proyectado. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

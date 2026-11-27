@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { computeErLayout, resolveErSpec } from '../../src/components/diagrams/er-spec.ts';
+import { computeErLayout, resolveErSpec } from '../../src/js/diagrams/utils/er-spec.ts';
 import { pathPoints as parsePathPoints } from '../../src/components/_shared/diagram-arrow.ts';
 
 const LAB = dirname(fileURLToPath(import.meta.url));

@@ -1,14 +1,21 @@
 ---
+name: iswd-quadrant-chart
+description: Matriz **2×2** en SVG, sin Mermaid.
 tag: iswd-quadrant-chart
 tags:
   - iswd-quadrant-chart
 category: diagrams
 status: public
-source: ./quadrant-chart.ts
-style: ./quadrant-chart.scss
-preview: ./quadrant-chart.json
+source: ./iswd-quadrant-chart.ts
+style: ./iswd-quadrant-chart.scss
+preview: ./iswd-quadrant-chart.json
 ---
 # `<iswd-quadrant-chart>`
+
+
+## Anatomía
+
+`<iswd-quadrant-chart>` es un Web Component vanilla (Shadow DOM, sin frameworks) del plugin `iswd-` de ISWC: el host recibe la configuración por JSON y pinta un único `<svg>` dentro de su shadow root; los colores salen de los tokens `--iswc-*` y del tema del diagrama.
 
 ## Propósito
 
@@ -30,11 +37,10 @@ de dispersión. Si no hay dos dimensiones, no hay matriz.
 ## Importación
 
 ```js
-import './quadrant-chart.js';
+import './iswd-quadrant-chart.js';
 ```
 
-## Ejemplo mínimo
-
+## Ejemplos
 ```html
 <iswd-quadrant-chart>
   <script type="application/json">
@@ -47,14 +53,12 @@ import './quadrant-chart.js';
 
 ### Atributos y propiedades
 
-#### Atributos observados
-
+## Atributos observados
 | Atributo | Tipo | Notas |
 | --- | --- | --- |
 | `color` | `viewer` \| color | `viewer` lo pinta como visor dentro del lightbox. |
 
-#### Propiedades públicas
-
+## Props
 | Propiedad | Acceso | Notas |
 | --- | --- | --- |
 | `isViewer` | solo lectura | Declarada por clase. |
@@ -63,14 +67,12 @@ import './quadrant-chart.js';
 | `layout` | solo lectura | Declarada por clase. |
 | `hiddenGroups` | lectura/escritura | Grupos ocultos por el visor. |
 
-### Slots
-
+## Slots
 | Slot | Uso |
 | --- | --- |
 | `default` | Payload JSON en un `<script type="application/json">`. |
 
-### Eventos
-
+## Eventos
 <!-- eventos: generado por scripts/sondas/eventos.ts desde declare static events -->
 
 | Evento | detail | cancelable |

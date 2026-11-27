@@ -58,7 +58,11 @@ function montarBloques(def: DefinicionDemo, main: ParentNode): void {
 }
 
 const base = new URL('./', location.href); // view/demo/
-const indice = ManifestDemoSchema.parse(await fetch(new URL('manifest.json', base)).then((r) => r.json()));
+// `?v=` de este módulo (lo escribe el build): sirve de buster para el manifiesto; cada ficha trae el suyo dentro.
+const vModulo = new URL(import.meta.url).searchParams.get('v');
+const urlManifiesto = new URL('manifest.json', base);
+if (vModulo) urlManifiesto.searchParams.set('v', vModulo);
+const indice = ManifestDemoSchema.parse(await fetch(urlManifiesto).then((r) => r.json()));
 const defs: DefinicionDemo[] = [];
 for (const item of indice) {
   const r = DefinicionDemoSchema.safeParse(await fetch(new URL(item.file, base)).then((x) => x.json()));
@@ -67,13 +71,32 @@ for (const item of indice) {
 }
 
 const nav = document.getElementById('nav')!;
+const split = document.getElementById('split') as HTMLElement & { collapse?: string | null };
+const drawer = document.getElementById('drawer') as HTMLElement & { open?: boolean };
 const preview = document.getElementById('preview') as HTMLElement & { preview?: unknown };
 
 function elegir(def: DefinicionDemo): void {
   for (const b of nav.querySelectorAll('iswc-button')) b.toggleAttribute('aria-current', b.getAttribute('data-tag') === def.tag);
   preview.preview = { definition: def, mount: (ctx: { main?: ParentNode }) => ctx.main && montarBloques(def, ctx.main) };
   history.replaceState(null, '', `#${def.tag}`);
+  if (movil.matches) drawer.open = false;
 }
+
+// sm/xs: el panel izquierdo pasa a drawer (el menú de la barra lo abre); en escritorio es un panel redimensionable.
+const movil = matchMedia('(max-width: 48em)');
+function acomodarNav(): void {
+  if (movil.matches) {
+    split.collapse = 'start';
+    drawer.append(nav);
+  } else {
+    drawer.open = false;
+    nav.setAttribute('slot', 'start');
+    split.collapse = null;
+    split.prepend(nav);
+  }
+}
+movil.addEventListener('change', acomodarNav);
+document.getElementById('menu')!.addEventListener('iswc-click', () => { drawer.open = true; });
 
 for (const def of defs) {
   const b = document.createElement('iswc-button');
@@ -83,6 +106,7 @@ for (const def of defs) {
   b.addEventListener('iswc-click', () => elegir(def));
   nav.append(b);
 }
+acomodarNav();
 const inicial = defs.find((d) => `#${d.tag}` === location.hash) ?? defs[0];
 if (inicial) elegir(inicial);
 document.documentElement.setAttribute('data-app-ready', '');
